@@ -1,0 +1,103 @@
+<!-- <form [formGroup]="personForm">
+  <input type="text" placeholder="Name" formControlName="name" />
+  <p
+    *ngIf="
+      personForm.controls['name'].errors && personForm.controls['name'].dirty
+    "
+  >
+    {{
+      personForm.controls["name"].hasError("required")
+        ? "Please enter Name"
+        : personForm.controls["name"].hasError("minlength")
+        ? "Name must be minimum of 3 characters"
+        : "Name must be maximum of 20 characters"
+    }}
+  </p>
+  <input type="text" placeholder="Age" formControlName="age" />
+  <p
+    *ngIf="
+      personForm.controls['age'].errors && personForm.controls['age'].dirty
+    "
+  >
+    {{
+      personForm.get("age")?.hasError("required")
+        ? "Please enter Age"
+        : "Age must be over 18"
+    }}
+  </p>
+  <input type="text" placeholder="Email" formControlName="email" />
+  <p
+    *ngIf="
+      personForm.controls['email'].errors && personForm.controls['email'].dirty
+    "
+  >
+    {{
+      personForm.get("email")?.hasError("required")
+        ? "Please enter Email"
+        : "Input must in the format of: abc@xyz.com"
+    }}
+  </p>
+
+  <button type="submit" (click)="addPerson()">Add</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of people; let id = index">
+      <td>{{ p.name }}</td>
+      <td>{{ p.age }}</td>
+      <td>
+      </td>
+    </tr>
+  </tbody>
+</table> -->
+<form [formGroup]="absentForm" class="abForm flex flex-col gap-4 mt-2">
+     <input type="date" formControlName="formDate" class="formDate border-[1px] border-slate-600 rounded-md mx-2 mt-2"/>
+     <br>
+     <div class="sec">
+     <label for="section" class=" font-bold">Section:</label>
+     <select name="section"
+      class="border-[1px] border-slate-600 rounded-md">
+          <option value="">Section</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+     </select>
+     <label for="period" class=" font-bold" > Period:</label>
+     <select name="period" class="formPeriod border-[1px] border-slate-600 rounded-md ">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+     </select>
+     </div>
+     <div>
+     <select name="student" 
+     class="formStud w-[260px] border-[1px] border-slate-400 mx-2 ">
+          <option value=""> Student Name</option>
+          <option value="">Ramanan</option>
+          <option value="">Bharathi</option>
+          <option value="">Suresh</option>
+          <option value="">Priyadharshan</option>
+          <option value="">Tamilselvan</option>
+          <option value="">Vichu</option>
+          <option value="">Vishwa</option>
+     </select>
+     </div>
+     <div class=" flex flex-row justify-center ">
+          isAbsent
+          <input type="checkbox" 
+          placeholder="isAbsent"
+          class="ml-10">
+     </div>
+     <button 
+     type="submit"
+     class=" bg-sky-500
+      text-slate-600 px-4 ml-4  rounded-md"> Submit</button>
+</form>

@@ -1,0 +1,23 @@
+<div class="menu">
+  <div class="logo ">
+    <h1 class="text-xl">Attendance Management</h1>
+  </div>
+  <ul>
+    <ng-container *ngFor="let m of menu">
+      <li class="menu-items">
+        <div>
+          <div>
+            <span nz-icon  nzTheme="outline"></span>
+            <span>{{ m.title }}</span>
+          </div>
+          <span
+            nz-icon
+            nzType="right"
+            nzTheme="outline"
+            *ngIf="m.children"
+          ></span>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+</div>
