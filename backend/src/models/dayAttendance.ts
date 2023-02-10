@@ -16,10 +16,6 @@ DayAttendance.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    hour: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     studentId: {
       type: DataTypes.INTEGER,
       allowNull: false,
