@@ -35,7 +35,7 @@ DayAttendance.init(
   },
   {
     sequelize,
-    modelName: "hourly-attendance",
+    modelName: "day-attendance",
     timestamps: false,
   }
 );
