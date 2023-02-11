@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { ChartComponent } from "../components/chart/chart.component";
 
 import { BaseLayoutComponent } from "./base-layout/base-layout.component";
-import { DashboardComponent } from "./dashboard/dashboard.component";
 import { DayAttendanceComponent } from "./day-attendance/day-attendance.component";
 import { HourlyAttendanceComponent } from "./hourly-attendance/hourly-attendance.component";
 
@@ -21,7 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        component:DashboardComponent,
+        component:ChartComponent,
       }
     ],
   },
