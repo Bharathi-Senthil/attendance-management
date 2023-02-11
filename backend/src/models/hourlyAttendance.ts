@@ -57,6 +57,3 @@ HourlyAttendance.belongsTo(Subject, {
   foreignKey: "subjectId",
   as: "subject",
 });
-
-Student.hasMany(HourlyAttendance, { foreignKey: "studentId" });
-Subject.hasMany(HourlyAttendance, { foreignKey: "subjectId" });

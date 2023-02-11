@@ -12,7 +12,11 @@ export abstract class IRepository<T extends Model> {
     return this.model.findByPk<T>(id, options);
   }
 
-  getAll(
+  getAll(options?: any): Promise<T[] | null> {
+    return this.model.findAll<T>(options);
+  }
+
+  getPaged(
     page: any,
     size: any,
     options?: any

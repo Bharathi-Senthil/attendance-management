@@ -38,5 +38,3 @@ DayAttendance.init(
 );
 
 DayAttendance.belongsTo(Student, { foreignKey: "studentId", as: "student" });
-
-Student.hasMany(DayAttendance, { foreignKey: "studentId" });

@@ -47,7 +47,3 @@ Student.belongsTo(Section, {
   foreignKey: "sectionId",
   as: "section",
 });
-
-Section.hasMany(Student, {
-  foreignKey: "sectionId",
-});

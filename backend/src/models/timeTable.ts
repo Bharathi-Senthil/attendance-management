@@ -102,10 +102,6 @@ TimeTable.belongsTo(Section, {
   as: "section",
 });
 
-Section.hasMany(TimeTable, {
-  foreignKey: "sectionId",
-});
-
 TimeTable.belongsTo(Subject, {
   foreignKey: "period1SubjectId",
   as: "period1Subject",
@@ -137,29 +133,4 @@ TimeTable.belongsTo(Subject, {
 TimeTable.belongsTo(Subject, {
   foreignKey: "period8SubjectId",
   as: "period8Subject",
-});
-
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
-});
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
-});
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
-});
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
-});
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
-});
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
-});
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
-});
-Subject.hasMany(TimeTable, {
-  foreignKey: "subjectId",
 });
