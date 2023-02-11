@@ -12,23 +12,23 @@ export class TimeTableController {
       "id",
       "day",
       "sectionId",
-      [Sequelize.literal("section.name"), "sectionName"],
+      [Sequelize.col("section.name"), "sectionName"],
       "period1SubjectId",
-      [Sequelize.literal("period1Subject.name"), "period1SubjectName"],
+      [Sequelize.col("period1Subject.name"), "period1SubjectName"],
       "period2SubjectId",
-      [Sequelize.literal("period2Subject.name"), "period2SubjectName"],
+      [Sequelize.col("period2Subject.name"), "period2SubjectName"],
       "period3SubjectId",
-      [Sequelize.literal("period3Subject.name"), "period3SubjectName"],
+      [Sequelize.col("period3Subject.name"), "period3SubjectName"],
       "period4SubjectId",
-      [Sequelize.literal("period4Subject.name"), "period4SubjectName"],
+      [Sequelize.col("period4Subject.name"), "period4SubjectName"],
       "period5SubjectId",
-      [Sequelize.literal("period5Subject.name"), "period5SubjectName"],
+      [Sequelize.col("period5Subject.name"), "period5SubjectName"],
       "period6SubjectId",
-      [Sequelize.literal("period6Subject.name"), "period6SubjectName"],
+      [Sequelize.col("period6Subject.name"), "period6SubjectName"],
       "period7SubjectId",
-      [Sequelize.literal("period7Subject.name"), "period7SubjectName"],
+      [Sequelize.col("period7Subject.name"), "period7SubjectName"],
       "period8SubjectId",
-      [Sequelize.literal("period8Subject.name"), "period8SubjectName"],
+      [Sequelize.col("period8Subject.name"), "period8SubjectName"],
     ],
     include: [
       { model: Section, as: "section", attributes: [] },
@@ -46,13 +46,19 @@ export class TimeTableController {
     this.timeTableService = new TimeTableService(TimeTable);
   }
 
-  getAll(req: Request, res: Response) {
+  getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
     this.timeTableService
-      .getAll(page, size, this.options)
+      .getPaged(page, size, this.options)
       .then((timeTables) => {
         res.status(200).json(getPagingData(timeTables));
       });
+  }
+
+  getAll(req: Request, res: Response) {
+    this.timeTableService.getAll(this.options).then((timeTables) => {
+      res.status(200).json(timeTables);
+    });
   }
 
   getById(req: Request, res: Response) {

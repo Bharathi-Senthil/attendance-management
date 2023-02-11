@@ -2,18 +2,39 @@ import { Request, Response } from "express";
 import { HourlyAttendanceService } from "../services";
 import { HourlyAttendance, Section, Student, Subject } from "../models";
 import { getPagingData } from "../helpers";
+import { Sequelize } from "sequelize";
 
 export class HourlyAttendanceController {
   private hourlyAttendanceService: HourlyAttendanceService;
 
   private options = {
+    attributes: [
+      "id",
+      "date",
+      "isAbsent",
+      [Sequelize.col("subject.id"), "subjectId"],
+      [Sequelize.col("subject.name"), "subjectName"],
+      [Sequelize.col("subject.code"), "subjectCode"],
+      "studentId",
+      [Sequelize.col("student.name"), "studentName"],
+      [Sequelize.col("student.roll_no"), "studentRollNo"],
+      [Sequelize.col("student.reg_no"), "studentRegNo"],
+      [Sequelize.col("student.section_id"), "studentSectionId"],
+      [Sequelize.col("student.section.name"), "sectionName"],
+    ],
     include: [
       {
         model: Student,
         as: "student",
-        include: [{ model: Section, as: "section" }],
+        attributes: [],
+        include: [
+          {
+            model: Section,
+            as: "section",
+          },
+        ],
       },
-      { model: Subject, as: "subject" },
+      { model: Subject, as: "subject", attributes: [] },
     ],
   };
 
@@ -23,12 +44,20 @@ export class HourlyAttendanceController {
     );
   }
 
-  getAll(req: Request, res: Response) {
+  getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
     this.hourlyAttendanceService
-      .getAll(page, size, this.options)
+      .getPaged(page, size, this.options)
       .then((hourlyAttendances) => {
         res.status(200).json(getPagingData(hourlyAttendances));
+      });
+  }
+
+  getAll(req: Request, res: Response) {
+    this.hourlyAttendanceService
+      .getAll(this.options)
+      .then((hourlyAttendances) => {
+        res.status(200).json(hourlyAttendances);
       });
   }
 

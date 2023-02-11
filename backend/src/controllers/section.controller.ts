@@ -10,11 +10,17 @@ export class SectionController {
     this.sectionService = new SectionService(Section);
   }
 
-  getAll(req: Request, res: Response) {
+  getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
     this.sectionService
-      .getAll(page, size)
+      .getPaged(page, size)
       .then((sections) => res.status(200).json(getPagingData(sections)));
+  }
+
+  getAll(req: Request, res: Response) {
+    this.sectionService
+      .getAll()
+      .then((sections) => res.status(200).json(sections));
   }
 
   getById(req: Request, res: Response) {

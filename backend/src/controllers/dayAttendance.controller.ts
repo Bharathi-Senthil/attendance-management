@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { DayAttendanceService } from "../services";
 import { DayAttendance, Student, Section } from "../models";
 import { getPagingData } from "../helpers";
+import { Sequelize } from "sequelize";
 
 export class DayAttendanceController {
   private dayAttendanceService: DayAttendanceService;
@@ -11,22 +12,45 @@ export class DayAttendanceController {
   }
 
   private options = {
+    attributes: [
+      "id",
+      "date",
+      "isAbsent",
+      "studentId",
+      [Sequelize.col("student.name"), "studentName"],
+      [Sequelize.col("student.roll_no"), "studentRollNo"],
+      [Sequelize.col("student.reg_no"), "studentRegNo"],
+      [Sequelize.col("student.section_id"), "studentSectionId"],
+      [Sequelize.col("student.section.name"), "sectionName"],
+    ],
     include: [
       {
         model: Student,
         as: "student",
-        include: [{ model: Section, as: "section" }],
+        attributes: [],
+        include: [
+          {
+            model: Section,
+            as: "section",
+          },
+        ],
       },
     ],
   };
 
-  getAll(req: Request, res: Response) {
+  getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
     this.dayAttendanceService
-      .getAll(page, size, this.options)
+      .getPaged(page, size, this.options)
       .then((dayAttendance) => {
         res.status(200).json(getPagingData(dayAttendance));
       });
+  }
+
+  getAll(req: Request, res: Response) {
+    this.dayAttendanceService.getAll(this.options).then((dayAttendance) => {
+      res.status(200).json(dayAttendance);
+    });
   }
 
   getById(req: Request, res: Response) {
@@ -44,13 +68,11 @@ export class DayAttendanceController {
   post(req: Request, res: Response) {
     let data = req.body;
 
-    console.log(data);
-
     let dayAttendance = new DayAttendance(data);
     this.dayAttendanceService
       .create(dayAttendance)
       .then((dayAttendance) => res.status(201).json(dayAttendance))
-      .catch((err) => res.status(400).json(err.errors));
+      .catch((err) => res.status(400).json(err));
   }
 
   update(req: Request, res: Response) {

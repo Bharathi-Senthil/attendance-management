@@ -13,7 +13,7 @@ export class StudentController {
       "name",
       "rollNo",
       "sectionId",
-      [Sequelize.literal("section.name"), "sectionName"],
+      [Sequelize.col("section.name"), "sectionName"],
     ],
     include: [
       {
@@ -28,11 +28,17 @@ export class StudentController {
     this.studentService = new StudentService(Student);
   }
 
-  getAll(req: Request, res: Response) {
+  getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
     this.studentService
-      .getAll(page, size, this.options)
+      .getPaged(page, size, this.options)
       .then((students) => res.status(200).json(getPagingData(students)));
+  }
+
+  getAll(req: Request, res: Response) {
+    this.studentService
+      .getAll(this.options)
+      .then((students) => res.status(200).json(students));
   }
 
   getById(req: Request, res: Response) {

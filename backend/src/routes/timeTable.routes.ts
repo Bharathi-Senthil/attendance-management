@@ -12,6 +12,9 @@ export class TimeTableRoutes {
   }
 
   private routes() {
+    //! GetPaged
+    this.router.get("/page", (req, res) => this.controller.getPaged(req, res));
+
     //! GetAll
     this.router.get("/", (req, res) => this.controller.getAll(req, res));
 
