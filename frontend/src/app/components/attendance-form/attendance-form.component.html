@@ -1,0 +1,87 @@
+<form nz-form [formGroup]="form" class="w-[450px]">
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="date"
+      >Date</nz-form-label
+    >
+    <nz-form-control nzErrorTip="Please select date">
+      <nz-date-picker
+        nzFormat="dd-MM-yyyy"
+        formControlName="date"
+        id="date"
+        class="w-full"
+      ></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="grid grid-cols-2">
+    <nz-form-item class="min-w-full">
+      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="student"
+        >Dept</nz-form-label
+      >
+      <nz-select
+        class="w-[130px]"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Department"
+        formControlName="department"
+      >
+        <nz-option nzValue="CSE" nzLabel="CSE"></nz-option>
+        <nz-option nzValue="ECE" nzLabel="ECE"></nz-option>
+        <nz-option nzValue="CIVIL" nzLabel="CIVIL"></nz-option>
+        <nz-option nzValue="MECH" nzLabel="MECH"></nz-option>
+        <nz-option nzValue="IT" nzLabel="IT"></nz-option>
+      </nz-select>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="student"
+        >Section</nz-form-label
+      >
+      <nz-select
+        class="w-[130px]"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Section"
+        formControlName="section"
+      >
+        <!-- <nz-option nzValue="A" nzLabel="A"></nz-option>
+        <nz-option nzValue="B" nzLabel="B"></nz-option> -->
+        <nz-option nzValue="C" nzLabel="C"></nz-option>
+        <nz-option nzValue="D" nzLabel="D"></nz-option>
+        <nz-option nzValue="E" nzLabel="E"></nz-option>
+      </nz-select>
+    </nz-form-item>
+  </div>
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="student" class="w-8"
+      >Student</nz-form-label
+    >
+    <nz-form-control nzErrorTip="Please select a student!">
+      <nz-select
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Select a Student"
+        formControlName="student"
+        id="student"
+      >
+        <nz-option
+          *ngFor="let s of students"
+          [nzLabel]="s.rollNo + ' - ' + s.name"
+          [nzValue]="s.id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="absent"
+      >Absent</nz-form-label
+    >
+    <nz-form-control nzErrorTip="Please select value!">
+      <label nz-checkbox formControlName="absent" id="absent"></label>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
+    Submit
+  </button>
+</form>

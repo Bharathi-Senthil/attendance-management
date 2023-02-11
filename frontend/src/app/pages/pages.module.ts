@@ -3,21 +3,19 @@ import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 
-import { BaseLayoutComponent } from "./base-layout/base-layout.component";
 import { PagesRoutingModule } from "./pages.routing.module";
+import { NgZorroModule } from "../NgZorro.module";
+import { BaseLayoutComponent } from "./base-layout/base-layout.component";
+import { ListAttendanceComponent } from './list-attendance/list-attendance.component';
 
 @NgModule({
-  declarations: [BaseLayoutComponent],
-  imports: [CommonModule, PagesRoutingModule, RouterModule, ComponentsModule],
+  declarations: [BaseLayoutComponent, ListAttendanceComponent],
+  imports: [
+    CommonModule,
+    PagesRoutingModule,
+    RouterModule,
+    ComponentsModule,
+    NgZorroModule,
+  ],
 })
-@NgModule({
-    declarations: [BaseLayoutComponent,],
-    imports: [
-      CommonModule,
-      PagesRoutingModule,
-      RouterModule,
-      
-    ],
-  })
-  export class PagesModule {}
-
+export class PagesModule {}

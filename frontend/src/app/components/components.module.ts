@@ -1,12 +1,22 @@
+import { NgZorroModule } from "./../NgZorro.module";
+import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { AttendanceFromComponent } from "./attendance-from/attendance-from.component";
-import { SidebarComponent } from "./sider/sider.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
+import { SiderComponent } from "./sider/sider.component";
+import { AttendanceFormComponent } from "./attendance-form/attendance-form.component";
+import { CalendarComponent } from "./calendar/calendar.component";
+
 @NgModule({
-  declarations: [SidebarComponent, AttendanceFromComponent],
-  exports: [SidebarComponent, AttendanceFromComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  declarations: [SiderComponent, AttendanceFormComponent, CalendarComponent],
+  exports: [SiderComponent, AttendanceFormComponent, CalendarComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    NgZorroModule,
+  ],
 })
 export class ComponentsModule {}

@@ -1,15 +1,17 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { BaseLayoutComponent } from './base-layout/base-layout.component';
-import { AttendanceFromComponent } from '../components/attendance-from/attendance-from.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+
+import { BaseLayoutComponent } from "./base-layout/base-layout.component";
+import { ListAttendanceComponent } from "./list-attendance/list-attendance.component";
+
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: BaseLayoutComponent,
     children: [
       {
-        path: 'attendance',
-        component: AttendanceFromComponent,
+        path: "attendance",
+        component: ListAttendanceComponent,
       },
     ],
   },

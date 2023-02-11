@@ -1,10 +1,13 @@
 .menu {
-  @apply w-[250px] bg-slate-50 h-screen sticky top-0;
-  .logo{
+  @apply w-[250px] bg-slate-50 h-screen;
+  .logo {
     @apply pb-6 flex flex-col items-center pt-4 font-bold border-b-2 border-b-slate-200/40;
   }
   ul {
-    .menu-items {
+    .menu-item {
+      @apply text-base gap-2 flex items-center p-2 px-4 m-2 hover:bg-slate-200 rounded cursor-pointer transition-all duration-300;
+    }
+    .smenu-item {
       @apply m-2 hover:bg-slate-200 rounded cursor-pointer transition-all duration-300;
       div:first-child {
         span {

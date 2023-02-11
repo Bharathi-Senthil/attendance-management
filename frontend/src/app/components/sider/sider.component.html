@@ -1,23 +1,49 @@
 <div class="menu">
-  <div class="logo ">
+  <div class="logo">
     <h1 class="text-xl">Attendance Management</h1>
   </div>
   <ul>
-    <ng-container *ngFor="let m of menu">
-      <li class="menu-items">
+    <ng-container *ngFor="let m of menu; let id = index">
+      <li
+        class="menu-item"
+        *ngIf="!m.children"
+        [routerLink]="m.path"
+        routerLinkActive="bg-slate-200"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span nz-icon [nzType]="m.icon" nzTheme="outline"></span>
+        <span>{{ m.title }}</span>
+      </li>
+      <li class="smenu-item" (click)="toggle(id)" *ngIf="m.children">
         <div>
           <div>
-            <span nz-icon  nzTheme="outline"></span>
+            <span nz-icon [nzType]="m.icon" nzTheme="outline"></span>
             <span>{{ m.title }}</span>
           </div>
           <span
             nz-icon
-            nzType="right"
+            [nzType]="dropdown.isOpen && dropdown.id === id ? 'up' : 'down'"
             nzTheme="outline"
             *ngIf="m.children"
           ></span>
         </div>
       </li>
+      <div
+        class="sub-item-container"
+        *ngIf="dropdown.isOpen && dropdown.id === id"
+        @slide
+      >
+        <div
+          *ngFor="let cm of m.children"
+          class="sub-items"
+          [routerLink]="cm.path"
+          routerLinkActive="bg-slate-200"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span nz-icon [nzType]="cm.icon" nzTheme="outline"></span>
+          <span>{{ cm.title }}</span>
+        </div>
+      </div>
     </ng-container>
   </ul>
 </div>
