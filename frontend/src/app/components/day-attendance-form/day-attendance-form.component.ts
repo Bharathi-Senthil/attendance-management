@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataService } from "src/app/helpers/data.service";
 
 @Component({
-  selector: "app-attendance-form",
-  templateUrl: "./attendance-form.component.html",
-  styleUrls: ["./attendance-form.component.scss"],
+  selector: "day-attendance-form",
+  templateUrl: "./day-attendance-form.component.html",
+  styleUrls: ["./day-attendance-form.component.scss"],
 })
-export class AttendanceFormComponent implements OnInit {
+export class DayAttendanceFormComponent implements OnInit {
   form: FormGroup;
   students = [
     { id: 1, name: "Ramanan KB", rollNo: "211420104218" },

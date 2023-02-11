@@ -11,9 +11,14 @@ import { Menu } from "../../models";
 export class SiderComponent {
   menu: Menu[] = [
     {
-      title: "Add Attendance",
+      title: "Day Attendance",
       icon: "team",
-      path: "attendance",
+      path: "day-attendance",
+    },
+    {
+      title: "Hourly Attendance",
+      icon: "team",
+      path: "hourly-attendance",
     },
     {
       title: "Dashboard",

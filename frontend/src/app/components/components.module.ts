@@ -5,13 +5,23 @@ import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { SiderComponent } from "./sider/sider.component";
-import { AttendanceFormComponent } from "./attendance-form/attendance-form.component";
+import { DayAttendanceFormComponent } from "./day-attendance-form/day-attendance-form.component";
 import { CalendarComponent } from "./calendar/calendar.component";
-import { HourlyAttendanceComponent } from './hourly-attendance/hourly-attendance.component';
+import { HourlyAttendanceFormComponent } from "./hourly-attendance-form/hourly-attendance-form.component";
 
 @NgModule({
-  declarations: [SiderComponent, AttendanceFormComponent, CalendarComponent, HourlyAttendanceComponent],
-  exports: [SiderComponent, AttendanceFormComponent, CalendarComponent],
+  declarations: [
+    SiderComponent,
+    DayAttendanceFormComponent,
+    CalendarComponent,
+    HourlyAttendanceFormComponent,
+  ],
+  exports: [
+    SiderComponent,
+    DayAttendanceFormComponent,
+    HourlyAttendanceFormComponent,
+    CalendarComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,

@@ -6,10 +6,11 @@ import { NgModule } from "@angular/core";
 import { PagesRoutingModule } from "./pages.routing.module";
 import { NgZorroModule } from "../NgZorro.module";
 import { BaseLayoutComponent } from "./base-layout/base-layout.component";
-import { ListAttendanceComponent } from './list-attendance/list-attendance.component';
+import { DayAttendanceComponent } from "./day-attendance/day-attendance.component";
+import { HourlyAttendanceComponent } from './hourly-attendance/hourly-attendance.component';
 
 @NgModule({
-  declarations: [BaseLayoutComponent, ListAttendanceComponent],
+  declarations: [BaseLayoutComponent, DayAttendanceComponent, HourlyAttendanceComponent],
   imports: [
     CommonModule,
     PagesRoutingModule,
