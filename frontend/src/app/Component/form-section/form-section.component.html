@@ -1,0 +1,43 @@
+<form [formGroup]="absentForm" class="abForm flex flex-col gap-4 mt-2">
+     <input type="date" formControlName="formDate" class="formDate border-[1px] border-slate-600 rounded-md mx-2 mt-2"/>
+     <br>
+     <div class="sec">
+     <label for="section" class=" font-bold">Section:</label>
+     <select name="section"
+      class="border-[1px] border-slate-600 rounded-md">
+          <option value="">Section</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+     </select>
+     <label for="period" class=" font-bold" > Period:</label>
+     <select name="period" class="formPeriod border-[1px] border-slate-600 rounded-md ">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+     </select>
+     </div>
+     <div>
+     <select name="student" 
+     class="formStud w-[260px] border-[1px] border-slate-400 mx-2 ">
+          <option value=""> Student Name</option>
+          <option value="">Ramanan</option>
+          <option value="">Bharathi</option>
+          <option value="">Suresh</option>
+          <option value="">Priyadharshan</option>
+          <option value="">Tamilselvan</option>
+          <option value="">Vichu</option>
+          <option value="">Vishwa</option>
+     </select>
+     </div>
+     <div class=" flex flex-row justify-center ">
+          isAbsent
+          <input type="checkbox" 
+          placeholder="isAbsent"
+          class="ml-10">
+     </div>
+     <button 
+     type="submit"
+     class=" bg-sky-500
+      text-slate-600 px-2 ml-2   rounded-md"> Submit</button>
+</form>

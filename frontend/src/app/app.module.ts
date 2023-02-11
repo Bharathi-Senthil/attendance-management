@@ -5,7 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SiderComponent } from './components/sider/sider.component';
 import { AttendanceFromComponent } from './components/attendance-from/attendance-from.component';
-
+import { FormsModule, ReactiveFormsModule,FormBuilder,FormGroup } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +15,10 @@ import { AttendanceFromComponent } from './components/attendance-from/attendance
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
