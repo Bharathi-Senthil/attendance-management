@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Menu } from "src/app/models/menu.module";
+import { Menu } from "src/app/Models/menu.module";
 @Component({
   selector: "app-sidebar",
   templateUrl: "./sider.component.html",
