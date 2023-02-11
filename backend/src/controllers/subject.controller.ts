@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { SubjectService } from "../services";
 import { Subject } from "../models";
+import { getPagingOptions, getPagingData } from "../helpers";
 
 export class SubjectController {
   private subjectService: SubjectService;
@@ -10,9 +11,10 @@ export class SubjectController {
   }
 
   getAll(req: Request, res: Response) {
+    const { page, size } = req.query;
     this.subjectService
-      .getAll()
-      .then((subjects) => res.status(200).json(subjects));
+      .getAll(page, size)
+      .then((subjects) => res.status(200).json(getPagingData(subjects)));
   }
 
   getById(req: Request, res: Response) {

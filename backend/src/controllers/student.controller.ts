@@ -1,41 +1,43 @@
 import { Request, Response } from "express";
 import { StudentService } from "../services";
 import { Section, Student } from "../models";
+import { Sequelize } from "sequelize";
+import { getPagingData } from "../helpers";
 
 export class StudentController {
   private studentService: StudentService;
 
-  private getOptions = {
-    include: [{ model: Section, as: "section" }],
+  private options = {
+    attributes: [
+      "id",
+      "name",
+      "rollNo",
+      "sectionId",
+      [Sequelize.literal("section.name"), "sectionName"],
+    ],
+    include: [
+      {
+        model: Section,
+        as: "section",
+        attributes: [],
+      },
+    ],
   };
-
-  private formatStudent(student: any) {
-    delete student.dataValues.sectionId;
-    return student;
-  }
-
-  private assignStudent(student: any) {
-    student.sectionId = student.section;
-    delete student.section;
-    return student;
-  }
 
   constructor() {
     this.studentService = new StudentService(Student);
   }
 
   getAll(req: Request, res: Response) {
-    this.studentService.getAll(this.getOptions).then((students) => {
-      students?.forEach((s) => {
-        this.formatStudent(s);
-      });
-      res.status(200).json(students);
-    });
+    const { page, size } = req.query;
+    this.studentService
+      .getAll(page, size, this.options)
+      .then((students) => res.status(200).json(getPagingData(students)));
   }
 
   getById(req: Request, res: Response) {
-    this.studentService.get(req.params.id, this.getOptions).then((student) => {
-      if (student) res.status(200).json(this.formatStudent(student));
+    this.studentService.get(req.params.id, this.options).then((student) => {
+      if (student) res.status(200).json(student);
       else
         res.status(404).json({
           message: `Student id:${req.params.id} does not exists`,
@@ -44,17 +46,17 @@ export class StudentController {
   }
 
   post(req: Request, res: Response) {
-    let data = this.assignStudent(req.body);
+    let data = req.body;
 
-    let student = new Student(data);
+    let student = new Student({ ...data });
     this.studentService
       .create(student)
       .then((student) => res.status(201).json(student))
-      .catch((err) => res.status(400).json(err.errors));
+      .catch((err) => res.status(400).json(err));
   }
 
   update(req: Request, res: Response) {
-    let data = this.assignStudent(req.body);
+    let data = req.body;
 
     this.studentService.get(req.params.id).then((student) => {
       if (student) {

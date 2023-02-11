@@ -1,86 +1,72 @@
 import { Request, Response } from "express";
 import { TimeTableService } from "../services";
 import { Section, Subject, TimeTable } from "../models";
+import { Sequelize } from "sequelize";
+import { getPagingData } from "../helpers";
 
 export class TimeTableController {
   private timeTableService: TimeTableService;
 
-  private getOptions = {
+  private options = {
+    attributes: [
+      "id",
+      "day",
+      "sectionId",
+      [Sequelize.literal("section.name"), "sectionName"],
+      "period1SubjectId",
+      [Sequelize.literal("period1Subject.name"), "period1SubjectName"],
+      "period2SubjectId",
+      [Sequelize.literal("period2Subject.name"), "period2SubjectName"],
+      "period3SubjectId",
+      [Sequelize.literal("period3Subject.name"), "period3SubjectName"],
+      "period4SubjectId",
+      [Sequelize.literal("period4Subject.name"), "period4SubjectName"],
+      "period5SubjectId",
+      [Sequelize.literal("period5Subject.name"), "period5SubjectName"],
+      "period6SubjectId",
+      [Sequelize.literal("period6Subject.name"), "period6SubjectName"],
+      "period7SubjectId",
+      [Sequelize.literal("period7Subject.name"), "period7SubjectName"],
+      "period8SubjectId",
+      [Sequelize.literal("period8Subject.name"), "period8SubjectName"],
+    ],
     include: [
-      { model: Section, as: "section" },
-      { model: Subject, as: "period1Subject" },
-      { model: Subject, as: "period2Subject" },
-      { model: Subject, as: "period3Subject" },
-      { model: Subject, as: "period4Subject" },
-      { model: Subject, as: "period5Subject" },
-      { model: Subject, as: "period6Subject" },
-      { model: Subject, as: "period7Subject" },
-      { model: Subject, as: "period8Subject" },
+      { model: Section, as: "section", attributes: [] },
+      { model: Subject, as: "period1Subject", attributes: [] },
+      { model: Subject, as: "period2Subject", attributes: [] },
+      { model: Subject, as: "period3Subject", attributes: [] },
+      { model: Subject, as: "period4Subject", attributes: [] },
+      { model: Subject, as: "period5Subject", attributes: [] },
+      { model: Subject, as: "period6Subject", attributes: [] },
+      { model: Subject, as: "period7Subject", attributes: [] },
+      { model: Subject, as: "period8Subject", attributes: [] },
     ],
   };
-
-  private formatTimeTable(timeTable: any) {
-    delete timeTable.dataValues.sectionId;
-    delete timeTable.dataValues.period1SubjectId;
-    delete timeTable.dataValues.period2SubjectId;
-    delete timeTable.dataValues.period3SubjectId;
-    delete timeTable.dataValues.period4SubjectId;
-    delete timeTable.dataValues.period5SubjectId;
-    delete timeTable.dataValues.period6SubjectId;
-    delete timeTable.dataValues.period7SubjectId;
-    delete timeTable.dataValues.period8SubjectId;
-    return timeTable;
-  }
-
-  private assignTimeTable(timeTable: any) {
-    timeTable.sectionId = timeTable.section;
-    timeTable.period1SubjectId = timeTable.period1Subject;
-    timeTable.period2SubjectId = timeTable.period2Subject;
-    timeTable.period3SubjectId = timeTable.period3Subject;
-    timeTable.period4SubjectId = timeTable.period4Subject;
-    timeTable.period5SubjectId = timeTable.period5Subject;
-    timeTable.period6SubjectId = timeTable.period6Subject;
-    timeTable.period7SubjectId = timeTable.period7Subject;
-    timeTable.period8SubjectId = timeTable.period8Subject;
-    delete timeTable.section;
-    delete timeTable.period1Subject;
-    delete timeTable.period2Subject;
-    delete timeTable.period3Subject;
-    delete timeTable.period4Subject;
-    delete timeTable.period5Subject;
-    delete timeTable.period6Subject;
-    delete timeTable.period7Subject;
-    delete timeTable.period8Subject;
-    return timeTable;
-  }
-
   constructor() {
     this.timeTableService = new TimeTableService(TimeTable);
   }
 
   getAll(req: Request, res: Response) {
-    this.timeTableService.getAll(this.getOptions).then((timeTables) => {
-      timeTables?.forEach((t) => {
-        this.formatTimeTable(t);
+    const { page, size } = req.query;
+    this.timeTableService
+      .getAll(page, size, this.options)
+      .then((timeTables) => {
+        res.status(200).json(getPagingData(timeTables));
       });
-      res.status(200).json(timeTables);
-    });
   }
 
   getById(req: Request, res: Response) {
-    this.timeTableService
-      .get(req.params.id, this.getOptions)
-      .then((timeTable) => {
-        if (timeTable) res.status(200).json(this.formatTimeTable(timeTable));
-        else
-          res.status(404).json({
-            message: `Time Table id:${req.params.id} does not exists`,
-          });
-      });
+    this.timeTableService.get(req.params.id, this.options).then((timeTable) => {
+      if (timeTable) res.status(200).json(timeTable);
+      else
+        res.status(404).json({
+          message: `Time Table id:${req.params.id} does not exists`,
+        });
+    });
   }
 
   post(req: Request, res: Response) {
-    let data = this.assignTimeTable(req.body);
+    let data = req.body;
 
     let timeTable = new TimeTable(data);
     this.timeTableService
@@ -90,7 +76,7 @@ export class TimeTableController {
   }
 
   update(req: Request, res: Response) {
-    let data = this.assignTimeTable(req.body);
+    let data = req.body;
 
     this.timeTableService.get(req.params.id).then((timeTable) => {
       if (timeTable) {

@@ -34,7 +34,7 @@ sequelize
 // TimeTable.sync();
 // Student.sync({ force: true });
 // HourlyAttendance.sync({ force: true });
-DayAttendance.sync({ force: true });
+// DayAttendance.sync({ force: true });
 
 app.use(express.json());
 

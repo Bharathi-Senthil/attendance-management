@@ -17,19 +17,16 @@ Student.init(
       allowNull: false,
     },
     rollNo: {
-      field: "roll_no",
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
     regNo: {
-      field: "reg_no",
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
     sectionId: {
-      field: "section_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -42,14 +39,15 @@ Student.init(
     sequelize,
     modelName: "student",
     timestamps: false,
+    underscored: true,
   }
 );
 
 Student.belongsTo(Section, {
-  foreignKey: "section_id",
+  foreignKey: "sectionId",
   as: "section",
 });
 
 Section.hasMany(Student, {
-  foreignKey: "section_id",
+  foreignKey: "sectionId",
 });

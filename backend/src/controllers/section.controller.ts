@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { SectionService } from "../services";
 import { Section } from "../models";
+import { getPagingData } from "../helpers";
 
 export class SectionController {
   private sectionService: SectionService;
@@ -10,9 +11,10 @@ export class SectionController {
   }
 
   getAll(req: Request, res: Response) {
+    const { page, size } = req.query;
     this.sectionService
-      .getAll()
-      .then((sections) => res.status(200).json(sections));
+      .getAll(page, size)
+      .then((sections) => res.status(200).json(getPagingData(sections)));
   }
 
   getById(req: Request, res: Response) {

@@ -1,4 +1,5 @@
 import { FindOptions, Model } from "sequelize";
+import { getPagingOptions } from "../helpers";
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -11,8 +12,13 @@ export abstract class IRepository<T extends Model> {
     return this.model.findByPk<T>(id, options);
   }
 
-  getAll(options?: any): Promise<T[] | null> {
-    return this.model.findAll<T>(options);
+  getAll(
+    page: any,
+    size: any,
+    options?: any
+  ): Promise<{ rows: T[]; count: number } | null> {
+    const pagingOptions = getPagingOptions(page, size, options);
+    return this.model.findAndCountAll<T>(pagingOptions);
   }
 
   find(where: FindOptions<T>): Promise<T> {

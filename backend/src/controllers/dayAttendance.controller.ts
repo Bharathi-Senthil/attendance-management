@@ -1,45 +1,39 @@
 import { Request, Response } from "express";
 import { DayAttendanceService } from "../services";
-import { DayAttendance, Student } from "../models";
+import { DayAttendance, Student, Section } from "../models";
+import { getPagingData } from "../helpers";
 
 export class DayAttendanceController {
   private dayAttendanceService: DayAttendanceService;
-
-  private getOptions = {
-    include: [{ model: Student, as: "student" }],
-  };
-
-  private formatDayAttendance(dayAttendance: any) {
-    delete dayAttendance.dataValues.studentId;
-    return dayAttendance;
-  }
-
-  private assignDayAttendance(dayAttendance: any) {
-    dayAttendance.studentId = dayAttendance.student;
-    delete dayAttendance.subject;
-    delete dayAttendance.student;
-    return dayAttendance;
-  }
 
   constructor() {
     this.dayAttendanceService = new DayAttendanceService(DayAttendance);
   }
 
+  private options = {
+    include: [
+      {
+        model: Student,
+        as: "student",
+        include: [{ model: Section, as: "section" }],
+      },
+    ],
+  };
+
   getAll(req: Request, res: Response) {
-    this.dayAttendanceService.getAll(this.getOptions).then((dayAttendance) => {
-      dayAttendance?.forEach((a) => {
-        this.formatDayAttendance(a);
+    const { page, size } = req.query;
+    this.dayAttendanceService
+      .getAll(page, size, this.options)
+      .then((dayAttendance) => {
+        res.status(200).json(getPagingData(dayAttendance));
       });
-      res.status(200).json(dayAttendance);
-    });
   }
 
   getById(req: Request, res: Response) {
     this.dayAttendanceService
-      .get(req.params.id, this.getOptions)
+      .get(req.params.id, this.options)
       .then((dayAttendance) => {
-        if (dayAttendance)
-          res.status(200).json(this.formatDayAttendance(dayAttendance));
+        if (dayAttendance) res.status(200).json(dayAttendance);
         else
           res.status(404).json({
             message: `Day Attendance id:${req.params.id} does not exists`,
@@ -48,7 +42,7 @@ export class DayAttendanceController {
   }
 
   post(req: Request, res: Response) {
-    let data = this.assignDayAttendance(req.body);
+    let data = req.body;
 
     console.log(data);
 
@@ -60,7 +54,7 @@ export class DayAttendanceController {
   }
 
   update(req: Request, res: Response) {
-    let data = this.assignDayAttendance(req.body);
+    let data = req.body;
 
     this.dayAttendanceService.get(req.params.id).then((dayAttendance) => {
       if (dayAttendance) {

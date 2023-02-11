@@ -1,30 +1,21 @@
 import { Request, Response } from "express";
 import { HourlyAttendanceService } from "../services";
-import { HourlyAttendance, Student, Subject } from "../models";
+import { HourlyAttendance, Section, Student, Subject } from "../models";
+import { getPagingData } from "../helpers";
 
 export class HourlyAttendanceController {
   private hourlyAttendanceService: HourlyAttendanceService;
 
-  private getOptions = {
+  private options = {
     include: [
-      { model: Student, as: "student" },
+      {
+        model: Student,
+        as: "student",
+        include: [{ model: Section, as: "section" }],
+      },
       { model: Subject, as: "subject" },
     ],
   };
-
-  private formatHourlyAttendance(hourlyAttendance: any) {
-    delete hourlyAttendance.dataValues.subjectId;
-    delete hourlyAttendance.dataValues.studentId;
-    return hourlyAttendance;
-  }
-
-  private assignHourlyAttendance(hourlyAttendance: any) {
-    hourlyAttendance.subjectId = hourlyAttendance.subject;
-    hourlyAttendance.studentId = hourlyAttendance.student;
-    delete hourlyAttendance.subject;
-    delete hourlyAttendance.student;
-    return hourlyAttendance;
-  }
 
   constructor() {
     this.hourlyAttendanceService = new HourlyAttendanceService(
@@ -33,22 +24,19 @@ export class HourlyAttendanceController {
   }
 
   getAll(req: Request, res: Response) {
+    const { page, size } = req.query;
     this.hourlyAttendanceService
-      .getAll(this.getOptions)
+      .getAll(page, size, this.options)
       .then((hourlyAttendances) => {
-        hourlyAttendances?.forEach((a) => {
-          this.formatHourlyAttendance(a);
-        });
-        res.status(200).json(hourlyAttendances);
+        res.status(200).json(getPagingData(hourlyAttendances));
       });
   }
 
   getById(req: Request, res: Response) {
     this.hourlyAttendanceService
-      .get(req.params.id, this.getOptions)
+      .get(req.params.id, this.options)
       .then((hourlyAttendance) => {
-        if (hourlyAttendance)
-          res.status(200).json(this.formatHourlyAttendance(hourlyAttendance));
+        if (hourlyAttendance) res.status(200).json(hourlyAttendance);
         else
           res.status(404).json({
             message: `Hourly Attendance id:${req.params.id} does not exists`,
@@ -57,7 +45,7 @@ export class HourlyAttendanceController {
   }
 
   post(req: Request, res: Response) {
-    let data = this.assignHourlyAttendance(req.body);
+    let data = req.body;
 
     console.log(data);
 
@@ -69,7 +57,7 @@ export class HourlyAttendanceController {
   }
 
   update(req: Request, res: Response) {
-    let data = this.assignHourlyAttendance(req.body);
+    let data = req.body;
 
     this.hourlyAttendanceService.get(req.params.id).then((hourlyAttendance) => {
       if (hourlyAttendance) {
