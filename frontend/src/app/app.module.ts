@@ -3,21 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './Component/sidebar/sidebar.component';
-import { FormSectionComponent } from './Component/form-section/form-section.component';
-import { FormsModule, ReactiveFormsModule,FormBuilder,FormGroup } from '@angular/forms';
+import { SiderComponent } from './components/sider/sider.component';
+import { AttendanceFromComponent } from './components/attendance-from/attendance-from.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent,
-    FormSectionComponent
+    SiderComponent,
+    AttendanceFromComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

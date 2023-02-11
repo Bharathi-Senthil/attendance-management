@@ -1,13 +1,11 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AppComponent } from "./app.component";
-import { FormSectionComponent } from "./Component/form-section/form-section.component";
-import { SidebarComponent } from "./Component/sidebar/sidebar.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: "addAttendance",
-    component: FormSectionComponent,
+    path: '',
+    loadChildren: () =>
+      import('./pages/pages.module').then((m) => m.PagesModule),
   },
 ];
 
