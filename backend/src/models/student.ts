@@ -17,16 +17,19 @@ Student.init(
       allowNull: false,
     },
     rollNo: {
+      field: "roll_no",
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
     regNo: {
+      field: "reg_no",
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
     sectionId: {
+      field: "section_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -43,10 +46,10 @@ Student.init(
 );
 
 Student.belongsTo(Section, {
-  foreignKey: "sectionId",
+  foreignKey: "section_id",
   as: "section",
 });
 
 Section.hasMany(Student, {
-  foreignKey: "sectionId",
+  foreignKey: "section_id",
 });

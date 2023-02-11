@@ -17,6 +17,7 @@ TimeTable.init(
       allowNull: false,
     },
     sectionId: {
+      field: "subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -25,6 +26,7 @@ TimeTable.init(
       },
     },
     period1SubjectId: {
+      field: "period1_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -33,6 +35,7 @@ TimeTable.init(
       },
     },
     period2SubjectId: {
+      field: "period2_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -41,6 +44,7 @@ TimeTable.init(
       },
     },
     period3SubjectId: {
+      field: "period3_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -49,6 +53,7 @@ TimeTable.init(
       },
     },
     period4SubjectId: {
+      field: "period4_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -57,6 +62,7 @@ TimeTable.init(
       },
     },
     period5SubjectId: {
+      field: "period5_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -65,6 +71,7 @@ TimeTable.init(
       },
     },
     period6SubjectId: {
+      field: "period6_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -73,6 +80,7 @@ TimeTable.init(
       },
     },
     period7SubjectId: {
+      field: "period7_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -81,6 +89,7 @@ TimeTable.init(
       },
     },
     period8SubjectId: {
+      field: "period8_subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -97,68 +106,68 @@ TimeTable.init(
 );
 
 TimeTable.belongsTo(Section, {
-  foreignKey: "sectionId",
+  foreignKey: "section_id",
   as: "section",
 });
 
 Section.hasMany(TimeTable, {
-  foreignKey: "sectionId",
+  foreignKey: "section_id",
 });
 
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period1SubjectId",
+  foreignKey: "period1_subject_id",
   as: "period1Subject",
 });
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period2SubjectId",
+  foreignKey: "period2_subject_id",
   as: "period2Subject",
 });
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period3SubjectId",
+  foreignKey: "period3_subject_id",
   as: "period3Subject",
 });
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period4SubjectId",
+  foreignKey: "period4_subject_id",
   as: "period4Subject",
 });
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period5SubjectId",
+  foreignKey: "period5_subject_id",
   as: "period5Subject",
 });
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period6SubjectId",
+  foreignKey: "period6_subject_id",
   as: "period6Subject",
 });
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period7SubjectId",
+  foreignKey: "period7_subject_id",
   as: "period7Subject",
 });
 TimeTable.belongsTo(Subject, {
-  foreignKey: "period8SubjectId",
+  foreignKey: "period8_subject_id",
   as: "period8Subject",
 });
 
 Subject.hasMany(TimeTable, {
-  foreignKey: "period1SubjectId",
+  foreignKey: "period1_subject_id",
 });
 Subject.hasMany(TimeTable, {
-  foreignKey: "period2SubjectId",
+  foreignKey: "period2_subject_id",
 });
 Subject.hasMany(TimeTable, {
-  foreignKey: "period3SubjectId",
+  foreignKey: "period3_subject_id",
 });
 Subject.hasMany(TimeTable, {
-  foreignKey: "period4SubjectId",
+  foreignKey: "period4_subject_id",
 });
 Subject.hasMany(TimeTable, {
-  foreignKey: "period5SubjectId",
+  foreignKey: "period5_subject_id",
 });
 Subject.hasMany(TimeTable, {
-  foreignKey: "period6SubjectId",
+  foreignKey: "period6_subject_id",
 });
 Subject.hasMany(TimeTable, {
-  foreignKey: "period7SubjectId",
+  foreignKey: "period7_subject_id",
 });
 Subject.hasMany(TimeTable, {
-  foreignKey: "period8SubjectId",
+  foreignKey: "period8_subject_id",
 });

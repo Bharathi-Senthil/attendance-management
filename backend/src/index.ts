@@ -31,10 +31,10 @@ sequelize
 
 // Section.sync({ force: true });
 // Subject.sync({ force: true });
-// TimeTable.sync({ force: true });
+// TimeTable.sync();
 // Student.sync({ force: true });
 // HourlyAttendance.sync({ force: true });
-// DayAttendance.sync({ force: true });
+DayAttendance.sync({ force: true });
 
 app.use(express.json());
 

@@ -21,6 +21,7 @@ HourlyAttendance.init(
       allowNull: false,
     },
     studentId: {
+      field: "student_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -29,6 +30,7 @@ HourlyAttendance.init(
       },
     },
     subjectId: {
+      field: "subject_id",
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -37,19 +39,26 @@ HourlyAttendance.init(
       },
     },
     isAbsent: {
+      field: "is_absent",
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: "hourly-attendance",
+    modelName: "hourly_attendance",
     timestamps: false,
   }
 );
 
-HourlyAttendance.belongsTo(Student, { foreignKey: "studentId", as: "student" });
-HourlyAttendance.belongsTo(Subject, { foreignKey: "subjectId", as: "subject" });
+HourlyAttendance.belongsTo(Student, {
+  foreignKey: "student_id",
+  as: "student",
+});
+HourlyAttendance.belongsTo(Subject, {
+  foreignKey: "subject_id",
+  as: "subject",
+});
 
-Student.hasMany(HourlyAttendance, { foreignKey: "studentId" });
-Subject.hasMany(HourlyAttendance, { foreignKey: "subjectId" });
+Student.hasMany(HourlyAttendance, { foreignKey: "student_id" });
+Subject.hasMany(HourlyAttendance, { foreignKey: "subject_id" });
