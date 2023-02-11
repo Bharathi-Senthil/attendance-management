@@ -23,6 +23,7 @@ export class SiderComponent {
     {
       title: "Dashboard",
       icon: "pie-chart",
+      path:"dashboard"
     },
   ];
 
