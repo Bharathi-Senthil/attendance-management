@@ -1,0 +1,74 @@
+<form nz-form [formGroup]="hourlyForm">
+     <nz-form-item>
+          <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="date">
+               Date</nz-form-label>
+          <nz-form-control nzErrorTip=" Please select Date">
+               <nz-date-picker 
+               nzFormat="dd-MM-yyyy"
+               formControlName="date"
+               id="date"
+               class="w-full"></nz-date-picker>
+          </nz-form-control>
+     </nz-form-item>
+     <div class=" grid grid-cols-2">
+          <nz-form-item class="min-w-full">
+               <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="student">
+                    Dept
+               </nz-form-label>
+               <nz-select>
+                    <nz-option nzValue="CSE" nzLabel="CSE"></nz-option>
+                    <nz-option nzValue="ECE" nzLabel="ECE"></nz-option>
+                    <nz-option nzValue="EEE" nzLabel="EEE"></nz-option>
+                    <nz-option nzValue="CIVIL" nzLabel="CIVIL"></nz-option>
+                    <nz-option nzValue="MECH" nzLabel="MECH"></nz-option>
+                    <nz-option nzValue="IT" nzLabel="IT"></nz-option>
+               </nz-select>
+          </nz-form-item>
+          <nz-form-item>
+               <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="Student">
+                    Section</nz-form-label>
+               <nz-select
+                    class="w-[130px]"
+                    nzShowSearch
+                    nzAllowClear
+                    nzPlaceHolder="Section"
+                    formControlName="section">
+               <nz-option nzValue="C" nzlabel="C"></nz-option>
+               <nz-option nzValue="D" nzlabel="D"></nz-option>
+               <nz-option nzValue="E" nzlabel="E"></nz-option>
+               </nz-select>
+          </nz-form-item>
+          <nz-form-item>
+               <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="Student">
+                    Period
+               </nz-form-label>
+               <nz-select
+                    class="w-[130px]"
+                    nzShowSearch
+                    nzAllowClear
+                    nzPlaceHolder="Section"
+                    formControlName="section">
+               <nz-option nzValue="1"  nzlabel="1"></nz-option>
+               <nz-option nzValue="2"  nzlabel="2"></nz-option>
+               <nz-option nzValue="3"  nzlabel="3"></nz-option>
+               <nz-option nzValue="4"  nzlabel="4"></nz-option>
+               <nz-option nzValue="5"  nzlabel="5"></nz-option>
+               </nz-select>
+          </nz-form-item>
+          <nz-form-item>
+               <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="absent" >
+                    Absent
+               </nz-form-label>
+               <nz-form-control nzErrorTip="Please select value!">
+      <label nz-checkbox formControlName="absent" id="absent"></label>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
+    Submit
+  </button>
+          
+          
+     </div>
+     
+</form>
