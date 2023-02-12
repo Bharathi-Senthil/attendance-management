@@ -23,7 +23,17 @@ export class SiderComponent {
     {
       title: "Dashboard",
       icon: "pie-chart",
-      path:"dashboard"
+      path: "dashboard",
+    },
+    {
+      title: "Section",
+      icon: "pie-chart",
+      path: "section",
+    },
+    {
+      title: "Subject",
+      icon: "pie-chart",
+      path: "subject",
     },
   ];
 

@@ -4,3 +4,4 @@ export * from "./timeTable.service";
 export * from "./student.service";
 export * from "./hourlyAttendance.service";
 export * from "./dayAttendance.service";
+export * from "./subjectSectionHours.service";

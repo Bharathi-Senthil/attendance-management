@@ -11,6 +11,7 @@ export class HourlyAttendanceController {
     attributes: [
       "id",
       "date",
+      "hour",
       "isAbsent",
       [Sequelize.col("subject.id"), "subjectId"],
       [Sequelize.col("subject.name"), "subjectName"],
@@ -75,8 +76,6 @@ export class HourlyAttendanceController {
 
   post(req: Request, res: Response) {
     let data = req.body;
-
-    console.log(data);
 
     let hourlyAttendance = new HourlyAttendance(data);
     this.hourlyAttendanceService

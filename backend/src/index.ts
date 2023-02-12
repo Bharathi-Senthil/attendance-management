@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import sequelize from "./db";
 import {
   DayAttendanceRoutes,
@@ -6,6 +7,7 @@ import {
   SectionRoutes,
   StudentRoutes,
   SubjectRoutes,
+  SubjectSectionHoursRoutes,
   TimeTableRoutes,
 } from "./routes";
 
@@ -19,6 +21,8 @@ import {
 } from "./models";
 
 const app = express();
+
+app.use(cors({ origin: "http://localhost:4200" }));
 
 sequelize
   .authenticate()
@@ -35,6 +39,7 @@ sequelize
 // Student.sync({ force: true });
 // HourlyAttendance.sync({ force: true });
 // DayAttendance.sync({ force: true });
+// SubjectSectionHours.sync({ force: true });
 
 app.use(express.json());
 
@@ -44,6 +49,10 @@ app.use("/api/time-tables", new TimeTableRoutes().getRouter());
 app.use("/api/students", new StudentRoutes().getRouter());
 app.use("/api/hourly-attendances", new HourlyAttendanceRoutes().getRouter());
 app.use("/api/day-attendances", new DayAttendanceRoutes().getRouter());
+app.use(
+  "/api/subject-section-hours",
+  new SubjectSectionHoursRoutes().getRouter()
+);
 
 app.listen(3000, () => {
   console.log("App listening on port http://localhost:3000");

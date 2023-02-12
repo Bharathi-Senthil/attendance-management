@@ -4,3 +4,4 @@ export * from "./timeTable.routes";
 export * from "./student.routes";
 export * from "./hourlyAttendance.routes";
 export * from "./dayAttendance.routes";
+export * from "./subjectSectionHours.routes";
