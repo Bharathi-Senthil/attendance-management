@@ -17,7 +17,7 @@ export class SiderComponent {
     },
     {
       title: "Hourly Attendance",
-      icon: "team",
+      icon: "houricon",
       path: "hourly-attendance",
     },
     {
@@ -32,22 +32,22 @@ export class SiderComponent {
     },
     {
       title: "Section",
-      icon: "pie-chart",
+      icon: "contacts",
       path: "sections",
     },
     {
       title: "Subject",
-      icon: "pie-chart",
+      icon: "book",
       path: "subjects",
     },
     {
       title: "Time Table",
-      icon: "pie-chart",
+      icon: "timetable",
       path: "time-tables",
     },
     {
       title: "Total Hours",
-      icon: "user",
+      icon: "clock",
       path: "total-hours",
     },
   ];
