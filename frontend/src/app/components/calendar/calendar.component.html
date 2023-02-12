@@ -41,10 +41,12 @@
     <button
       *ngFor="let i of calendarDates; let idx = index"
       class="date"
+      [disabled]="i.isDisabled"
       [ngClass]="{
-        click: dateToString(i.fullDate) === dateToString(selectedDate)
+        click: dateToString(i.fullDate) === dateToString(selectedDate),
+        inactive: i.isDisabled
       }"
-      (click)="onCalendarChange(i.fullDate)"
+      (click)="onCalendarChange(i.fullDate, i.isDisabled)"
     >
       {{ i.date }}
     </button>

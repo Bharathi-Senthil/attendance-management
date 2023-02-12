@@ -4,7 +4,7 @@
 <form nz-form [formGroup]="form" class="w-[400px]" nzLayout="vertical">
   <nz-form-item>
     <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
-    <nz-form-control nzErrorTip="Please Input Name">
+    <nz-form-control nzErrorTip="Please input student name">
       <input nz-input type="text" formControlName="name" class="w-full" />
     </nz-form-control>
   </nz-form-item>
@@ -30,30 +30,32 @@
 
     <nz-form-item>
       <nz-form-label nzRequired nzFor="student">Section</nz-form-label>
-      <nz-select
-        class="w-full"
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Section"
-        formControlName="sectionId"
-      >
-        <nz-option
-          *ngFor="let s of sections"
-          [nzValue]="s.id"
-          [nzLabel]="s.name"
-        ></nz-option>
-      </nz-select>
+      <nz-form-control nzErrorTip="Please select a section!">
+        <nz-select
+          class="w-full"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Section"
+          formControlName="sectionId"
+        >
+          <nz-option
+            *ngFor="let s of sections"
+            [nzValue]="s.id"
+            [nzLabel]="s.name"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
     </nz-form-item>
   </div>
   <nz-form-item>
     <nz-form-label nzRequired nzFor="regNo">Register No</nz-form-label>
-    <nz-form-control nzErrorTip="Please select a Register No!">
+    <nz-form-control nzErrorTip="Please input register no!">
       <input nz-input type="text" formControlName="regNo" class="w-full" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label nzRequired nzFor="rollNo">Roll No</nz-form-label>
-    <nz-form-control nzErrorTip="Please select a Roll No!">
+    <nz-form-control nzErrorTip="Please input a roll no!">
       <input nz-input type="text" formControlName="rollNo" class="w-full" />
     </nz-form-control>
   </nz-form-item>

@@ -10,6 +10,7 @@ import { CalendarComponent } from "./calendar/calendar.component";
 import { HourlyAttendanceFormComponent } from "./hourly-attendance-form/hourly-attendance-form.component";
 import { ChartComponent } from "./chart/chart.component";
 import { StudentFormComponent } from "./student-form/student-form.component";
+import { TimeTableFormComponent } from "./time-table-form/time-table-form.component";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { StudentFormComponent } from "./student-form/student-form.component";
     HourlyAttendanceFormComponent,
     ChartComponent,
     StudentFormComponent,
+    TimeTableFormComponent,
   ],
   exports: [
     SiderComponent,
@@ -27,6 +29,7 @@ import { StudentFormComponent } from "./student-form/student-form.component";
     CalendarComponent,
     ChartComponent,
     StudentFormComponent,
+    TimeTableFormComponent,
   ],
   imports: [
     CommonModule,

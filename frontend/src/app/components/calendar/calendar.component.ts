@@ -8,6 +8,7 @@ interface Calendar {
   month: number;
   year: number;
   fullDate: Date;
+  isDisabled: boolean;
 }
 
 @Component({
@@ -124,18 +125,22 @@ export class CalendarComponent implements OnInit {
         let year = this.date.getFullYear();
         let month = this.date.getMonth();
         let date: any = start + idx;
+        let fullDate = new Date(year, month, date);
+        let isDisabled =
+          fullDate.getDay() === 0 || fullDate.getDay() === 6 ? true : false;
         return {
           date,
           month,
           year,
-          fullDate: new Date(year, month, date),
+          fullDate,
+          isDisabled,
         };
       });
   }
 
-  onCalendarChange(date: Date) {
+  onCalendarChange(date: Date, isDisabled: boolean) {
     const dateString = formatDate(date, "yyyy-MM-dd", "en");
     this.selectedDate = date;
-    this.data.setDate(this.selectedDate);
+    if (!isDisabled) this.data.setDate(this.selectedDate);
   }
 }

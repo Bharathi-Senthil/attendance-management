@@ -7,10 +7,10 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./time-table.component.scss"],
 })
 export class TimeTableComponent implements OnInit {
-  students: any[];
+  timeTables: any[];
   isLoading = false;
 
-  studentId = -1;
+  timeTableId = -1;
 
   constructor(private http: HttpClient) {}
 
@@ -22,11 +22,11 @@ export class TimeTableComponent implements OnInit {
     this.http
       .get("http://localhost:3000/api/time-tables")
       .subscribe((data: any) => {
-        this.students = data;
+        this.timeTables = data;
       });
   }
 
-  deleteStudent(id: number) {
+  deleteTimeTable(id: number) {
     this.http
       .delete(`http://localhost:3000/api/time-tables/${id}`)
       .subscribe((data: any) => this.getTimeTable());

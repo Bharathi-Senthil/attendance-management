@@ -1,10 +1,11 @@
 <div class="flex gap-10">
   <nz-table
     #basicTable
-    [nzData]="students"
+    [nzData]="timeTables"
     [nzLoading]="isLoading"
     [nzShowPagination]="false"
     class="flex-grow"
+    nzSize="small"
   >
     <thead>
       <tr>
@@ -44,8 +45,8 @@
               nzTooltipTitle="Delete"
               nz-popconfirm
               nzPopconfirmPlacement="bottom"
-              nzPopconfirmTitle="Are you sure delete this student?"
-              (nzOnConfirm)="deleteStudent(t.id)"
+              nzPopconfirmTitle="Are you sure delete this time table?"
+              (nzOnConfirm)="deleteTimeTable(t.id)"
             ></span>
             <span
               class="text-blue-400 text-base cursor-pointer"
@@ -54,7 +55,7 @@
               nzTheme="outline"
               nz-tooltip
               nzTooltipTitle="Edit"
-              (click)="studentId = t.id"
+              (click)="timeTableId = t.id"
             ></span>
           </div>
         </td>
@@ -62,9 +63,10 @@
     </tbody>
   </nz-table>
   <div class="shadow border border-gray-100 rounded p-6">
-    <app-student-form
-      [(studentId)]="studentId"
+    <app-time-table-form
+      [(timeTableId)]="timeTableId"
+      [timeTables]="timeTables"
       (onFormSubmit)="getTimeTable()"
-    ></app-student-form>
+    ></app-time-table-form>
   </div>
 </div>

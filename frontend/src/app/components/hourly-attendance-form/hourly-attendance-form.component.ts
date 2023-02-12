@@ -23,7 +23,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: null,
-      date: [{ value: new Date(), disabled: true }, [Validators.required]],
+      date: [{ value: null, disabled: true }, [Validators.required]],
       department: [{ value: "CSE", disabled: true }, [Validators.required]],
       section: [null, [Validators.required]],
       student: [null, [Validators.required]],
