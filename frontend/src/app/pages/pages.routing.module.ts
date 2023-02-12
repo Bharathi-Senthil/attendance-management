@@ -1,4 +1,3 @@
-import { SubjectComponent } from "./subject/subject.component";
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ChartComponent } from "../components/chart/chart.component";
@@ -6,7 +5,9 @@ import { ChartComponent } from "../components/chart/chart.component";
 import { BaseLayoutComponent } from "./base-layout/base-layout.component";
 import { DayAttendanceComponent } from "./day-attendance/day-attendance.component";
 import { HourlyAttendanceComponent } from "./hourly-attendance/hourly-attendance.component";
-import { SectionComponent } from "./section/section.component";
+import { SectionsComponent } from "./sections/sections.component";
+import { StudentsComponent } from "./students/students.component";
+import { SubjectsComponent } from "./subjects/subjects.component";
 
 const routes: Routes = [
   {
@@ -26,12 +27,16 @@ const routes: Routes = [
         component: ChartComponent,
       },
       {
-        path: "section",
-        component: SectionComponent,
+        path: "sections",
+        component: SectionsComponent,
       },
       {
-        path: "subject",
-        component: SubjectComponent,
+        path: "subjects",
+        component: SubjectsComponent,
+      },
+      {
+        path: "students",
+        component: StudentsComponent,
       },
     ],
   },

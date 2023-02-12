@@ -1,0 +1,54 @@
+<div class="flex gap-10">
+  <nz-table
+    #basicTable
+    [nzData]="students"
+    [nzLoading]="isLoading"
+    [nzShowPagination]="false"
+    class="min-w-[800px]"
+  >
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>RollNo</th>
+        <th>RegNo</th>
+        <th>Section</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of basicTable.data">
+        <td>{{ s.name }}</td>
+        <td>{{ s.rollNo }}</td>
+        <td>{{ s.regNo }}</td>
+        <td>{{ s.sectionName }}</td>
+        <td>
+          <div class="flex gap-4 items-center">
+            <span
+              class="text-red-400 text-base cursor-pointer"
+              nz-icon
+              nzType="delete"
+              nzTheme="outline"
+              nz-tooltip
+              nzTooltipTitle="Delete"
+              nz-popconfirm
+              nzPopconfirmPlacement="bottom"
+              nzPopconfirmTitle="Are you sure delete this section?"
+            ></span>
+            <span
+              class="text-blue-400 text-base cursor-pointer"
+              nz-icon
+              nzType="edit"
+              nzTheme="outline"
+              nz-tooltip
+              nzTooltipTitle="Edit"
+              (click)="studentId = s.id"
+            ></span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="shadow border border-gray-100 rounded p-6">
+    <app-student-form [studentId]="studentId"></app-student-form>
+  </div>
+</div>

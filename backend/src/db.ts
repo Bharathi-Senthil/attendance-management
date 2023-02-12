@@ -5,7 +5,7 @@ dotenv.config();
 
 const sequelize = new Sequelize(
   "attendance-management",
-  process.env.USERNAME ? process.env.USERNAME : "",
+  process.env.DBUSER ? process.env.DBUSER : "",
   process.env.PASSWORD ? process.env.PASSWORD : "",
   {
     host: "localhost",

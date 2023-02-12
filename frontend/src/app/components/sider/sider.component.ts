@@ -28,12 +28,17 @@ export class SiderComponent {
     {
       title: "Section",
       icon: "pie-chart",
-      path: "section",
+      path: "sections",
     },
     {
       title: "Subject",
       icon: "pie-chart",
-      path: "subject",
+      path: "subjects",
+    },
+    {
+      title: "Students",
+      icon: "user",
+      path: "students",
     },
   ];
 

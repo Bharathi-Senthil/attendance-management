@@ -10,9 +10,10 @@ import { BaseLayoutComponent } from "./base-layout/base-layout.component";
 import { DayAttendanceComponent } from "./day-attendance/day-attendance.component";
 import { HourlyAttendanceComponent } from "./hourly-attendance/hourly-attendance.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { SectionComponent } from "./section/section.component";
+import { SectionsComponent } from "./sections/sections.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SubjectComponent } from './subject/subject.component';
+import { SubjectsComponent } from "./subjects/subjects.component";
+import { StudentsComponent } from "./students/students.component";
 
 @NgModule({
   declarations: [
@@ -20,8 +21,9 @@ import { SubjectComponent } from './subject/subject.component';
     DayAttendanceComponent,
     HourlyAttendanceComponent,
     DashboardComponent,
-    SectionComponent,
-    SubjectComponent,
+    SectionsComponent,
+    SubjectsComponent,
+    StudentsComponent,
   ],
   imports: [
     CommonModule,

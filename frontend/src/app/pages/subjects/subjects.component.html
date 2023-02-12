@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col justify-center items-center">
   <div class="w-[1000px]">
-    <div
+    <form
       nz-form
       nzLayout="inline"
       [formGroup]="form"
@@ -43,7 +43,7 @@
       >
         cancel
       </button>
-    </div>
+    </form>
     <nz-table
       #basicTable
       [nzData]="sections"

@@ -8,7 +8,8 @@ import { SiderComponent } from "./sider/sider.component";
 import { DayAttendanceFormComponent } from "./day-attendance-form/day-attendance-form.component";
 import { CalendarComponent } from "./calendar/calendar.component";
 import { HourlyAttendanceFormComponent } from "./hourly-attendance-form/hourly-attendance-form.component";
-import { ChartComponent } from './chart/chart.component';
+import { ChartComponent } from "./chart/chart.component";
+import { StudentFormComponent } from "./student-form/student-form.component";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ChartComponent } from './chart/chart.component';
     CalendarComponent,
     HourlyAttendanceFormComponent,
     ChartComponent,
+    StudentFormComponent,
   ],
   exports: [
     SiderComponent,
@@ -24,7 +26,7 @@ import { ChartComponent } from './chart/chart.component';
     HourlyAttendanceFormComponent,
     CalendarComponent,
     ChartComponent,
-    
+    StudentFormComponent,
   ],
   imports: [
     CommonModule,

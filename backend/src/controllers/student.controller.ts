@@ -12,6 +12,7 @@ export class StudentController {
       "id",
       "name",
       "rollNo",
+      "regNo",
       "sectionId",
       [Sequelize.col("section.name"), "sectionName"],
     ],

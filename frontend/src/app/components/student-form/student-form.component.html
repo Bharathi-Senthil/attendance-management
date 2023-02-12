@@ -1,0 +1,61 @@
+<form nz-form [formGroup]="form" class="w-[450px]" nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
+    <nz-form-control nzErrorTip="Please Input Name">
+      <input nz-input type="text" formControlName="name" class="w-full" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="grid grid-cols-2 gap-4">
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="student">Dept</nz-form-label>
+      <nz-select
+        class="w-full"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Department"
+        nzDisabled
+      >
+        <nz-option nzValue="CSE" nzLabel="CSE"></nz-option>
+        <nz-option nzValue="ECE" nzLabel="ECE"></nz-option>
+        <nz-option nzValue="EEE" nzLabel="EEE"></nz-option>
+        <nz-option nzValue="CIVIL" nzLabel="CIVIL"></nz-option>
+        <nz-option nzValue="MECH" nzLabel="MECH"></nz-option>
+        <nz-option nzValue="IT" nzLabel="IT"></nz-option>
+      </nz-select>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="student">Section</nz-form-label>
+      <nz-select
+        class="w-full"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Section"
+        formControlName="sectionId"
+      >
+        <nz-option
+          *ngFor="let s of sections"
+          [nzValue]="s.id"
+          [nzLabel]="s.name"
+        ></nz-option>
+      </nz-select>
+    </nz-form-item>
+  </div>
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="regNo">Register No</nz-form-label>
+    <nz-form-control nzErrorTip="Please select a Register No!">
+      <input nz-input type="text" formControlName="regNo" class="w-full" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="rollNo">Roll No</nz-form-label>
+    <nz-form-control nzErrorTip="Please select a Roll No!">
+      <input nz-input type="text" formControlName="rollNo" class="w-full" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
+    Submit
+  </button>
+</form>

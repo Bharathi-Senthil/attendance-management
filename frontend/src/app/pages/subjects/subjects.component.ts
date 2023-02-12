@@ -9,10 +9,10 @@ import {
 
 @Component({
   selector: "app-subject",
-  templateUrl: "./subject.component.html",
-  styleUrls: ["./subject.component.scss"],
+  templateUrl: "./subjects.component.html",
+  styleUrls: ["./subjects.component.scss"],
 })
-export class SubjectComponent {
+export class SubjectsComponent {
   sections: any[];
   isLoading = false;
 

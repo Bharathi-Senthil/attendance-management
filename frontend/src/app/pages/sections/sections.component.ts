@@ -4,10 +4,10 @@ import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-section",
-  templateUrl: "./section.component.html",
-  styleUrls: ["./section.component.scss"],
+  templateUrl: "./sections.component.html",
+  styleUrls: ["./sections.component.scss"],
 })
-export class SectionComponent implements OnInit {
+export class SectionsComponent implements OnInit {
   sections: any[];
   isLoading = false;
 
