@@ -7,7 +7,28 @@ import { Sequelize } from "sequelize";
 export class SubjectSectionHoursController {
   private subjectSectionHoursService: SubjectSectionHoursService;
 
-  private options = {};
+  private options = {
+    attributes: [
+      "id",
+      "totalHours",
+      "sectionId",
+      [Sequelize.col("section.name"), "sectionName"],
+      "subjectId",
+      [Sequelize.col("subject.name"), "subjectName"],
+    ],
+    include: [
+      {
+        model: Subject,
+        as: "section",
+        attributes: [],
+      },
+      {
+        model: Section,
+        as: "section",
+        attributes: [],
+      },
+    ],
+  };
 
   constructor() {
     this.subjectSectionHoursService = new SubjectSectionHoursService(
