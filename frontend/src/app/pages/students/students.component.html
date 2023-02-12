@@ -32,7 +32,8 @@
               nzTooltipTitle="Delete"
               nz-popconfirm
               nzPopconfirmPlacement="bottom"
-              nzPopconfirmTitle="Are you sure delete this section?"
+              nzPopconfirmTitle="Are you sure delete this student?"
+              (nzOnConfirm)="deleteStudent(s.id)"
             ></span>
             <span
               class="text-blue-400 text-base cursor-pointer"
@@ -49,6 +50,9 @@
     </tbody>
   </nz-table>
   <div class="shadow border border-gray-100 rounded p-6">
-    <app-student-form [studentId]="studentId"></app-student-form>
+    <app-student-form
+      [studentId]="studentId"
+      (onFormSubmit)="getStudents()"
+    ></app-student-form>
   </div>
 </div>

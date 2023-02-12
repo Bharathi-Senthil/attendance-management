@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
@@ -24,9 +24,12 @@ export class StudentFormComponent implements OnInit {
       this.http
         .get(`http://localhost:3000/api/students/${id}`)
         .subscribe((data: any) => {
-          console.log(data);
+          this.form.patchValue(data);
         });
   }
+
+  @Output()
+  onFormSubmit = new EventEmitter();
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.form = this.fb.group({
@@ -45,5 +48,34 @@ export class StudentFormComponent implements OnInit {
       });
   }
 
-  submit() {}
+  submit() {
+    if (this.form.valid) {
+      console.log(this.studentId);
+      if (this.studentId === -1)
+        this.http
+          .post("http://localhost:3000/api/students", this.form.value)
+          .subscribe((data: any) => {
+            this.form.reset();
+            this.onFormSubmit.emit();
+          });
+      else
+        this.http
+          .put(`http://localhost:3000/api/students/${this.studentId}`, {
+            id: this.studentId,
+            ...this.form.value,
+          })
+          .subscribe((data: any) => {
+            this.studentId = -1;
+            this.form.reset();
+            this.onFormSubmit.emit();
+          });
+    } else {
+      Object.values(this.form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
 }

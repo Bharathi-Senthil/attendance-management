@@ -1,3 +1,6 @@
+<h1 class="text-lg font-medium text-center">
+  {{ studentId > 0 ? "Edit" : "Add" }} Student
+</h1>
 <form nz-form [formGroup]="form" class="w-[450px]" nzLayout="vertical">
   <nz-form-item>
     <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
@@ -55,7 +58,18 @@
     </nz-form-control>
   </nz-form-item>
 
-  <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
-    Submit
-  </button>
+  <div class="flex gap-4">
+    <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
+      {{ studentId > 0 ? "Save" : "Add" }}
+    </button>
+    <button
+      nz-button
+      [nzType]="'default'"
+      class="w-full"
+      (click)="studentId = -1; form.reset()"
+      *ngIf="studentId > 0"
+    >
+      cancel
+    </button>
+  </div>
 </form>
