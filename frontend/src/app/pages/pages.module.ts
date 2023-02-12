@@ -14,6 +14,7 @@ import { SectionsComponent } from "./sections/sections.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SubjectsComponent } from "./subjects/subjects.component";
 import { StudentsComponent } from "./students/students.component";
+import { SubjectSectionHoursComponent } from './subject-section-hours/subject-section-hours.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { StudentsComponent } from "./students/students.component";
     SectionsComponent,
     SubjectsComponent,
     StudentsComponent,
+    SubjectSectionHoursComponent,
   ],
   imports: [
     CommonModule,

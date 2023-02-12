@@ -18,6 +18,7 @@ import {
   Student,
   HourlyAttendance,
   DayAttendance,
+  SubjectSectionHours
 } from "./models";
 
 const app = express();
