@@ -53,6 +53,7 @@ export class SectionsComponent implements OnInit {
             this.getSection();
           });
     } else {
+      this.section.markAsDirty();
       this.section.updateValueAndValidity({ onlySelf: true });
     }
   }

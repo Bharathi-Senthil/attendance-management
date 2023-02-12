@@ -8,7 +8,7 @@ import { DataService } from "src/app/helpers/data.service";
   styleUrls: ["./hourly-attendance-form.component.scss"],
 })
 export class HourlyAttendanceFormComponent implements OnInit {
-  hourlyForm: FormGroup;
+  form: FormGroup;
   students = [
     { id: 1, name: "Ramanan KB", rollNo: "211420104218" },
     { id: 2, name: "Bharathi S", rollNo: "211420104219" },
@@ -19,7 +19,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private data: DataService) {}
   ngOnInit(): void {
-    this.hourlyForm = this.fb.group({
+    this.form = this.fb.group({
       id: null,
       department: [{ Value: "CSE", disabled: true }, [Validators.required]],
       section: ["C", [Validators.required]],
@@ -28,8 +28,11 @@ export class HourlyAttendanceFormComponent implements OnInit {
       period: [],
       absent: [true, [Validators.required]],
     });
+    this.data
+      .getDate()
+      .subscribe((date) => this.form.controls["date"].setValue(date));
   }
   submit() {
-    console.log(this.hourlyForm.value);
+    console.log(this.form.value);
   }
 }

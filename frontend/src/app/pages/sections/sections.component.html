@@ -1,15 +1,20 @@
 <div class="w-full flex flex-col justify-center items-center">
   <div class="w-[1000px]">
-    <div class="flex items-end justify-end gap-4 mb-4">
-      <div class="flex flex-col">
-        <span class="text-gray-700">Section:</span>
-        <input
-          nz-input
-          type="text"
-          [formControl]="section"
-          class="max-w-[200px]"
-        />
-      </div>
+    <div class="flex items-start justify-end gap-4 mb-4">
+      <nz-form-item class="!mb-0">
+        <nz-form-label nzRequired class="text-gray-700">Section</nz-form-label>
+        <nz-form-control
+          nzErrorTip="Please Input Section"
+          [nzValidateStatus]="section.invalid && section.dirty ? 'error' : ''"
+        >
+          <input
+            nz-input
+            type="text"
+            [formControl]="section"
+            class="max-w-[200px]"
+          />
+        </nz-form-control>
+      </nz-form-item>
       <button nz-button [nzType]="'primary'" (click)="submit()">
         {{ id === -1 ? "Add" : "Edit" }}
       </button>
