@@ -26,6 +26,11 @@ export class SiderComponent {
       path: "dashboard",
     },
     {
+      title: "Students",
+      icon: "user",
+      path: "students",
+    },
+    {
       title: "Section",
       icon: "pie-chart",
       path: "sections",
@@ -36,15 +41,15 @@ export class SiderComponent {
       path: "subjects",
     },
     {
-      title: "Students",
-      icon: "user",
-      path: "students",
+      title: "Time Table",
+      icon: "pie-chart",
+      path: "time-tables",
     },
     {
-      title:"Total Hours",
-      icon:"user",
-      path:"total-hours"
-    }
+      title: "Total Hours",
+      icon: "user",
+      path: "total-hours",
+    },
   ];
 
   dropdown: { id: any; isOpen: boolean } = {

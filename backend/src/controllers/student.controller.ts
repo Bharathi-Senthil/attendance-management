@@ -37,8 +37,11 @@ export class StudentController {
   }
 
   getAll(req: Request, res: Response) {
+    const { sec } = req.query;
+    let fOptions: any = { ...this.options };
+    if (sec) fOptions = { ...fOptions, where: { sectionId: sec } };
     this.studentService
-      .getAll(this.options)
+      .getAll(fOptions)
       .then((students) => res.status(200).json(students));
   }
 

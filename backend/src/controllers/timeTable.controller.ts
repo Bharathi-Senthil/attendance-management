@@ -56,7 +56,10 @@ export class TimeTableController {
   }
 
   getAll(req: Request, res: Response) {
-    this.timeTableService.getAll(this.options).then((timeTables) => {
+    const { sec } = req.query;
+    let fOptions: any = { ...this.options };
+    if (sec) fOptions = { ...fOptions, where: { sectionId: sec } };
+    this.timeTableService.getAll(fOptions).then((timeTables) => {
       res.status(200).json(timeTables);
     });
   }

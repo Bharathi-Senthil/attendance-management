@@ -1,3 +1,4 @@
+import { FadeInOut } from "./../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -20,6 +21,7 @@ export class StudentFormComponent implements OnInit {
   @Input()
   set studentId(id: number) {
     this._studentId = id;
+    this.studentIdChange.emit(id);
     if (id > 0)
       this.http
         .get(`http://localhost:3000/api/students/${id}`)
@@ -27,6 +29,9 @@ export class StudentFormComponent implements OnInit {
           this.form.patchValue(data);
         });
   }
+
+  @Output()
+  studentIdChange = new EventEmitter();
 
   @Output()
   onFormSubmit = new EventEmitter();

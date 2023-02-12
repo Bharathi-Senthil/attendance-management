@@ -8,19 +8,31 @@
   >
     <thead>
       <tr>
-        <th>Name</th>
-        <th>RollNo</th>
-        <th>RegNo</th>
+        <th>Day</th>
         <th>Section</th>
+        <th>Period 1</th>
+        <th>Period 2</th>
+        <th>Period 3</th>
+        <th>Period 4</th>
+        <th>Period 5</th>
+        <th>Period 6</th>
+        <th>Period 7</th>
+        <th>Period 8</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let s of basicTable.data">
-        <td>{{ s.name }}</td>
-        <td>{{ s.rollNo }}</td>
-        <td>{{ s.regNo }}</td>
-        <td>{{ s.sectionName }}</td>
+      <tr *ngFor="let t of basicTable.data">
+        <td>{{ t.day }}</td>
+        <td>{{ t.sectionName }}</td>
+        <td>{{ t.period1SubjectName }}</td>
+        <td>{{ t.period2SubjectName }}</td>
+        <td>{{ t.period3SubjectName }}</td>
+        <td>{{ t.period4SubjectName }}</td>
+        <td>{{ t.period5SubjectName }}</td>
+        <td>{{ t.period6SubjectName }}</td>
+        <td>{{ t.period7SubjectName }}</td>
+        <td>{{ t.period8SubjectName }}</td>
         <td>
           <div class="flex gap-4 items-center">
             <span
@@ -33,7 +45,7 @@
               nz-popconfirm
               nzPopconfirmPlacement="bottom"
               nzPopconfirmTitle="Are you sure delete this student?"
-              (nzOnConfirm)="deleteStudent(s.id)"
+              (nzOnConfirm)="deleteStudent(t.id)"
             ></span>
             <span
               class="text-blue-400 text-base cursor-pointer"
@@ -42,7 +54,7 @@
               nzTheme="outline"
               nz-tooltip
               nzTooltipTitle="Edit"
-              (click)="studentId = s.id"
+              (click)="studentId = t.id"
             ></span>
           </div>
         </td>
@@ -52,7 +64,7 @@
   <div class="shadow border border-gray-100 rounded p-6">
     <app-student-form
       [(studentId)]="studentId"
-      (onFormSubmit)="getStudents()"
+      (onFormSubmit)="getTimeTable()"
     ></app-student-form>
   </div>
 </div>

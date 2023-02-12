@@ -1,3 +1,4 @@
+import { TimeTableComponent } from "./time-table/time-table.component";
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ChartComponent } from "../components/chart/chart.component";
@@ -40,9 +41,13 @@ const routes: Routes = [
         component: StudentsComponent,
       },
       {
-        path:"total-hours",
-        component: SubjectSectionHoursComponent
-      }
+        path: "total-hours",
+        component: SubjectSectionHoursComponent,
+      },
+      {
+        path: "time-tables",
+        component: TimeTableComponent,
+      },
     ],
   },
 ];
