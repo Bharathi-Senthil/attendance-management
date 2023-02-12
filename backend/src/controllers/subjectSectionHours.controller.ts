@@ -19,7 +19,7 @@ export class SubjectSectionHoursController {
     include: [
       {
         model: Subject,
-        as: "section",
+        as: "subject",
         attributes: [],
       },
       {
