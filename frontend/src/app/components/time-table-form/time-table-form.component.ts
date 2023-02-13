@@ -80,7 +80,6 @@ export class TimeTableFormComponent implements OnInit {
     if (selectedDay && !this.days.includes(selectedDay))
       this.days.push(selectedDay);
   }
-
   submit() {
     if (this.form.valid) {
       console.log(this.timeTableId);
