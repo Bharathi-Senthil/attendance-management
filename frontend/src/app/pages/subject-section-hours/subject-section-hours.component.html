@@ -18,7 +18,7 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item class="!mb-0">
-        <nz-form-label nzRequired class="text-gray-700"
+        <nz-form-label nzRequired class="text-gray-700"  
           >Total Hours</nz-form-label
         >
         <nz-form-control nzErrorTip="Please Input Name">
@@ -28,7 +28,7 @@
       <button nz-button [nzType]="'primary'">Add</button>
       <button nz-button [nzType]="'default'">cancel</button>
     </form>
-    <nz-table #basicTable [nzShowPagination]="false">
+    <nz-table [nzData]="hours" #basicTable [nzShowPagination]="false">
       <thead>
         <tr>
           <th>Section</th>
@@ -53,7 +53,8 @@
                 nzTooltipTitle="Delete"
                 nz-popconfirm
                 nzPopconfirmPlacement="bottom"
-                nzPopconfirmTitle="Are you sure delete this section?"
+                nzPopconfirmTitle="Are you sure delete this hour?"
+                (nzOnConfirm)="deleteSubjectHours(s.id)"
               ></span>
               <span
                 class="text-blue-400 text-base cursor-pointer"

@@ -19,7 +19,7 @@ export class StudentsComponent implements OnInit {
   }
 
   getStudents() {
-    this.http
+    this.http 
       .get("http://localhost:3000/api/students")
       .subscribe((data: any) => {
         this.students = data;
