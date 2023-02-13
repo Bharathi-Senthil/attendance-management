@@ -27,12 +27,14 @@ export class TimeTableFormComponent implements OnInit {
   @Input()
   set timeTableId(id: number) {
     this._timeTableId = id;
-    this.timeTableIdChange.emit(id);
+    // this.timeTableIdChange.emit(id);
     if (id > 0)
       this.http
         .get(`http://localhost:3000/api/time-tables/${id}`)
         .subscribe((data: any) => {
           this.form.patchValue(data);
+          this.getDay(data.sectionId);
+          this.form.controls["sectionId"].disable();
         });
   }
 
@@ -54,10 +56,6 @@ export class TimeTableFormComponent implements OnInit {
       period6SubjectId: [null, [Validators.required]],
       period7SubjectId: [null, [Validators.required]],
       period8SubjectId: [null, [Validators.required]],
-    });
-    this.form.controls["sectionId"].valueChanges.subscribe((data) => {
-      this.form.controls["day"].reset();
-      this.getDay(data);
     });
   }
 
@@ -81,8 +79,6 @@ export class TimeTableFormComponent implements OnInit {
     let selectedDay = this.form.controls["day"].value;
     if (selectedDay && !this.days.includes(selectedDay))
       this.days.push(selectedDay);
-
-    console.log(this.days);
   }
 
   submit() {

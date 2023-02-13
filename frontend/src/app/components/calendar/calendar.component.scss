@@ -93,8 +93,8 @@
 
 .selected:hover,
 .click:hover {
-  background-color: #0084ff !important;
-  color: white;
+  background-color: #0f8bff !important;
+  @apply text-white;
 }
 
 .dump {
@@ -103,7 +103,7 @@
 }
 
 .selected {
-  @apply bg-sky-200 text-white;
+  @apply bg-[#1890ff] text-white;
 }
 
 @keyframes to-top {
