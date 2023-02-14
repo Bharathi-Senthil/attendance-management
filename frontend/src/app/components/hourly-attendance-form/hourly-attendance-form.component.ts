@@ -23,16 +23,16 @@ export class HourlyAttendanceFormComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: null,
-      date: [{ value: null, disabled: true }, [Validators.required]],
+      date: [{ value: new Date(), disabled: true }, [Validators.required]],
       department: [{ value: "CSE", disabled: true }, [Validators.required]],
       section: [null, [Validators.required]],
       student: [null, [Validators.required]],
       hour: [null, [Validators.required]],
       absent: [true, [Validators.required]],
     });
-    this.data
-      .getDate()
-      .subscribe((date) => this.form.controls["date"].setValue(date));
+    this.data.getDate().subscribe((date) => {
+      this.form.controls["date"].setValue(date);
+    });
 
     this.form.controls["section"].valueChanges.subscribe((data) => {
       this.getStudents(data);
@@ -51,7 +51,6 @@ export class HourlyAttendanceFormComponent implements OnInit {
     this.http
       .get(`http://localhost:3000/api/students?sec=${sec}`)
       .subscribe((data: any) => {
-        console.log(data);
         this.students = data;
       });
   }
@@ -60,7 +59,6 @@ export class HourlyAttendanceFormComponent implements OnInit {
     this.http
       .get(`http://localhost:3000/api/time-tables?sec=${sec}`)
       .subscribe((data: any) => {
-        console.log(data);
         this.timeTable = data;
       });
   }

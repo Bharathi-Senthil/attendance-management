@@ -40,7 +40,12 @@
     </nz-form-item>
   </div>
   <nz-form-item>
-    <nz-form-label nzRequired class="text-gray-700">Day</nz-form-label>
+    <nz-form-label nzRequired class="text-gray-700"
+      >Day
+      {{
+        form.controls["day"].disabled ? "(Select section)" : ""
+      }}</nz-form-label
+    >
     <nz-form-control nzErrorTip="Please select day!">
       <nz-select
         class="w-full"
@@ -94,7 +99,7 @@
       nz-button
       [nzType]="'default'"
       class="flex-grow"
-      (click)="timeTableId = -1; form.reset()"
+      (click)="resetForm()"
       *ngIf="timeTableId > 0"
     >
       cancel

@@ -27,7 +27,7 @@ export class TimeTableFormComponent implements OnInit {
   @Input()
   set timeTableId(id: number) {
     this._timeTableId = id;
-    // this.timeTableIdChange.emit(id);
+    this.timeTableIdChange.emit(id);
     if (id > 0)
       this.http
         .get(`http://localhost:3000/api/time-tables/${id}`)
@@ -36,6 +36,7 @@ export class TimeTableFormComponent implements OnInit {
           this.getDay(data.sectionId);
           this.form.controls["sectionId"].disable();
         });
+    else this.form.controls["sectionId"].enable();
   }
 
   @Output()
@@ -57,6 +58,16 @@ export class TimeTableFormComponent implements OnInit {
       period7SubjectId: [null, [Validators.required]],
       period8SubjectId: [null, [Validators.required]],
     });
+
+    this.form.controls["day"].disable();
+
+    if (this.timeTableId === -1)
+      this.form.controls["sectionId"].valueChanges.subscribe((secId) => {
+        if (this.form.controls["day"].disabled && secId)
+          this.form.controls["day"].enable();
+        else this.form.controls["day"].disable();
+        this.getDay(secId);
+      });
   }
 
   ngOnInit(): void {
@@ -74,12 +85,21 @@ export class TimeTableFormComponent implements OnInit {
 
   getDay(secId: number) {
     this.days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-    let secTT = this.timeTables.filter((tt) => tt.sectionId === secId);
-    secTT.forEach((sTT) => (this.days = this.days.filter((d) => d != sTT.day)));
+    let secTT = this.timeTables?.filter((tt) => tt.sectionId === secId);
+    secTT?.forEach(
+      (sTT) => (this.days = this.days.filter((d) => d != sTT.day))
+    );
     let selectedDay = this.form.controls["day"].value;
     if (selectedDay && !this.days.includes(selectedDay))
       this.days.push(selectedDay);
   }
+
+  resetForm() {
+    this.timeTableId = -1;
+    this.form.reset();
+    this.form.controls["day"].disable();
+  }
+
   submit() {
     if (this.form.valid) {
       console.log(this.timeTableId);
