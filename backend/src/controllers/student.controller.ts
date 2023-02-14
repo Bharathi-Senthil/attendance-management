@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
-import { StudentService } from "../services";
-import { Section, Student } from "../models";
+import { StudentService, HourlyAttendanceService } from "../services";
+import { Section, Student, HourlyAttendance } from "../models";
 import { Sequelize } from "sequelize";
 import { getPagingData } from "../helpers";
 
 export class StudentController {
   private studentService: StudentService;
+  private hourlyAttendanceService: HourlyAttendanceService;
 
   private options = {
     attributes: [
@@ -27,6 +28,9 @@ export class StudentController {
 
   constructor() {
     this.studentService = new StudentService(Student);
+    this.hourlyAttendanceService = new HourlyAttendanceService(
+      HourlyAttendance
+    );
   }
 
   getPaged(req: Request, res: Response) {
@@ -53,6 +57,10 @@ export class StudentController {
           message: `Student id:${req.params.id} does not exists`,
         });
     });
+  }
+
+  getHourAbsentees(req: Request, res: Response) {
+    const { hour, sec } = req.params;
   }
 
   post(req: Request, res: Response) {
