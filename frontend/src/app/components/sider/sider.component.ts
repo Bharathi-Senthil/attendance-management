@@ -20,11 +20,11 @@ export class SiderComponent {
       icon: "houricon",
       path: "hourly-attendance",
     },
-    {
-      title: "Dashboard",
-      icon: "pie-charts",
-      path: "dashboard",
-    },
+    // {
+    //   title: "Dashboard",
+    //   icon: "pie-charts",
+    //   path: "dashboard",
+    // },
     {
       title: "Students",
       icon: "user",

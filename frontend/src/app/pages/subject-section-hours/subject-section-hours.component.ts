@@ -56,6 +56,7 @@ export class SubjectSectionHoursComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    0;
     this.getSubjectHours();
     this.http
       .get("http://localhost:3000/api/subjects")

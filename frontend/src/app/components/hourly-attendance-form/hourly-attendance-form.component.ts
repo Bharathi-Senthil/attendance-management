@@ -63,6 +63,8 @@ export class HourlyAttendanceFormComponent implements OnInit {
       });
   }
 
+  getHours(sectionId: number) {}
+
   submit() {
     console.log(this.form.value);
   }

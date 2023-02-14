@@ -1,7 +1,7 @@
 import { TimeTableComponent } from "./time-table/time-table.component";
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { ChartComponent } from "../components/chart/chart.component";
+// import { ChartComponent } from "../components/chart/chart.component";
 
 import { BaseLayoutComponent } from "./base-layout/base-layout.component";
 import { DayAttendanceComponent } from "./day-attendance/day-attendance.component";
@@ -24,10 +24,10 @@ const routes: Routes = [
         path: "hourly-attendance",
         component: HourlyAttendanceComponent,
       },
-      {
-        path: "dashboard",
-        component: ChartComponent,
-      },
+      // {
+      //   path: "dashboard",
+      //   component: ChartComponent,
+      // },
       {
         path: "sections",
         component: SectionsComponent,

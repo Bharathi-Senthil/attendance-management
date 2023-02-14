@@ -38,9 +38,9 @@ sequelize
 // Subject.sync({ force: true });
 // TimeTable.sync();
 // Student.sync({ force: true });
-// HourlyAttendance.sync({ force: true });
-// DayAttendance.sync({ force: true });
-// SubjectSectionHours.sync({ force: true });
+HourlyAttendance.sync({ force: true });
+DayAttendance.sync({ force: true });
+SubjectSectionHours.sync({ force: true });
 
 let query = `SELECT a.student_id, a.student_name, a.roll_no,
                   a.section_name,
