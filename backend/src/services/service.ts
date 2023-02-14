@@ -25,8 +25,8 @@ export abstract class IRepository<T extends Model> {
     return this.model.findAndCountAll<T>(pagingOptions);
   }
 
-  find(where: FindOptions<T>): Promise<T> {
-    throw new Error("Method not implemented.");
+  find(where: FindOptions): Promise<any> {
+    return this.model.findOne(where);
   }
 
   create(data: T): Promise<T> {

@@ -5,3 +5,4 @@ export * from "./student.routes";
 export * from "./hourlyAttendance.routes";
 export * from "./dayAttendance.routes";
 export * from "./subjectSectionHours.routes";
+export * from "./user.routes";

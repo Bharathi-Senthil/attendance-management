@@ -1,3 +1,4 @@
+import { UserRoutes } from "./routes/user.routes";
 import express from "express";
 import cors from "cors";
 import sequelize from "./db";
@@ -19,7 +20,9 @@ import {
   HourlyAttendance,
   DayAttendance,
   SubjectSectionHours,
+  User,
 } from "./models";
+import { verifyToken } from "./middleware";
 
 const app = express();
 
@@ -34,13 +37,14 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
+// User.sync({ force: true });
 // Section.sync({ force: true });
 // Subject.sync({ force: true });
 // TimeTable.sync();
 // Student.sync({ force: true });
-HourlyAttendance.sync({ force: true });
-DayAttendance.sync({ force: true });
-SubjectSectionHours.sync({ force: true });
+// HourlyAttendance.sync({ force: true });
+// DayAttendance.sync({ force: true });
+// SubjectSectionHours.sync({ force: true });
 
 let query = `SELECT a.student_id, a.student_name, a.roll_no,
                   a.section_name,
@@ -100,14 +104,24 @@ let query = `SELECT a.student_id, a.student_name, a.roll_no,
 
 app.use(express.json());
 
-app.use("/api/sections", new SectionRoutes().getRouter());
-app.use("/api/subjects", new SubjectRoutes().getRouter());
-app.use("/api/time-tables", new TimeTableRoutes().getRouter());
-app.use("/api/students", new StudentRoutes().getRouter());
-app.use("/api/hourly-attendances", new HourlyAttendanceRoutes().getRouter());
-app.use("/api/day-attendances", new DayAttendanceRoutes().getRouter());
+app.use("/api/users", new UserRoutes().getRouter());
+app.use("/api/sections", verifyToken, new SectionRoutes().getRouter());
+app.use("/api/subjects", verifyToken, new SubjectRoutes().getRouter());
+app.use("/api/time-tables", verifyToken, new TimeTableRoutes().getRouter());
+app.use("/api/students", verifyToken, new StudentRoutes().getRouter());
+app.use(
+  "/api/hourly-attendances",
+  verifyToken,
+  new HourlyAttendanceRoutes().getRouter()
+);
+app.use(
+  "/api/day-attendances",
+  verifyToken,
+  new DayAttendanceRoutes().getRouter()
+);
 app.use(
   "/api/subject-section-hours",
+  verifyToken,
   new SubjectSectionHoursRoutes().getRouter()
 );
 

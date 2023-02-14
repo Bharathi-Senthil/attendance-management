@@ -1,0 +1,136 @@
+import { Request, Response } from "express";
+import { UserService } from "../services";
+import { User } from "../models";
+import { getPagingData } from "../helpers";
+
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+export class UserController {
+  private userService: UserService;
+
+  constructor() {
+    this.userService = new UserService(User);
+  }
+
+  private options = {};
+
+  getPaged(req: Request, res: Response) {
+    const { page, size } = req.query;
+    this.userService.getPaged(page, size, this.options).then((user) => {
+      res.status(200).json(getPagingData(user));
+    });
+  }
+
+  getAll(req: Request, res: Response) {
+    this.userService.getAll(this.options).then((users) => {
+      res.status(200).json(users);
+    });
+  }
+
+  getById(req: Request, res: Response) {
+    this.userService.get(req.params.id, this.options).then((user) => {
+      if (user) res.status(200).json(user);
+      else
+        res.status(404).json({
+          message: `User id:${req.params.id} does not exists`,
+        });
+    });
+  }
+
+  async post(req: Request, res: Response) {
+    const { firstName, lastName, email, password, role } = req.body;
+
+    this.userService
+      .find({ where: { email } })
+      .then((user) => {
+        if (user)
+          return res.status(409).send("User Already Exist. Please Login");
+      })
+      .catch((err) => res.status(400).json(err));
+
+    let encryptedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      firstName,
+      lastName,
+      email: email.toLowerCase(),
+      password: encryptedPassword,
+      role,
+    });
+
+    this.userService
+      .create(user)
+      .then((user) => {
+        delete user.dataValues.password;
+        res.status(201).json(user);
+      })
+      .catch((err) => res.status(400).json(err));
+  }
+
+  async login(req: Request, res: Response) {
+    const { email, password } = req.body;
+
+    if (!(email && password)) {
+      return res.status(400).send("All input is required");
+    }
+
+    this.userService
+      .find({ where: { email } })
+      .then(async (user) => {
+        if (
+          user &&
+          (await bcrypt.compare(password, user.dataValues.password))
+        ) {
+          const token = jwt.sign(
+            { userId: user.dataValues.id, email, role: user.dataValues.role },
+            process.env.TOKEN_KEY ? process.env.TOKEN_KEY : "",
+            {
+              expiresIn: "2h",
+            }
+          );
+
+          user.dataValues.token = token;
+          delete user.dataValues.password;
+
+          res.status(200).json(user);
+        } else res.status(400).send("Invalid Credentials");
+      })
+      .catch((err) => res.status(400).json(err));
+  }
+
+  update(req: Request, res: Response) {
+    let data = req.body;
+
+    this.userService.get(req.params.id).then((user) => {
+      if (user) {
+        let updatedDayAttendance = new User({
+          ...user.dataValues,
+          ...data,
+        });
+
+        this.userService
+          .update(req.params.id, updatedDayAttendance)
+          .then(() => res.status(200).json(updatedDayAttendance))
+          .catch((err) => res.status(400).json(err));
+      } else
+        res.status(404).json({
+          message: `User id:${req.params.id} does not exists`,
+        });
+    });
+  }
+
+  delete(req: Request, res: Response) {
+    this.userService.get(req.params.id).then((user) => {
+      if (user) {
+        this.userService
+          .delete(req.params.id)
+          .then((user) => res.status(200).json())
+          .catch((err) => res.status(400).json(err));
+      } else
+        res.status(404).json({
+          message: `User id:${req.params.id} does not exists`,
+        });
+    });
+  }
+}

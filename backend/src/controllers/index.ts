@@ -5,3 +5,4 @@ export * from "./student.controller";
 export * from "./hourlyAttendance.controller";
 export * from "./dayAttendance.controller";
 export * from "./subjectSectionHours.controller";
+export * from "./user.controller";
