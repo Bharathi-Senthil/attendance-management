@@ -15,6 +15,7 @@ export class SubjectSectionHoursController {
       [Sequelize.col("section.name"), "sectionName"],
       "subjectId",
       [Sequelize.col("subject.name"), "subjectName"],
+      [Sequelize.col("subject.code"), "subjectCode"],
     ],
     include: [
       {

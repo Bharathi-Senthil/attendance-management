@@ -7,8 +7,8 @@
       class="flex items-start justify-end gap-4 mb-4"
     >
       <nz-form-item class="!mb-0">
-        <nz-form-label nzRequired class="text-gray-700">Section </nz-form-label>
-        <nz-form-control nzErrorTip="Please Input Code">
+        <nz-form-label nzRequired class="text-gray-700">Section</nz-form-label>
+        <nz-form-control nzErrorTip="Please select section!">
           <nz-select
             formControlName="sectionId"
             class="min-w-[100px]"
@@ -26,7 +26,7 @@
       </nz-form-item>
       <nz-form-item class="!mb-0">
         <nz-form-label nzRequired class="text-gray-700">Subject</nz-form-label>
-        <nz-form-control nzErrorTip="Please Input Code">
+        <nz-form-control nzErrorTip="Please select subject!">
           <nz-select
             formControlName="subjectId"
             class="min-w-[150px]"
@@ -47,18 +47,25 @@
           >Total Hours</nz-form-label
         >
         <nz-form-control nzErrorTip="Please Input Name">
-          <input
-            nz-input
-            type="number"
+          <nz-input-number
             formControlName="totalHours"
             class="max-w-[150px]"
-          />
+            [nzMin]="1"
+            [nzStep]="1"
+          ></nz-input-number>
         </nz-form-control>
       </nz-form-item>
-      <button nz-button (click)="addSubjectHours()" [nzType]="'primary'">
-        Add
+      <button nz-button (click)="submit()" [nzType]="'primary'">
+        {{ hourId > 0 ? "Save" : "Add" }}
       </button>
-      <button nz-button [nzType]="'default'">cancel</button>
+      <button
+        nz-button
+        [nzType]="'default'"
+        *ngIf="hourId > 0"
+        (click)="hourId = -1; form.reset()"
+      >
+        cancel
+      </button>
     </form>
     <nz-table [nzData]="hours" #basicTable [nzShowPagination]="false">
       <thead>
@@ -95,6 +102,7 @@
                 nzTheme="outline"
                 nz-tooltip
                 nzTooltipTitle="Edit"
+                (click)="hourId = s.id"
               ></span>
             </div>
           </td>

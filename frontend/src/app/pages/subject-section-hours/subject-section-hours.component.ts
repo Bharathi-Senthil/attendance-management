@@ -9,15 +9,50 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 export class SubjectSectionHoursComponent implements OnInit {
   hours: any[];
+
+  tempSubjects: any[];
   subjects: any[];
+
   sections: any[];
+
   form: FormGroup;
+
+  _hourId = -1;
+
+  get hourId() {
+    return this._hourId;
+  }
+
+  set hourId(id: number) {
+    this._hourId = id;
+    if (id > 0)
+      this.http
+        .get(`http://localhost:3000/api/subject-section-hours/${id}`)
+        .subscribe((data: any) => {
+          console.log(data);
+          this.form.patchValue(data);
+          let selecteSubject = {
+            id: data.subjectId,
+            name: data.subjectName,
+            code: data.subjectCode,
+          };
+          if (!this.subjects.includes(selecteSubject)) {
+            this.subjects.push(selecteSubject);
+          }
+        });
+  }
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.form = fb.group({
-      subjectId: ["", Validators.required],
-      sectionId: ["", Validators.required],
-      totalHours: ["", Validators.required],
+      subjectId: [null, Validators.required],
+      sectionId: [null, Validators.required],
+      totalHours: [1, Validators.required],
+    });
+    this.form.controls["sectionId"].valueChanges.subscribe((sectionId) => {
+      if (sectionId) {
+        this.form.controls["subjectId"].reset();
+        this.getSubjects(sectionId);
+      }
     });
   }
   ngOnInit(): void {
@@ -26,6 +61,7 @@ export class SubjectSectionHoursComponent implements OnInit {
       .get("http://localhost:3000/api/subjects")
       .subscribe((data: any) => {
         this.subjects = data;
+        this.tempSubjects = data;
       });
     this.http
       .get("http://localhost:3000/api/sections")
@@ -50,13 +86,43 @@ export class SubjectSectionHoursComponent implements OnInit {
       });
   }
 
-  addSubjectHours() {
-    console.log(this.form.value);
-    this.http
-      .post("http://localhost:3000/api/subject-section-hours", this.form.value)
-      .subscribe((data: any) => {
-        this.getSubjectHours();
-        this.form.reset();
+  submit() {
+    if (this.form.valid) {
+      if (this.hourId < 0)
+        this.http
+          .post(
+            "http://localhost:3000/api/subject-section-hours",
+            this.form.value
+          )
+          .subscribe((data: any) => {
+            this.getSubjectHours();
+            this.form.reset();
+          });
+      else
+        this.http
+          .put(
+            `http://localhost:3000/api/subject-section-hours/${this.hourId}`,
+            this.form.value
+          )
+          .subscribe((data: any) => {
+            this.getSubjectHours();
+            this.form.reset();
+            this.hourId = -1;
+          });
+    } else {
+      Object.values(this.form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
       });
+    }
+  }
+  getSubjects(sectionId: number) {
+    this.subjects = this.tempSubjects;
+    let sectionHours = this.hours.filter((e) => e.sectionId === sectionId);
+    sectionHours.forEach((sh) => {
+      this.subjects = this.subjects.filter((s) => sh.subjectId != s.id);
+    });
   }
 }
