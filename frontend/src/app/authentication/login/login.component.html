@@ -1,0 +1,45 @@
+<div class="master-div">
+  <form
+    nz-form
+    [formGroup]="validateForm"
+    (ngSubmit)="submitForm()"
+    class="form"
+  >
+    <h1 class="text-3xl font-medium pb-[25px] leading-none flex justify-center">
+      Log In
+    </h1>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            formControlName="userName"
+            placeholder="Username"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            placeholder="Password"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <div nz-row class="flex justify-center flex-col min-w-full">
+      <nz-form-item>
+        <label nz-checkbox formControlName="remember">
+          <h4>Remember me</h4>
+        </label>
+      </nz-form-item>
+      <button nz-button class="min-w-full" [nzType]="'primary'">Log in</button>
+    </div>
+  </form>
+</div>
