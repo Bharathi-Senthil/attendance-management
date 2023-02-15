@@ -1,3 +1,4 @@
+import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -13,7 +14,8 @@ export class HourlyAttendanceFormComponent implements OnInit {
 
   sections: any[];
   students: any[];
-  timeTable: any[];
+  timeTables: any[];
+  timeTable: any;
 
   constructor(
     private http: HttpClient,
@@ -23,43 +25,74 @@ export class HourlyAttendanceFormComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       id: null,
-      date: [{ value: new Date(), disabled: true }, [Validators.required]],
+      date: [{ value: null, disabled: true }, [Validators.required]],
       department: [{ value: "CSE", disabled: true }, [Validators.required]],
-      section: [null, [Validators.required]],
-      student: [null, [Validators.required]],
+      sectionId: [null, [Validators.required]],
+      studentId: [null, [Validators.required]],
+      subjectId: [null, [Validators.required]],
       hour: [null, [Validators.required]],
       absent: [true, [Validators.required]],
     });
+
+    this.form.controls["subjectId"].disable();
+
     this.data.getDate().subscribe((date) => {
       this.form.controls["date"].setValue(date);
-    });
-
-    this.form.controls["section"].valueChanges.subscribe((data) => {
-      this.getStudents(data);
-      this.getTimeTable(data);
     });
 
     this.http
       .get("http://localhost:3000/api/sections")
       .subscribe((data: any) => {
         this.sections = data;
-        this.form.controls["section"].setValue(data[0].id);
+        this.http
+          .get(`http://localhost:3000/api/time-tables?sec=${data[0].id}`)
+          .subscribe((data: any) => {
+            this.timeTables = data;
+            this.form.controls["sectionId"].setValue(data[0].id);
+            this.form.controls["date"].setValue(new Date());
+          });
       });
+
+    this.form.controls["sectionId"].valueChanges.subscribe((data) => {
+      this.form.controls["hour"].reset();
+      this.form.controls["subjectId"].reset();
+      this.form.controls["studentId"].reset();
+      this.timeTable = {};
+      // this.getStudents(data);
+      this.getTimeTables(data);
+    });
+
+    this.form.controls["date"].valueChanges.subscribe((date) => {
+      let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+      let day = days[date.getDay() - 1];
+      if (this.timeTables)
+        this.timeTable = this.timeTables.filter((t) => t.day === day)[0];
+    });
+
+    this.form.controls["hour"].valueChanges.subscribe((hour) => {
+      if (hour)
+        this.form.controls["subjectId"].setValue(
+          this.timeTable["period" + hour + "SubjectId"]
+        );
+    });
   }
 
-  getStudents(sec: number) {
+  getStudents(sec: number, period: number, date: string) {
+    date = formatDate(date, "yyyy-MM-dd", "en");
     this.http
-      .get(`http://localhost:3000/api/students?sec=${sec}`)
+      .get(
+        `http://localhost:3000/api/students/hour-present?sec=${sec}&hour=${period}$date=${date}`
+      )
       .subscribe((data: any) => {
         this.students = data;
       });
   }
 
-  getTimeTable(sec: number) {
+  getTimeTables(sec: number) {
     this.http
       .get(`http://localhost:3000/api/time-tables?sec=${sec}`)
       .subscribe((data: any) => {
-        this.timeTable = data;
+        this.timeTables = data;
       });
   }
 

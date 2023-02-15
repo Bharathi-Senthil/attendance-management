@@ -18,6 +18,14 @@ export class StudentRoutes {
     //! GetAll
     this.router.get("/", (req, res) => this.controller.getAll(req, res));
 
+    this.router.get("/hour-present", (req, res) =>
+      this.controller.getHourlyPresent(req, res)
+    );
+
+    this.router.get("/day-present", (req, res) =>
+      this.controller.getDayPresent(req, res)
+    );
+
     //! GetById
     this.router.get("/:id", (req, res) => this.controller.getById(req, res));
 

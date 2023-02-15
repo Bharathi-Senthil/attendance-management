@@ -36,7 +36,7 @@
         nzShowSearch
         nzAllowClear
         nzPlaceHolder="Section"
-        formControlName="section"
+        formControlName="sectionId"
       >
         <nz-option
           *ngFor="let s of sections"
@@ -71,14 +71,14 @@
         class="w-[130px]"
         nzShowSearch
         nzAllowClear
-        nzPlaceHolder="Section"
-        formControlName="section"
+        nzPlaceHolder="Subject"
+        formControlName="subjectId"
       >
-        <nz-option nzValue="1" nzLabel="1"></nz-option>
-        <nz-option nzValue="2" nzLabel="2"></nz-option>
-        <nz-option nzValue="3" nzLabel="3"></nz-option>
-        <nz-option nzValue="4" nzLabel="4"></nz-option>
-        <nz-option nzValue="5" nzLabel="5"></nz-option>
+        <nz-option
+          *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8]"
+          [nzValue]="timeTable?.['period' + i + 'SubjectId']"
+          [nzLabel]="timeTable?.['period' + i + 'SubjectName']"
+        ></nz-option>
       </nz-select>
     </nz-form-item>
   </div>
@@ -89,7 +89,7 @@
         nzShowSearch
         nzAllowClear
         nzPlaceHolder="Select a Student"
-        formControlName="student"
+        formControlName="studentId"
         id="student"
       >
         <nz-option

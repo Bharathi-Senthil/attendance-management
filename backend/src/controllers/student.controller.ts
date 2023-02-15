@@ -1,12 +1,17 @@
 import { Request, Response } from "express";
 import { StudentService, HourlyAttendanceService } from "../services";
-import { Section, Student, HourlyAttendance } from "../models";
+import {
+  Section,
+  Student,
+  HourlyAttendance,
+  DayAttendance,
+  Subject,
+} from "../models";
 import { Sequelize } from "sequelize";
 import { getPagingData } from "../helpers";
 
 export class StudentController {
   private studentService: StudentService;
-  private hourlyAttendanceService: HourlyAttendanceService;
 
   private options = {
     attributes: [
@@ -26,11 +31,78 @@ export class StudentController {
     ],
   };
 
+  private hourlyOptions: any = (hour: number, date: string) => {
+    return {
+      attributes: [
+        "id",
+        "date",
+        "hour",
+        "isAbsent",
+        [Sequelize.col("subject.id"), "subjectId"],
+        [Sequelize.col("subject.name"), "subjectName"],
+        [Sequelize.col("subject.code"), "subjectCode"],
+        "studentId",
+        [Sequelize.col("student.name"), "studentName"],
+        [Sequelize.col("student.roll_no"), "studentRollNo"],
+        [Sequelize.col("student.reg_no"), "studentRegNo"],
+        [Sequelize.col("student.section_id"), "studentSectionId"],
+        [Sequelize.col("student.section.name"), "sectionName"],
+      ],
+      include: [
+        {
+          model: Student,
+          as: "student",
+          attributes: [],
+          include: [
+            {
+              model: Section,
+              as: "section",
+            },
+          ],
+        },
+        { model: Subject, as: "subject", attributes: [] },
+      ],
+      where: {
+        hour,
+        date,
+      },
+    };
+  };
+
+  private dayOptions: any = (date: string) => {
+    return {
+      attributes: [
+        "id",
+        "date",
+        "isAbsent",
+        "studentId",
+        [Sequelize.col("student.name"), "studentName"],
+        [Sequelize.col("student.roll_no"), "studentRollNo"],
+        [Sequelize.col("student.reg_no"), "studentRegNo"],
+        [Sequelize.col("student.section_id"), "studentSectionId"],
+        [Sequelize.col("student.section.name"), "sectionName"],
+      ],
+      include: [
+        {
+          model: Student,
+          as: "student",
+          attributes: [],
+          include: [
+            {
+              model: Section,
+              as: "section",
+            },
+          ],
+        },
+      ],
+      where: {
+        date,
+      },
+    };
+  };
+
   constructor() {
     this.studentService = new StudentService(Student);
-    this.hourlyAttendanceService = new HourlyAttendanceService(
-      HourlyAttendance
-    );
   }
 
   getPaged(req: Request, res: Response) {
@@ -59,8 +131,38 @@ export class StudentController {
     });
   }
 
-  getHourAbsentees(req: Request, res: Response) {
-    const { hour, sec } = req.params;
+  getHourlyPresent(req: Request, res: Response) {
+    const { hour, sec, date } = req.query;
+    let preStudents: Student[];
+    Student.findAll({ where: { sectionId: sec } }).then((students) => {
+      preStudents = students;
+      HourlyAttendance.findAll(this.hourlyOptions(hour, date)).then(
+        (absStudent) => {
+          absStudent.forEach((abs) => {
+            preStudents = preStudents.filter(
+              (pre) => pre.dataValues.id != abs.dataValues.studentId
+            );
+          });
+          res.status(200).json(preStudents);
+        }
+      );
+    });
+  }
+
+  getDayPresent(req: Request, res: Response) {
+    const { sec, date } = req.query;
+    let preStudents: Student[];
+    Student.findAll({ where: { sectionId: sec } }).then((students) => {
+      preStudents = students;
+      DayAttendance.findAll(this.dayOptions(date)).then((absStudent) => {
+        absStudent.forEach((abs) => {
+          preStudents = preStudents.filter(
+            (pre) => pre.dataValues.id != abs.dataValues.studentId
+          );
+        });
+        res.status(200).json(preStudents);
+      });
+    });
   }
 
   post(req: Request, res: Response) {
