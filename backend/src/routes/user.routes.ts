@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UserController } from "../controllers";
+import { verifyToken } from "../middleware";
 
 export class UserRoutes {
   private router: Router;
@@ -13,25 +14,37 @@ export class UserRoutes {
 
   private routes() {
     //! GetPaged
-    this.router.get("/page", (req, res) => this.controller.getPaged(req, res));
+    this.router.get("/page", verifyToken, (req, res) =>
+      this.controller.getPaged(req, res)
+    );
 
     //! GetAll
-    this.router.get("/", (req, res) => this.controller.getAll(req, res));
+    this.router.get("/", verifyToken, (req, res) =>
+      this.controller.getAll(req, res)
+    );
 
     //! GetById
-    this.router.get("/:id", (req, res) => this.controller.getById(req, res));
+    this.router.get("/:id", verifyToken, (req, res) =>
+      this.controller.getById(req, res)
+    );
 
     //! Register
-    this.router.post("/register", (req, res) => this.controller.post(req, res));
+    this.router.post("/register", verifyToken, (req, res) =>
+      this.controller.post(req, res)
+    );
 
     //! Login
     this.router.post("/login", (req, res) => this.controller.login(req, res));
 
     //! Put
-    this.router.put("/:id", (req, res) => this.controller.update(req, res));
+    this.router.put("/:id", verifyToken, (req, res) =>
+      this.controller.update(req, res)
+    );
 
     //! Delete
-    this.router.delete("/:id", (req, res) => this.controller.delete(req, res));
+    this.router.delete("/:id", verifyToken, (req, res) =>
+      this.controller.delete(req, res)
+    );
   }
 
   public getRouter() {

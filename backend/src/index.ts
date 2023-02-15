@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { UserRoutes } from "./routes/user.routes";
 import express from "express";
 import cors from "cors";
@@ -37,7 +38,20 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
-// User.sync({ force: true });
+User.sync().then(() => {
+  User.findOne({ where: { email: "admin@local.com" } }).then((user) => {
+    if (!user)
+      bcrypt.hash("admin@123", 10).then((ep) => {
+        User.create({
+          firstName: "Admin",
+          lastName: "Admin",
+          email: "admin@local.com",
+          password: ep,
+          role: "ADMIN",
+        });
+      });
+  });
+});
 // Section.sync({ force: true });
 // Subject.sync({ force: true });
 // TimeTable.sync();

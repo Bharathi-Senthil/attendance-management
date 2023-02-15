@@ -39,7 +39,7 @@ export class UserController {
   }
 
   async post(req: Request, res: Response) {
-    const { firstName, lastName, email, password, role } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     this.userService
       .find({ where: { email } })
@@ -56,7 +56,7 @@ export class UserController {
       lastName,
       email: email.toLowerCase(),
       password: encryptedPassword,
-      role,
+      role: "MENTOR",
     });
 
     this.userService
@@ -77,24 +77,31 @@ export class UserController {
 
     this.userService
       .find({ where: { email } })
-      .then(async (user) => {
-        if (
-          user &&
-          (await bcrypt.compare(password, user.dataValues.password))
-        ) {
-          const token = jwt.sign(
-            { userId: user.dataValues.id, email, role: user.dataValues.role },
-            process.env.TOKEN_KEY ? process.env.TOKEN_KEY : "",
-            {
-              expiresIn: "2h",
+      .then((user) => {
+        if (user) {
+          bcrypt.compare(password, user.dataValues.password).then((checked) => {
+            if (checked) {
+              const token = jwt.sign(
+                {
+                  userId: user.dataValues.id,
+                  email,
+                  role: user.dataValues.role,
+                },
+                process.env.TOKEN_KEY ? process.env.TOKEN_KEY : "",
+                {
+                  expiresIn: "2h",
+                }
+              );
+
+              user.dataValues.token = token;
+              delete user.dataValues.password;
+
+              res.status(200).json(user);
+            } else {
+              res.status(401).send("Invalid Credentials");
             }
-          );
-
-          user.dataValues.token = token;
-          delete user.dataValues.password;
-
-          res.status(200).json(user);
-        } else res.status(400).send("Invalid Credentials");
+          });
+        } else res.status(401).send("Invalid Credentials");
       })
       .catch((err) => res.status(400).json(err));
   }
