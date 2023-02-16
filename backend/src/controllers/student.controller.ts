@@ -31,74 +31,63 @@ export class StudentController {
     ],
   };
 
-  private hourlyOptions: any = (hour: number, date: string) => {
-    return {
-      attributes: [
-        "id",
-        "date",
-        "hour",
-        "isAbsent",
-        [Sequelize.col("subject.id"), "subjectId"],
-        [Sequelize.col("subject.name"), "subjectName"],
-        [Sequelize.col("subject.code"), "subjectCode"],
-        "studentId",
-        [Sequelize.col("student.name"), "studentName"],
-        [Sequelize.col("student.roll_no"), "studentRollNo"],
-        [Sequelize.col("student.reg_no"), "studentRegNo"],
-        [Sequelize.col("student.section_id"), "studentSectionId"],
-        [Sequelize.col("student.section.name"), "sectionName"],
-      ],
-      include: [
-        {
-          model: Student,
-          as: "student",
-          attributes: [],
-          include: [
-            {
-              model: Section,
-              as: "section",
-            },
-          ],
-        },
-        { model: Subject, as: "subject", attributes: [] },
-      ],
-      where: {
-        hour,
-        date,
+  private hourlyOptions = {
+    attributes: [
+      "id",
+      "date",
+      "hour",
+      "isAbsent",
+      [Sequelize.col("subject.id"), "subjectId"],
+      [Sequelize.col("subject.name"), "subjectName"],
+      [Sequelize.col("subject.code"), "subjectCode"],
+      "studentId",
+      [Sequelize.col("student.name"), "studentName"],
+      [Sequelize.col("student.roll_no"), "studentRollNo"],
+      [Sequelize.col("student.reg_no"), "studentRegNo"],
+      [Sequelize.col("student.section_id"), "studentSectionId"],
+      [Sequelize.col("student.section.name"), "sectionName"],
+    ],
+    include: [
+      {
+        model: Student,
+        as: "student",
+        attributes: [],
+        include: [
+          {
+            model: Section,
+            as: "section",
+          },
+        ],
       },
-    };
+      { model: Subject, as: "subject", attributes: [] },
+    ],
   };
 
-  private dayOptions: any = (date: string) => {
-    return {
-      attributes: [
-        "id",
-        "date",
-        "isAbsent",
-        "studentId",
-        [Sequelize.col("student.name"), "studentName"],
-        [Sequelize.col("student.roll_no"), "studentRollNo"],
-        [Sequelize.col("student.reg_no"), "studentRegNo"],
-        [Sequelize.col("student.section_id"), "studentSectionId"],
-        [Sequelize.col("student.section.name"), "sectionName"],
-      ],
-      include: [
-        {
-          model: Student,
-          as: "student",
-          attributes: [],
-          include: [
-            {
-              model: Section,
-              as: "section",
-            },
-          ],
-        },
-      ],
-      where: {
-        date,
+  private dayOptions = {
+    attributes: [
+      "id",
+      "date",
+      "isAbsent",
+      "studentId",
+      [Sequelize.col("student.name"), "studentName"],
+      [Sequelize.col("student.roll_no"), "studentRollNo"],
+      [Sequelize.col("student.reg_no"), "studentRegNo"],
+      [Sequelize.col("student.section_id"), "studentSectionId"],
+      [Sequelize.col("student.section.name"), "sectionName"],
+    ],
+    include: [
+      {
+        model: Student,
+        as: "student",
+        attributes: [],
+        include: [
+          {
+            model: Section,
+            as: "section",
+          },
+        ],
       },
-    };
+    ],
   };
 
   constructor() {
@@ -136,16 +125,23 @@ export class StudentController {
     let preStudents: Student[];
     Student.findAll({ where: { sectionId: sec } }).then((students) => {
       preStudents = students;
-      HourlyAttendance.findAll(this.hourlyOptions(hour, date)).then(
-        (absStudent) => {
-          absStudent.forEach((abs) => {
-            preStudents = preStudents.filter(
-              (pre) => pre.dataValues.id != abs.dataValues.studentId
-            );
-          });
-          res.status(200).json(preStudents);
-        }
-      );
+      let options: any = this.hourlyOptions;
+      if (hour && date)
+        options = {
+          ...options,
+          where: {
+            hour,
+            date,
+          },
+        };
+      HourlyAttendance.findAll(options).then((absStudent) => {
+        absStudent.forEach((abs) => {
+          preStudents = preStudents.filter(
+            (pre) => pre.dataValues.id != abs.dataValues.studentId
+          );
+        });
+        res.status(200).json(preStudents);
+      });
     });
   }
 
@@ -154,7 +150,15 @@ export class StudentController {
     let preStudents: Student[];
     Student.findAll({ where: { sectionId: sec } }).then((students) => {
       preStudents = students;
-      DayAttendance.findAll(this.dayOptions(date)).then((absStudent) => {
+      let options: any = this.dayOptions;
+      if (date)
+        options = {
+          ...options,
+          where: {
+            date,
+          },
+        };
+      DayAttendance.findAll(options).then((absStudent) => {
         absStudent.forEach((abs) => {
           preStudents = preStudents.filter(
             (pre) => pre.dataValues.id != abs.dataValues.studentId

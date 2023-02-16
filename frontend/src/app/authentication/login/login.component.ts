@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-login",
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("token", user.token);
           delete user.token;
           localStorage.setItem("user", user);
+          this.router.navigateByUrl("/day-attendance");
         });
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
@@ -29,7 +31,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

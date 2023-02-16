@@ -46,6 +46,10 @@
       </nz-select>
     </nz-form-item>
 
+    <p class="text-xs text-red-500 col-span-2 mb-2 pl-24" *ngIf="!timeTable">
+      NOTE: Time Table unavailable
+    </p>
+
     <nz-form-item>
       <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired>Period</nz-form-label>
       <nz-select
@@ -93,7 +97,7 @@
         id="student"
       >
         <nz-option
-          *ngFor="let s of students"
+          *ngFor="let s of students; let i = index"
           [nzLabel]="s.rollNo + ' - ' + s.name"
           [nzValue]="s.id"
         ></nz-option>
@@ -103,7 +107,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>Absent</nz-form-label>
     <nz-form-control nzErrorTip="Please select value!">
-      <label nz-checkbox formControlName="absent" id="absent"></label>
+      <label nz-checkbox formControlName="isAbsent" id="absent"></label>
     </nz-form-control>
   </nz-form-item>
 
@@ -111,3 +115,8 @@
     Submit
   </button>
 </form>
+
+<ng-template #tagPlaceHolder let-selectedList
+  >and {{ form.controls["studentId"].value.length - 1 }} more
+  selected</ng-template
+>
