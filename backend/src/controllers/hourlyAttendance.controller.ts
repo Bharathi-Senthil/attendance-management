@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { HourlyAttendanceService } from "../services";
 import { HourlyAttendance, Section, Student, Subject } from "../models";
 import { getPagingData } from "../helpers";
-import { Sequelize } from "sequelize";
+import { Optional, Sequelize } from "sequelize";
 
 export class HourlyAttendanceController {
   private hourlyAttendanceService: HourlyAttendanceService;
@@ -76,10 +76,15 @@ export class HourlyAttendanceController {
 
   post(req: Request, res: Response) {
     let data = req.body;
+    let students = data.studentId;
+    delete data.studentId;
 
-    let hourlyAttendance = new HourlyAttendance(data);
-    this.hourlyAttendanceService
-      .create(hourlyAttendance)
+    let absentees: any[] = [];
+    students.forEach((s: any) => {
+      absentees.push({ ...data, studentId: s });
+    });
+
+    HourlyAttendance.bulkCreate(absentees)
       .then((hourlyAttendance) => res.status(201).json(hourlyAttendance))
       .catch((err) => res.status(400).json(err.errors));
   }

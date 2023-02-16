@@ -131,7 +131,7 @@ export class StudentController {
           ...options,
           where: {
             hour,
-            date,
+            date: new Date(String(date)),
           },
         };
       HourlyAttendance.findAll(options).then((absStudent) => {
