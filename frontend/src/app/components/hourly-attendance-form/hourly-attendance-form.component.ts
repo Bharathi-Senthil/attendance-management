@@ -119,15 +119,15 @@ export class HourlyAttendanceFormComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
+      let data = this.form.getRawValue();
+      data.date = formatDate(data.date, "yyyy-MM-dd", "en");
       this.http
-        .post(
-          `http://localhost:3000/api/hourly-attendances`,
-          this.form.getRawValue()
-        )
+        .post(`http://localhost:3000/api/hourly-attendances`, data)
         .subscribe((data) => {
           this.form.controls["hour"].reset();
           this.form.controls["subjectId"].reset();
           this.form.controls["studentId"].reset();
+          console.log(data);
         });
     }
   }
