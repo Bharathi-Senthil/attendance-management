@@ -1,6 +1,9 @@
 <div class="flex">
   <app-sider></app-sider>
-  <div class="basis-0 p-10" style="flex-grow: 999; min-inline-size: 50%">
+  <div class="basis-0 p-10 pt-5" style="flex-grow: 999; min-inline-size: 50%">
+    <div class="flex justify-end">
+      <button nz-button (click)="logOut()">Log out</button>
+    </div>
     <router-outlet></router-outlet>
   </div>
 </div>

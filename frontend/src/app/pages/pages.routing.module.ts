@@ -10,6 +10,7 @@ import { SectionsComponent } from "./sections/sections.component";
 import { StudentsComponent } from "./students/students.component";
 import { SubjectSectionHoursComponent } from "./subject-section-hours/subject-section-hours.component";
 import { SubjectsComponent } from "./subjects/subjects.component";
+import { AuthGuard } from "../helpers/auth.guard";
 
 const routes: Routes = [
   {
@@ -19,10 +20,12 @@ const routes: Routes = [
       {
         path: "day-attendance",
         component: DayAttendanceComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: "hourly-attendance",
         component: HourlyAttendanceComponent,
+        canActivate: [AuthGuard],
       },
       // {
       //   path: "dashboard",
@@ -31,22 +34,27 @@ const routes: Routes = [
       {
         path: "sections",
         component: SectionsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: "subjects",
         component: SubjectsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: "students",
         component: StudentsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: "total-hours",
         component: SubjectSectionHoursComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: "time-tables",
         component: TimeTableComponent,
+        canActivate: [AuthGuard],
       },
     ],
   },

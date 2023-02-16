@@ -12,6 +12,7 @@ import en from "@angular/common/locales/en";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AuthInterceptorProvider } from "./helpers/auth.interceptor";
+import { AuthGuard } from "./helpers/auth.guard";
 
 registerLocaleData(en);
 
