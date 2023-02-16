@@ -19,12 +19,12 @@ Student.init(
     rollNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: { msg: "Roll No must be unique!", name: "rollNo" },
     },
     regNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: { msg: "Reg No must be unique!", name: "regNo" },
     },
     sectionId: {
       type: DataTypes.INTEGER,

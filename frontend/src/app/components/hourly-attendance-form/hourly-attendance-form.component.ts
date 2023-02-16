@@ -118,7 +118,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
   getHours(sectionId: number) {}
 
   submit() {
-    if (this.form.valid) {
+    if (this.form.valid && this.form.controls["studentId"].value?.length > 0) {
       let data = this.form.getRawValue();
       data.date = formatDate(data.date, "yyyy-MM-dd", "en");
       this.http
@@ -127,8 +127,14 @@ export class HourlyAttendanceFormComponent implements OnInit {
           this.form.controls["hour"].reset();
           this.form.controls["subjectId"].reset();
           this.form.controls["studentId"].reset();
-          console.log(data);
         });
+    } else {
+      Object.values(this.form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 }

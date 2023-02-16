@@ -1,3 +1,5 @@
+import { ComponentsModule } from "./components/components.module";
+import { PagesModule } from "./pages/pages.module";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { AppComponent } from "./app.component";
@@ -12,7 +14,8 @@ import en from "@angular/common/locales/en";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AuthInterceptorProvider } from "./helpers/auth.interceptor";
-import { AuthGuard } from "./helpers/auth.guard";
+import { ErrorInterceptorProvider } from "./helpers/error.interceptor";
+import { NgZorroModule } from "./NgZorro.module";
 
 registerLocaleData(en);
 
@@ -25,8 +28,15 @@ registerLocaleData(en);
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgZorroModule,
+    PagesModule,
+    ComponentsModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }, AuthInterceptorProvider],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    AuthInterceptorProvider,
+    ErrorInterceptorProvider,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

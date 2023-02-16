@@ -81,7 +81,7 @@ export class TimeTableController {
     this.timeTableService
       .create(timeTable)
       .then((timeTable) => res.status(201).json(timeTable))
-      .catch((err) => res.status(400).json(err.errors));
+      .catch((err) => res.status(400).json(err));
   }
 
   update(req: Request, res: Response) {

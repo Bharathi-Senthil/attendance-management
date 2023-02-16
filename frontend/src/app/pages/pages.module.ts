@@ -4,7 +4,6 @@ import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 
-import { PagesRoutingModule } from "./pages.routing.module";
 import { NgZorroModule } from "../NgZorro.module";
 import { BaseLayoutComponent } from "./base-layout/base-layout.component";
 import { DayAttendanceComponent } from "./day-attendance/day-attendance.component";
@@ -14,8 +13,8 @@ import { SectionsComponent } from "./sections/sections.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SubjectsComponent } from "./subjects/subjects.component";
 import { StudentsComponent } from "./students/students.component";
-import { SubjectSectionHoursComponent } from './subject-section-hours/subject-section-hours.component';
-import { TimeTableComponent } from './time-table/time-table.component';
+import { SubjectSectionHoursComponent } from "./subject-section-hours/subject-section-hours.component";
+import { TimeTableComponent } from "./time-table/time-table.component";
 
 @NgModule({
   declarations: [
@@ -31,7 +30,6 @@ import { TimeTableComponent } from './time-table/time-table.component';
   ],
   imports: [
     CommonModule,
-    PagesRoutingModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,

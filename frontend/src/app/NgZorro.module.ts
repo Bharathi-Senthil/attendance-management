@@ -15,6 +15,7 @@ import { NzPaginationModule } from "ng-zorro-antd/pagination";
 import { NzToolTipModule } from "ng-zorro-antd/tooltip";
 import { NzCalendarModule } from "ng-zorro-antd/calendar";
 import { NzInputNumberModule } from "ng-zorro-antd/input-number";
+import { NzNotificationModule } from "ng-zorro-antd/notification";
 
 @NgModule({
   exports: [
@@ -33,6 +34,7 @@ import { NzInputNumberModule } from "ng-zorro-antd/input-number";
     NzToolTipModule,
     NzCalendarModule,
     NzInputNumberModule,
+    NzNotificationModule,
   ],
 })
 export class NgZorroModule {}

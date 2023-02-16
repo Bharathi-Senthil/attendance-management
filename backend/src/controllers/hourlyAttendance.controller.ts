@@ -80,13 +80,16 @@ export class HourlyAttendanceController {
     delete data.studentId;
 
     let absentees: any[] = [];
-    students.forEach((s: any) => {
+    students?.forEach((s: any) => {
       absentees.push({ ...data, studentId: s });
     });
 
+    if (absentees.length === 0)
+      return res.status(400).json({ errorMessage: "Students required" });
+
     HourlyAttendance.bulkCreate(absentees)
       .then((hourlyAttendance) => res.status(201).json(hourlyAttendance))
-      .catch((err) => res.status(400).json(err.errors));
+      .catch((err) => res.status(400).json(err));
   }
 
   update(req: Request, res: Response) {

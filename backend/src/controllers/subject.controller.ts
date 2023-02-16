@@ -39,7 +39,7 @@ export class SubjectController {
     this.subjectService
       .create(section)
       .then((section) => res.status(201).json(section))
-      .catch((err) => res.status(400).json(err.errors));
+      .catch((err) => res.status(400).json(err));
   }
 
   update(req: Request, res: Response) {

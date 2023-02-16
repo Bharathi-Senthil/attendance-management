@@ -14,12 +14,12 @@ Subject.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: { name: "name", msg: "Subject name must be unique!" },
     },
     code: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: { name: "code", msg: "Subject code must be unique!" },
     },
   },
   {

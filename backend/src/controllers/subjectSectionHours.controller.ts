@@ -73,7 +73,7 @@ export class SubjectSectionHoursController {
     this.subjectSectionHoursService
       .create(subjectSectionHours)
       .then((subjectSectionHours) => res.status(201).json(subjectSectionHours))
-      .catch((err) => res.status(400).json(err.errors));
+      .catch((err) => res.status(400).json(err));
   }
 
   update(req: Request, res: Response) {
