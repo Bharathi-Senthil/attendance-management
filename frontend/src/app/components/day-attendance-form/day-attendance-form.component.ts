@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataService } from "src/app/helpers/data.service";
+import { formatDate } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "day-attendance-form",
@@ -9,30 +11,46 @@ import { DataService } from "src/app/helpers/data.service";
 })
 export class DayAttendanceFormComponent implements OnInit {
   form: FormGroup;
-  students = [
-    { id: 1, name: "Ramanan KB", rollNo: "211420104218" },
-    { id: 2, name: "Bharathi S", rollNo: "211420104219" },
-    { id: 3, name: "Suresh H", rollNo: "211420104220" },
-    { id: 4, name: "Priyadharshan", rollNo: "211420104221" },
-    { id: 5, name: "Sanjeev V", rollNo: "211420104222" },
-  ];
-  constructor(private fb: FormBuilder, private data: DataService) {}
+  students: any = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private data: DataService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
       id: null,
-      department: [{ value: "CSE", disabled: true }, [Validators.required]],
-      section: ["C", [Validators.required]],
+      department: [{ value: "CSe", disabled: true }, [Validators.required]],
       student: [null, [Validators.required]],
-      date: [{ value: new Date(), disabled: true }, [Validators.required]],
+      section: [null, [Validators.required]],
       absent: [true, [Validators.required]],
+      date: [{ value: new Date(), disabled: true }, [Validators.required]],
     });
-    this.data
-      .getDate()
-      .subscribe((date) => this.form.controls["date"].setValue(date));
+
+    this.data.getDate().subscribe((date) => {
+      this.form.controls["date"].setValue(date);
+    });
   }
 
   submit() {
-    console.log(this.form.value);
+    if (this.form.valid && this.form.controls["sutdent"].value.length > 0) {
+      let data = this.form.getRawValue();
+      data.date = formatDate(data.date, "yyyy-MM-dd", "en");
+      this.http
+        .post(`http://localhost:3000/api/day-attendance`, data)
+        .subscribe((data) => {
+          this.form.controls["section"].reset();
+          this.form.controls["student"].reset();
+        });
+    } else {
+      Object.values(this.form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 }
