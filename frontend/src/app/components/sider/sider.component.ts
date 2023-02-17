@@ -52,7 +52,7 @@ export class SiderComponent {
     },
     {
       title: "Mentor",
-      icon: "",
+      icon: "crown",
       path: "mentor",
     },
   ];
