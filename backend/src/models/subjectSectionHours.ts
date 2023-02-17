@@ -44,6 +44,7 @@ SubjectSectionHours.init(
 SubjectSectionHours.belongsTo(Subject, {
   foreignKey: "subjectId",
   as: "subject",
+  onDelete: "cascade",
 });
 
 SubjectSectionHours.belongsTo(Section, {

@@ -172,11 +172,17 @@ export class StudentController {
   post(req: Request, res: Response) {
     let data = req.body;
 
-    let student = new Student({ ...data });
-    this.studentService
-      .create(student)
-      .then((student) => res.status(201).json(student))
-      .catch((err) => res.status(400).json(err));
+    if (data.length)
+      Student.bulkCreate(data)
+        .then((students) => res.status(201).json(students))
+        .catch((err) => res.status(400).json(err));
+    else {
+      let student = new Student({ ...data });
+      this.studentService
+        .create(student)
+        .then((student) => res.status(201).json(student))
+        .catch((err) => res.status(400).json(err));
+    }
   }
 
   update(req: Request, res: Response) {

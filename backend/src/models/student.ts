@@ -46,4 +46,5 @@ Student.init(
 Student.belongsTo(Section, {
   foreignKey: "sectionId",
   as: "section",
+  onDelete: "cascade",
 });

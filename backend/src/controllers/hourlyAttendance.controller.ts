@@ -76,6 +76,7 @@ export class HourlyAttendanceController {
 
   post(req: Request, res: Response) {
     let data = req.body;
+
     let students = data.studentId;
     delete data.studentId;
 

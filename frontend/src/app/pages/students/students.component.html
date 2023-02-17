@@ -1,54 +1,84 @@
 <div class="flex gap-10">
-  <nz-table
-    #basicTable
-    [nzData]="students"
-    [nzLoading]="isLoading"
-    [nzShowPagination]="false"
-    class="flex-grow"
-  >
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>RollNo</th>
-        <th>RegNo</th>
-        <th>Section</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let s of basicTable.data">
-        <td>{{ s.name }}</td>
-        <td>{{ s.rollNo }}</td>
-        <td>{{ s.regNo }}</td>
-        <td>{{ s.sectionName }}</td>
-        <td>
-          <div class="flex gap-4 items-center">
-            <span
-              class="text-red-400 text-base cursor-pointer"
-              nz-icon
-              nzType="delete"
-              nzTheme="outline"
-              nz-tooltip
-              nzTooltipTitle="Delete"
-              nz-popconfirm
-              nzPopconfirmPlacement="bottom"
-              nzPopconfirmTitle="Are you sure delete this student?"
-              (nzOnConfirm)="deleteStudent(s.id)"
-            ></span>
-            <span
-              class="text-blue-400 text-base cursor-pointer"
-              nz-icon
-              nzType="edit"
-              nzTheme="outline"
-              nz-tooltip
-              nzTooltipTitle="Edit"
-              (click)="studentId = s.id"
-            ></span>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+  <div class="flex-grow">
+    <!-- <button nz-button class="mb-4">
+      <span nz-icon nzType="upload"></span>Upload Student CSV
+    </button> -->
+    <div class="flex items-center mb-4 gap-4">
+      <nz-select
+        class="w-[130px]"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Section"
+        [formControl]="section"
+      >
+        <nz-option
+          *ngFor="let s of sections"
+          [nzValue]="s.id"
+          [nzLabel]="s.name"
+        ></nz-option>
+      </nz-select>
+      <input
+        type="file"
+        class="hidden"
+        accept=".csv"
+        #file
+        (change)="handleUpload(file)"
+      />
+      <button nz-button [disabled]="section.invalid" (click)="file.click()">
+        <span nz-icon nzType="upload"></span>
+        Upload Student CSV
+      </button>
+    </div>
+    <nz-table
+      #basicTable
+      [nzData]="students"
+      [nzLoading]="isLoading"
+      [nzShowPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>RollNo</th>
+          <th>RegNo</th>
+          <th>Section</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of basicTable.data">
+          <td>{{ s.name }}</td>
+          <td>{{ s.rollNo }}</td>
+          <td>{{ s.regNo }}</td>
+          <td>{{ s.sectionName }}</td>
+          <td>
+            <div class="flex gap-4 items-center">
+              <span
+                class="text-red-400 text-base cursor-pointer"
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Delete"
+                nz-popconfirm
+                nzPopconfirmPlacement="bottom"
+                nzPopconfirmTitle="Are you sure delete this student?"
+                (nzOnConfirm)="deleteStudent(s.id)"
+              ></span>
+              <span
+                class="text-blue-400 text-base cursor-pointer"
+                nz-icon
+                nzType="edit"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Edit"
+                (click)="studentId = s.id"
+              ></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
   <div class="shadow border border-gray-100 rounded p-6">
     <app-student-form
       [(studentId)]="studentId"

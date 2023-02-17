@@ -37,4 +37,8 @@ DayAttendance.init(
   }
 );
 
-DayAttendance.belongsTo(Student, { foreignKey: "studentId", as: "student" });
+DayAttendance.belongsTo(Student, {
+  foreignKey: "studentId",
+  as: "student",
+  onDelete: "cascade",
+});

@@ -68,6 +68,17 @@ export class DayAttendanceController {
   post(req: Request, res: Response) {
     let data = req.body;
 
+    let students = data.studentId;
+    delete data.studentId;
+
+    let absentees: any[] = [];
+    students?.forEach((s: any) => {
+      absentees.push({ ...data, studentId: s });
+    });
+
+    if (absentees.length === 0)
+      return res.status(400).json({ errorMessage: "Students required" });
+
     let dayAttendance = new DayAttendance(data);
     this.dayAttendanceService
       .create(dayAttendance)

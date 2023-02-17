@@ -1,7 +1,7 @@
 <form nz-form [formGroup]="form" class="w-[450px]">
   <nz-form-item>
     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>Date</nz-form-label>
-    <nz-form-control nzErrorTip=" Please select Date">
+    <nz-form-control nzErrorTip="Please select Date">
       <nz-date-picker
         nzFormat="dd-MM-yyyy"
         formControlName="date"
@@ -52,22 +52,24 @@
 
     <nz-form-item>
       <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired>Period</nz-form-label>
-      <nz-select
-        class="w-[130px]"
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Period"
-        formControlName="hour"
-      >
-        <nz-option nzValue="1" nzLabel="1"></nz-option>
-        <nz-option nzValue="2" nzLabel="2"></nz-option>
-        <nz-option nzValue="3" nzLabel="3"></nz-option>
-        <nz-option nzValue="4" nzLabel="4"></nz-option>
-        <nz-option nzValue="5" nzLabel="5"></nz-option>
-        <nz-option nzValue="6" nzLabel="6"></nz-option>
-        <nz-option nzValue="7" nzLabel="7"></nz-option>
-        <nz-option nzValue="8" nzLabel="8"></nz-option>
-      </nz-select>
+      <nz-form-control nzErrorTip="Please select period!">
+        <nz-select
+          class="w-[130px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Period"
+          formControlName="hour"
+        >
+          <nz-option nzValue="1" nzLabel="1"></nz-option>
+          <nz-option nzValue="2" nzLabel="2"></nz-option>
+          <nz-option nzValue="3" nzLabel="3"></nz-option>
+          <nz-option nzValue="4" nzLabel="4"></nz-option>
+          <nz-option nzValue="5" nzLabel="5"></nz-option>
+          <nz-option nzValue="6" nzLabel="6"></nz-option>
+          <nz-option nzValue="7" nzLabel="7"></nz-option>
+          <nz-option nzValue="8" nzLabel="8"></nz-option>
+        </nz-select>
+      </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired>Subject</nz-form-label>

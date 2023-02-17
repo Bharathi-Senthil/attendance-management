@@ -4,7 +4,6 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../db";
 
 export class TimeTable extends Model {}
-
 TimeTable.init(
   {
     id: {
@@ -100,37 +99,46 @@ TimeTable.init(
 TimeTable.belongsTo(Section, {
   foreignKey: "sectionId",
   as: "section",
+  onDelete: "cascade",
 });
 
 TimeTable.belongsTo(Subject, {
   foreignKey: "period1SubjectId",
   as: "period1Subject",
+  onDelete: "cascade",
 });
 TimeTable.belongsTo(Subject, {
   foreignKey: "period2SubjectId",
   as: "period2Subject",
+  onDelete: "cascade",
 });
 TimeTable.belongsTo(Subject, {
   foreignKey: "period3SubjectId",
   as: "period3Subject",
+  onDelete: "cascade",
 });
 TimeTable.belongsTo(Subject, {
   foreignKey: "period4SubjectId",
   as: "period4Subject",
+  onDelete: "cascade",
 });
 TimeTable.belongsTo(Subject, {
   foreignKey: "period5SubjectId",
   as: "period5Subject",
+  onDelete: "cascade",
 });
 TimeTable.belongsTo(Subject, {
   foreignKey: "period6SubjectId",
   as: "period6Subject",
+  onDelete: "cascade",
 });
 TimeTable.belongsTo(Subject, {
   foreignKey: "period7SubjectId",
   as: "period7Subject",
+  onDelete: "cascade",
 });
 TimeTable.belongsTo(Subject, {
   foreignKey: "period8SubjectId",
   as: "period8Subject",
+  onDelete: "cascade",
 });

@@ -52,8 +52,10 @@ HourlyAttendance.init(
 HourlyAttendance.belongsTo(Student, {
   foreignKey: "studentId",
   as: "student",
+  onDelete: "cascade",
 });
 HourlyAttendance.belongsTo(Subject, {
   foreignKey: "subjectId",
   as: "subject",
+  onDelete: "cascade",
 });
