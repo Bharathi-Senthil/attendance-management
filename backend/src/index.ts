@@ -43,8 +43,7 @@ User.sync().then(() => {
     if (!user)
       bcrypt.hash("admin@123", 10).then((ep) => {
         User.create({
-          firstName: "Admin",
-          lastName: "Admin",
+          name: "Admin",
           email: "admin@local.com",
           password: ep,
           role: "ADMIN",

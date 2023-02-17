@@ -33,7 +33,7 @@ export abstract class IRepository<T extends Model> {
     return this.model.create(data.dataValues);
   }
 
-  update(id: any, data: T): Promise<any> {
+  update(id: any, data: T | any): Promise<any> {
     return this.model.update(data.dataValues, {
       where: { id },
     });

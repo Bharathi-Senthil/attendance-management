@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserService } from "../services";
-import { User } from "../models";
+import { StudentService, UserService } from "../services";
+import { Student, User } from "../models";
 import { getPagingData } from "../helpers";
 
 import bcrypt from "bcryptjs";
@@ -8,12 +8,14 @@ import jwt from "jsonwebtoken";
 
 export class UserController {
   private userService: UserService;
+  private studentService: StudentService;
 
   constructor() {
     this.userService = new UserService(User);
+    this.studentService = new StudentService(Student);
   }
 
-  private options = {};
+  private options = { where: { role: "MENTOR" } };
 
   getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
@@ -39,7 +41,7 @@ export class UserController {
   }
 
   async post(req: Request, res: Response) {
-    const { firstName, lastName, email, password } = req.body;
+    const { name, email, password, studentId } = req.body;
 
     this.userService
       .find({ where: { email } })
@@ -52,8 +54,7 @@ export class UserController {
     let encryptedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
-      firstName,
-      lastName,
+      name,
       email: email.toLowerCase(),
       password: encryptedPassword,
       role: "MENTOR",
@@ -63,6 +64,10 @@ export class UserController {
       .create(user)
       .then((user) => {
         delete user.dataValues.password;
+        if (studentId.length > 0)
+          studentId.forEach((s: number) => {
+            this.studentService.update(s, { mentorId: user.dataValues.id });
+          });
         res.status(201).json(user);
       })
       .catch((err) => res.status(400).json(err));
