@@ -25,12 +25,12 @@
         nzPlaceHolder="Department"
         formControlName="department"
       >
-        <nz-option nzValue="CSE" nzLabel="CSE"></nz-option>
-        <nz-option nzValue="ECE" nzLabel="ECE"></nz-option>
-        <nz-option nzValue="EEE" nzLabel="EEE"></nz-option>
+        <!-- <nz-option nzValue="CSE" nzLabel="CSE"></nz-option> -->
+        <nz-option nzValue="cse" nzLabel="ECE"></nz-option>
+        <!-- <nz-option nzValue="EEE" nzLabel="EEE"></nz-option>
         <nz-option nzValue="CIVIL" nzLabel="CIVIL"></nz-option>
         <nz-option nzValue="MECH" nzLabel="MECH"></nz-option>
-        <nz-option nzValue="IT" nzLabel="IT"></nz-option>
+        <nz-option nzValue="IT" nzLabel="IT"></nz-option> -->
       </nz-select>
     </nz-form-item>
 
@@ -43,11 +43,13 @@
         nzShowSearch
         nzAllowClear
         nzPlaceHolder="Section"
-        formControlName="section"
+        formControlName="sectionId"
       >
-        <nz-option nzValue="C" nzLabel="C"></nz-option>
-        <nz-option nzValue="D" nzLabel="D"></nz-option>
-        <nz-option nzValue="E" nzLabel="E"></nz-option>
+        <nz-option
+          *ngFor="let s of sections"
+          [nzLabel]="s.name"
+          [nzValue]="s.id"
+        ></nz-option>
       </nz-select>
     </nz-form-item>
   </div>
@@ -59,8 +61,11 @@
       <nz-select
         nzShowSearch
         nzAllowClear
+        [nzMaxTagCount]="1"
+        [nzMaxTagPlaceholder]="tagPlaceHolder"
+        nzMode="multiple"
         nzPlaceHolder="Select a Student"
-        formControlName="student"
+        formControlName="studentId"
         id="student"
       >
         <nz-option
@@ -76,7 +81,7 @@
       >Absent</nz-form-label
     >
     <nz-form-control nzErrorTip="Please select value!">
-      <label nz-checkbox formControlName="absent" id="absent"></label>
+      <label nz-checkbox formControlName="isAbsent" id="absent"></label>
     </nz-form-control>
   </nz-form-item>
 
@@ -84,3 +89,8 @@
     Submit
   </button>
 </form>
+
+<ng-template #tagPlaceHolder let-selectedList
+  >and {{ form.controls["studentId"].value.length - 1 }} more
+  selected</ng-template
+>
