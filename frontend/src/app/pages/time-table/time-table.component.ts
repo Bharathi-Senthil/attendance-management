@@ -1,3 +1,4 @@
+import { FadeInOut } from "./../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 
@@ -5,6 +6,7 @@ import { Component, OnInit } from "@angular/core";
   selector: "app-time-table",
   templateUrl: "./time-table.component.html",
   styleUrls: ["./time-table.component.scss"],
+  animations: [FadeInOut],
 })
 export class TimeTableComponent implements OnInit {
   timeTables: any[];

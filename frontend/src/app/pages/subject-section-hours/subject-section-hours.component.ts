@@ -1,3 +1,4 @@
+import { FadeInOut } from "./../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -6,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
   selector: "app-subject-section-hours",
   templateUrl: "./subject-section-hours.component.html",
   styleUrls: ["./subject-section-hours.component.scss"],
+  animations: [FadeInOut],
 })
 export class SubjectSectionHoursComponent implements OnInit {
   hours: any[];

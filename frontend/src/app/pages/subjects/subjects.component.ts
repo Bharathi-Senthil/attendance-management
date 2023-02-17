@@ -1,3 +1,4 @@
+import { FadeInOut } from "./../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import {
@@ -11,6 +12,7 @@ import {
   selector: "app-subject",
   templateUrl: "./subjects.component.html",
   styleUrls: ["./subjects.component.scss"],
+  animations: [FadeInOut],
 })
 export class SubjectsComponent {
   sections: any[];

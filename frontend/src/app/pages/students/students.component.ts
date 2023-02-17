@@ -1,3 +1,4 @@
+import { FadeInOut } from "./../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
@@ -7,6 +8,7 @@ import { uploadCsv } from "src/app/helpers";
   selector: "app-students",
   templateUrl: "./students.component.html",
   styleUrls: ["./students.component.scss"],
+  animations: [FadeInOut],
 })
 export class StudentsComponent implements OnInit {
   students: any[];

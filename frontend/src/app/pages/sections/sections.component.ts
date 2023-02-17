@@ -1,3 +1,4 @@
+import { FadeInOut } from "./../../animations";
 import { FormControl, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
@@ -6,6 +7,7 @@ import { HttpClient } from "@angular/common/http";
   selector: "app-section",
   templateUrl: "./sections.component.html",
   styleUrls: ["./sections.component.scss"],
+  animations: [FadeInOut],
 })
 export class SectionsComponent implements OnInit {
   sections: any[];

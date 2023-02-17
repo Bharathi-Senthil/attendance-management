@@ -1,3 +1,4 @@
+import { FadeInOut } from "./../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 
@@ -5,6 +6,7 @@ import { Component } from "@angular/core";
   selector: "app-hourly-attendance",
   templateUrl: "./hourly-attendance.component.html",
   styleUrls: ["./hourly-attendance.component.scss"],
+  animations: [FadeInOut],
 })
 export class HourlyAttendanceComponent {
   constructor(private http: HttpClient) {}
