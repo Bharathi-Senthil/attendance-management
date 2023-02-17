@@ -50,7 +50,6 @@ export class DayAttendanceFormComponent implements OnInit {
       let date = this.form.controls["date"];
       this.getStudents(sec, date.value);
     });
-
     this.http
       .get(`http://localhost:3000/api/sections`)
       .subscribe((sections: any) => {

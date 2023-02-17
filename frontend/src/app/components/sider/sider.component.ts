@@ -50,6 +50,11 @@ export class SiderComponent {
       icon: "clock",
       path: "total-hours",
     },
+    {
+      title: "Mentor",
+      icon: "",
+      path: "mentor",
+    },
   ];
 
   dropdown: { id: any; isOpen: boolean } = {

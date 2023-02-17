@@ -15,6 +15,7 @@ import { SubjectsComponent } from "./subjects/subjects.component";
 import { StudentsComponent } from "./students/students.component";
 import { SubjectSectionHoursComponent } from "./subject-section-hours/subject-section-hours.component";
 import { TimeTableComponent } from "./time-table/time-table.component";
+import { MentorComponent } from "./mentor/mentor.component";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TimeTableComponent } from "./time-table/time-table.component";
     StudentsComponent,
     SubjectSectionHoursComponent,
     TimeTableComponent,
+    MentorComponent,
   ],
   imports: [
     CommonModule,

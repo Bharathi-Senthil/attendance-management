@@ -9,6 +9,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./helpers/auth.guard";
 import { BaseLayoutComponent } from "./pages/base-layout/base-layout.component";
+import { MentorFormComponent } from "./components/mentor-form/mentor-form.component";
 
 const routes: Routes = [
   {
@@ -53,6 +54,11 @@ const routes: Routes = [
       {
         path: "time-tables",
         component: TimeTableComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: "mentor",
+        component: MentorFormComponent,
         canActivate: [AuthGuard],
       },
     ],

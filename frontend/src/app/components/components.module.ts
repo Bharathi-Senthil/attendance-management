@@ -11,6 +11,7 @@ import { HourlyAttendanceFormComponent } from "./hourly-attendance-form/hourly-a
 import { ChartComponent } from "./chart/chart.component";
 import { StudentFormComponent } from "./student-form/student-form.component";
 import { TimeTableFormComponent } from "./time-table-form/time-table-form.component";
+import { MentorFormComponent } from "./mentor-form/mentor-form.component";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TimeTableFormComponent } from "./time-table-form/time-table-form.compon
     ChartComponent,
     StudentFormComponent,
     TimeTableFormComponent,
+    MentorFormComponent,
   ],
   exports: [
     SiderComponent,
@@ -30,6 +32,7 @@ import { TimeTableFormComponent } from "./time-table-form/time-table-form.compon
     ChartComponent,
     StudentFormComponent,
     TimeTableFormComponent,
+    MentorFormComponent,
   ],
   imports: [
     CommonModule,
