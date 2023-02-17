@@ -1,36 +1,50 @@
 <div class="flex gap-10" @fade>
   <div class="flex-grow">
-    <div class="flex items-center mb-4 gap-4">
-      <nz-select
-        class="w-[130px]"
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Section"
-        [formControl]="section"
-      >
-        <nz-option
-          *ngFor="let s of sections"
-          [nzValue]="s.id"
-          [nzLabel]="s.name"
-        ></nz-option>
-      </nz-select>
-      <input
-        type="file"
-        class="hidden"
-        accept=".csv"
-        #file
-        (change)="handleUpload(file)"
-      />
-      <button nz-button [disabled]="section.invalid" (click)="file.click()">
-        <span nz-icon nzType="upload"></span>
-        Upload Student CSV
-      </button>
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-4">
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Section"
+          [formControl]="section"
+        >
+          <nz-option
+            *ngFor="let s of sections"
+            [nzValue]="s.id"
+            [nzLabel]="s.name"
+          ></nz-option>
+        </nz-select>
+        <input
+          type="file"
+          class="hidden"
+          accept=".csv"
+          #file
+          (change)="handleUpload(file)"
+        />
+        <button nz-button [disabled]="section.invalid" (click)="file.click()">
+          <span nz-icon nzType="upload"></span>
+          Upload Student CSV
+        </button>
+      </div>
+      <nz-input-group [nzSuffix]="suffixIconSearch" class="w-[220px]">
+        <input
+          type="text"
+          nz-input
+          placeholder="Search..."
+          [(ngModel)]="search"
+        />
+      </nz-input-group>
     </div>
     <nz-table
       #basicTable
       [nzData]="students"
       [nzLoading]="isLoading"
       [nzShowPagination]="false"
+      [nzFrontPagination]="false"
+      [(nzPageSize)]="pageSize"
+      [(nzPageIndex)]="pageIndex"
+      (nzQueryParams)="getStudents()"
       class="shadow rounded"
     >
       <thead>
@@ -78,6 +92,16 @@
         </tr>
       </tbody>
     </nz-table>
+    <div class="flex justify-end mt-4">
+      <nz-pagination
+        nzSize="small"
+        [(nzPageIndex)]="pageIndex"
+        [(nzPageSize)]="pageSize"
+        [nzTotal]="total"
+        [nzShowTotal]="rangeTemplate"
+        nzShowSizeChanger
+      ></nz-pagination>
+    </div>
   </div>
   <div class="shadow border border-gray-100 rounded p-6 self-start">
     <app-student-form
@@ -86,3 +110,11 @@
     ></app-student-form>
   </div>
 </div>
+
+<ng-template #rangeTemplate let-range="range" let-total>
+  {{ range[0] }}-{{ range[1] }} of {{ total }} items
+</ng-template>
+
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>

@@ -1,5 +1,5 @@
-import { Menu } from "./../../models/menu";
-import { navigationAnimation } from "./../../animations";
+import { Menu } from "../../models/menu";
+import { navigationAnimation } from "../../animations";
 import { Component, OnInit } from "@angular/core";
 import { Router, RouterOutlet } from "@angular/router";
 

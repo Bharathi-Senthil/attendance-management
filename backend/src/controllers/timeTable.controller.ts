@@ -47,12 +47,12 @@ export class TimeTableController {
   }
 
   getPaged(req: Request, res: Response) {
-    const { page, size } = req.query;
-    this.timeTableService
-      .getPaged(page, size, this.options)
-      .then((timeTables) => {
-        res.status(200).json(getPagingData(timeTables));
-      });
+    const { page, size, sec } = req.query;
+    let fOptions: any = { ...this.options };
+    if (sec) fOptions = { ...fOptions, where: { sectionId: sec } };
+    this.timeTableService.getPaged(page, size, fOptions).then((timeTables) => {
+      res.status(200).json(getPagingData(timeTables));
+    });
   }
 
   getAll(req: Request, res: Response) {

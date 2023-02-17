@@ -21,7 +21,7 @@ export abstract class IRepository<T extends Model> {
     size: any,
     options?: any
   ): Promise<{ rows: T[]; count: number } | null> {
-    const pagingOptions = getPagingOptions(page, size, options);
+    const pagingOptions = getPagingOptions(page - 1, size, options);
     return this.model.findAndCountAll<T>(pagingOptions);
   }
 

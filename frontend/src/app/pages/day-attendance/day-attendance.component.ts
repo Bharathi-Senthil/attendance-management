@@ -1,4 +1,4 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { Component } from "@angular/core";
 
 @Component({

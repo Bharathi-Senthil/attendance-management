@@ -8,7 +8,7 @@ import {
   DayAttendance,
   Subject,
 } from "../models";
-import { Sequelize } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { getPagingData } from "../helpers";
 
 export class StudentController {
@@ -99,9 +99,37 @@ export class StudentController {
   }
 
   getPaged(req: Request, res: Response) {
-    const { page, size } = req.query;
+    const { page, size, sec, mentor, search } = req.query;
+    let where = {};
+    if (sec) where = { ...where, sectionId: sec };
+    if (mentor) {
+      if (mentor != "null") where = { ...where, mentorId: mentor };
+      else where = { ...where, mentorId: null };
+    }
+    if (search)
+      where = {
+        ...where,
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: "%" + search + "%",
+            },
+          },
+          {
+            rollNo: {
+              [Op.like]: "%" + search + "%",
+            },
+          },
+          {
+            regNo: {
+              [Op.like]: "%" + search + "%",
+            },
+          },
+        ],
+      };
+    let fOptions: any = { ...this.options, where };
     this.studentService
-      .getPaged(page, size, this.options)
+      .getPaged(page, size, fOptions)
       .then((students) => res.status(200).json(getPagingData(students)));
   }
 

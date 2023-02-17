@@ -1,6 +1,7 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
+import { Mentor } from "src/app/models";
 
 @Component({
   selector: "app-mentor",
@@ -9,17 +10,23 @@ import { Component, OnInit } from "@angular/core";
   animations: [FadeInOut],
 })
 export class MentorComponent implements OnInit {
-  mentors: any[];
+  mentors: Mentor[];
   mentorId = -1;
+  isLoading = false;
   constructor(private http: HttpClient) {}
   ngOnInit(): void {
     this.getMentors();
   }
 
   getMentors() {
-    this.http.get("http://localhost:3000/api/users").subscribe((users: any) => {
-      this.mentors = users;
-    });
+    this.isLoading = !this.isLoading;
+    this.http.get<Mentor[]>("http://localhost:3000/api/users").subscribe(
+      (users: Mentor[]) => {
+        this.mentors = users;
+        this.isLoading = !this.isLoading;
+      },
+      (err) => (this.isLoading = !this.isLoading)
+    );
   }
 
   deleteMentor(id: number) {

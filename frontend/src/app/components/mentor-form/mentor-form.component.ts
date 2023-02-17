@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Student } from "src/app/models";
 
 @Component({
   selector: "app-mentor-form",
@@ -37,7 +38,7 @@ export class MentorFormComponent implements OnInit {
   @Output()
   onFormSubmit = new EventEmitter();
 
-  students: any[] = [];
+  students: Student[] = [];
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.form = this.fb.group({

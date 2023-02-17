@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataService } from "src/app/helpers/data.service";
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
+import { Section, Student } from "src/app/models";
 
 @Component({
   selector: "day-attendance-form",
@@ -12,9 +13,9 @@ import { HttpClient } from "@angular/common/http";
 export class DayAttendanceFormComponent implements OnInit {
   form: FormGroup;
 
-  students: any[];
+  students: Student[];
 
-  sections: any[];
+  sections: Section[];
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
@@ -52,8 +53,8 @@ export class DayAttendanceFormComponent implements OnInit {
       this.getStudents(sec, date.value);
     });
     this.http
-      .get(`http://localhost:3000/api/sections`)
-      .subscribe((sections: any) => {
+      .get<Section[]>(`http://localhost:3000/api/sections`)
+      .subscribe((sections: Section[]) => {
         this.sections = sections;
         this.form.controls["sectionId"].setValue(sections[0]?.id);
         this.form.controls["date"].setValue(new Date());
@@ -62,10 +63,10 @@ export class DayAttendanceFormComponent implements OnInit {
   getStudents(sec: number, date: Date) {
     let Fdate = formatDate(date, "yyyy-MM-dd", "en");
     this.http
-      .get<any[]>(
+      .get<Student[]>(
         `http://localhost:3000/api/students/day-present?mentor=${this.user.id}&date=${Fdate}`
       )
-      .subscribe((data: any) => {
+      .subscribe((data: Student[]) => {
         this.students = data;
         if (data.length > 0) this.form.controls["studentId"].enable();
         else this.form.controls["studentId"].disable();

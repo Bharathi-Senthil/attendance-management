@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Section, Subject, TimeTable } from "src/app/models";
 
 @Component({
   selector: "app-time-table-form",
@@ -9,13 +10,13 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 export class TimeTableFormComponent implements OnInit {
   form: FormGroup;
-  sections: any[];
-  subjects: any[];
+  sections: Section[];
+  subjects: Subject[];
 
   _timeTableId = -1;
 
   @Input()
-  timeTables: any[];
+  timeTables: TimeTable[];
 
   @Input()
   days: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];

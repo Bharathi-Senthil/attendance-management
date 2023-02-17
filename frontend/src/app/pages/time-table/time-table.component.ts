@@ -1,6 +1,7 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
+import { TimeTable } from "src/app/models";
 
 @Component({
   selector: "app-time-table",
@@ -9,7 +10,7 @@ import { Component, OnInit } from "@angular/core";
   animations: [FadeInOut],
 })
 export class TimeTableComponent implements OnInit {
-  timeTables: any[];
+  timeTables: TimeTable[];
   isLoading = false;
 
   timeTableId = -1;
@@ -21,11 +22,16 @@ export class TimeTableComponent implements OnInit {
   }
 
   getTimeTable() {
+    this.isLoading = !this.isLoading;
     this.http
-      .get("http://localhost:3000/api/time-tables")
-      .subscribe((data: any) => {
-        this.timeTables = data;
-      });
+      .get<TimeTable[]>("http://localhost:3000/api/time-tables")
+      .subscribe(
+        (data: TimeTable[]) => {
+          this.isLoading = !this.isLoading;
+          this.timeTables = data;
+        },
+        (err) => (this.isLoading = !this.isLoading)
+      );
   }
 
   deleteTimeTable(id: number) {

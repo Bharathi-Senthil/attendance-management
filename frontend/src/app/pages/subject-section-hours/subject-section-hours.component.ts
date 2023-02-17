@@ -1,7 +1,8 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Section, TotalHours } from "src/app/models";
 
 @Component({
   selector: "app-subject-section-hours",
@@ -10,7 +11,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
   animations: [FadeInOut],
 })
 export class SubjectSectionHoursComponent implements OnInit {
-  hours: any[];
+  hours: TotalHours[];
+  isLoading = false;
 
   tempSubjects: any[];
   subjects: any[];
@@ -29,17 +31,18 @@ export class SubjectSectionHoursComponent implements OnInit {
     this._hourId = id;
     if (id > 0)
       this.http
-        .get(`http://localhost:3000/api/subject-section-hours/${id}`)
-        .subscribe((data: any) => {
-          console.log(data);
+        .get<TotalHours>(
+          `http://localhost:3000/api/subject-section-hours/${id}`
+        )
+        .subscribe((data: TotalHours) => {
           this.form.patchValue(data);
-          let selecteSubject = {
+          let selectedSubject = {
             id: data.subjectId,
             name: data.subjectName,
             code: data.subjectCode,
           };
-          if (!this.subjects.includes(selecteSubject)) {
-            this.subjects.push(selecteSubject);
+          if (!this.subjects.includes(selectedSubject)) {
+            this.subjects.push(selectedSubject);
           }
         });
   }
@@ -61,24 +64,29 @@ export class SubjectSectionHoursComponent implements OnInit {
     0;
     this.getSubjectHours();
     this.http
-      .get("http://localhost:3000/api/subjects")
-      .subscribe((data: any) => {
+      .get<TotalHours[]>("http://localhost:3000/api/subjects")
+      .subscribe((data: TotalHours[]) => {
         this.subjects = data;
         this.tempSubjects = data;
       });
     this.http
-      .get("http://localhost:3000/api/sections")
-      .subscribe((data: any) => {
+      .get<Section[]>("http://localhost:3000/api/sections")
+      .subscribe((data: Section[]) => {
         this.sections = data;
       });
   }
 
   getSubjectHours() {
+    this.isLoading = !this.isLoading;
     this.http
-      .get("http://localhost:3000/api/subject-section-hours")
-      .subscribe((data: any) => {
-        this.hours = data;
-      });
+      .get<TotalHours[]>("http://localhost:3000/api/subject-section-hours")
+      .subscribe(
+        (data: TotalHours[]) => {
+          this.isLoading = !this.isLoading;
+          this.hours = data;
+        },
+        (err) => (this.isLoading = !this.isLoading)
+      );
   }
 
   deleteSubjectHours(id: number) {
