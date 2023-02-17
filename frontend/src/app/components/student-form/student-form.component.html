@@ -5,7 +5,7 @@
   <nz-form-item>
     <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
     <nz-form-control nzErrorTip="Please input student name">
-      <input nz-input type="text" formControlName="name" class="w-full" />
+      <input nz-input type="text" formControlName="name" />
     </nz-form-control>
   </nz-form-item>
 
@@ -13,7 +13,6 @@
     <nz-form-item>
       <nz-form-label nzRequired nzFor="student">Dept</nz-form-label>
       <nz-select
-        class="w-full"
         nzShowSearch
         nzAllowClear
         nzPlaceHolder="Department"
@@ -32,7 +31,6 @@
       <nz-form-label nzRequired nzFor="student">Section</nz-form-label>
       <nz-form-control nzErrorTip="Please select a section!">
         <nz-select
-          class="w-full"
           nzShowSearch
           nzAllowClear
           nzPlaceHolder="Section"
@@ -50,13 +48,13 @@
   <nz-form-item>
     <nz-form-label nzRequired nzFor="regNo">Register No</nz-form-label>
     <nz-form-control nzErrorTip="Please input register no!">
-      <input nz-input type="text" formControlName="regNo" class="w-full" />
+      <input nz-input type="text" formControlName="regNo" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label nzRequired nzFor="rollNo">Roll No</nz-form-label>
     <nz-form-control nzErrorTip="Please input a roll no!">
-      <input nz-input type="text" formControlName="rollNo" class="w-full" />
+      <input nz-input type="text" formControlName="rollNo" />
     </nz-form-control>
   </nz-form-item>
 

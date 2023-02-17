@@ -7,7 +7,7 @@ import { HourlyAttendanceComponent } from "./pages/hourly-attendance/hourly-atte
 import { DayAttendanceComponent } from "./pages/day-attendance/day-attendance.component";
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AuthGuard } from "./helpers/auth.guard";
+import { AdminGuard, AuthGuard, MentorGuard } from "./helpers/auth.guard";
 import { BaseLayoutComponent } from "./pages/base-layout/base-layout.component";
 import { MentorComponent } from "./pages/mentor/mentor.component";
 
@@ -24,42 +24,42 @@ const routes: Routes = [
       {
         path: "day-attendance",
         component: DayAttendanceComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, MentorGuard],
       },
       {
         path: "hourly-attendance",
         component: HourlyAttendanceComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, MentorGuard],
       },
       {
         path: "sections",
         component: SectionsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
       {
         path: "subjects",
         component: SubjectsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
       {
         path: "students",
         component: StudentsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
       {
         path: "total-hours",
         component: SubjectSectionHoursComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
       {
         path: "time-tables",
         component: TimeTableComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
       {
         path: "mentor",
         component: MentorComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
     ],
   },

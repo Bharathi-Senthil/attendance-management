@@ -16,6 +16,8 @@ export class DayAttendanceFormComponent implements OnInit {
 
   sections: any[];
 
+  user = JSON.parse(String(localStorage.getItem("user")));
+
   constructor(
     private fb: FormBuilder,
     private data: DataService,
@@ -53,7 +55,7 @@ export class DayAttendanceFormComponent implements OnInit {
       .get(`http://localhost:3000/api/sections`)
       .subscribe((sections: any) => {
         this.sections = sections;
-        this.form.controls["sectionId"].setValue(sections[0].id);
+        this.form.controls["sectionId"].setValue(sections[0]?.id);
         this.form.controls["date"].setValue(new Date());
       });
   }
@@ -61,7 +63,7 @@ export class DayAttendanceFormComponent implements OnInit {
     let Fdate = formatDate(date, "yyyy-MM-dd", "en");
     this.http
       .get<any[]>(
-        `http://localhost:3000/api/students/day-present?sec=${sec}&date=${Fdate}`
+        `http://localhost:3000/api/students/day-present?mentor=${this.user.id}&date=${Fdate}`
       )
       .subscribe((data: any) => {
         this.students = data;

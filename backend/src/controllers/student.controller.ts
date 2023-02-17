@@ -130,9 +130,9 @@ export class StudentController {
   }
 
   getHourlyPresent(req: Request, res: Response) {
-    const { hour, sec, date } = req.query;
+    const { hour, mentor, date } = req.query;
     let preStudents: Student[];
-    Student.findAll({ where: { sectionId: sec } }).then((students) => {
+    Student.findAll({ where: { mentorId: mentor } }).then((students) => {
       preStudents = students;
       let options: any = this.hourlyOptions;
       if (hour && date)
@@ -155,9 +155,9 @@ export class StudentController {
   }
 
   getDayPresent(req: Request, res: Response) {
-    const { sec, date } = req.query;
+    const { mentor, date } = req.query;
     let preStudents: Student[];
-    Student.findAll({ where: { sectionId: sec } }).then((students) => {
+    Student.findAll({ where: { mentorId: mentor } }).then((students) => {
       preStudents = students;
       let options: any = this.dayOptions;
       if (date)

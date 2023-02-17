@@ -1,8 +1,5 @@
 <div class="flex gap-10">
   <div class="flex-grow">
-    <!-- <button nz-button class="mb-4">
-      <span nz-icon nzType="upload"></span>Upload Student CSV
-    </button> -->
     <div class="flex items-center mb-4 gap-4">
       <nz-select
         class="w-[130px]"
@@ -34,6 +31,7 @@
       [nzData]="students"
       [nzLoading]="isLoading"
       [nzShowPagination]="false"
+      class="shadow rounded"
     >
       <thead>
         <tr>
@@ -81,7 +79,7 @@
       </tbody>
     </nz-table>
   </div>
-  <div class="shadow border border-gray-100 rounded p-6">
+  <div class="shadow border border-gray-100 rounded p-6 self-start">
     <app-student-form
       [(studentId)]="studentId"
       (onFormSubmit)="getStudents()"

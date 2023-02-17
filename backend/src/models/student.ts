@@ -61,5 +61,9 @@ Student.belongsTo(Section, {
 Student.belongsTo(User, {
   foreignKey: "mentorId",
   as: "mentor",
-  onDelete: "cascade",
+});
+
+User.hasMany(Student, {
+  foreignKey: "mentorId",
+  as: "student",
 });

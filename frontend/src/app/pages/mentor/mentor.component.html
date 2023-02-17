@@ -1,27 +1,50 @@
 <div class="flex gap-10">
-  <nz-table class="flex-grow" #basicTable>
+  <nz-table class="flex-grow" #basicTable [nzData]="mentors">
     <thead>
       <tr>
         <th>Name</th>
-        <th>Age</th>
-        <th>Address</th>
+        <th>Email</th>
+        <th>Assigned Students</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.name }}</td>
-        <td>{{ data.age }}</td>
-        <td>{{ data.address }}</td>
+      <tr *ngFor="let m of basicTable.data">
+        <td>{{ m.name }}</td>
+        <td>{{ m.email }}</td>
+        <td>{{ m.studentsCount }}</td>
         <td>
-          <a>Action 一 {{ data.name }}</a>
-
-          <a>Delete</a>
+          <div class="flex gap-4 items-center">
+            <span
+              class="text-red-400 text-base cursor-pointer"
+              nz-icon
+              nzType="delete"
+              nzTheme="outline"
+              nz-tooltip
+              nzTooltipTitle="Delete"
+              nz-popconfirm
+              nzPopconfirmPlacement="bottom"
+              nzPopconfirmTitle="Are you sure delete this mentor?"
+              (nzOnConfirm)="deleteMentor(m.id)"
+            ></span>
+            <span
+              class="text-blue-400 text-base cursor-pointer"
+              nz-icon
+              nzType="edit"
+              nzTheme="outline"
+              nz-tooltip
+              nzTooltipTitle="Edit"
+              (click)="mentorId = m.id"
+            ></span>
+          </div>
         </td>
       </tr>
     </tbody>
   </nz-table>
   <div class="shadow border border-gray-100 rounded p-6">
-    <app-mentor-form></app-mentor-form>
+    <app-mentor-form
+      [(mentorId)]="mentorId"
+      (onFormSubmit)="getMentors()"
+    ></app-mentor-form>
   </div>
 </div>

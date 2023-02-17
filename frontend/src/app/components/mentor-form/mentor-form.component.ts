@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
@@ -10,12 +10,39 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class MentorFormComponent implements OnInit {
   form: FormGroup;
 
+  _mentorId = -1;
+
+  get mentorId() {
+    return this._mentorId;
+  }
+
+  @Input()
+  set mentorId(id: number) {
+    this._mentorId = id;
+    this.mentorIdChange.emit(id);
+    if (id > 0) {
+      this.form.controls["password"].disable();
+      this.http
+        .get(`http://localhost:3000/api/users/${id}`)
+        .subscribe((user: any) => {
+          this.getStudents(user.id);
+          this.form.patchValue(user);
+        });
+    } else this.form.controls["password"].enable();
+  }
+
+  @Output()
+  mentorIdChange = new EventEmitter();
+
+  @Output()
+  onFormSubmit = new EventEmitter();
+
   students: any[] = [];
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.form = this.fb.group({
-      name: ["", [Validators.required]],
-      email: ["", [Validators.required, Validators.email]],
+      name: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
       password: [
         "",
         [
@@ -24,42 +51,54 @@ export class MentorFormComponent implements OnInit {
           Validators.minLength(8),
         ],
       ],
-      studentId: ["", [Validators.required, Validators.email]],
+      studentId: [null, [Validators.required]],
     });
   }
 
   ngOnInit(): void {
+    this.getStudents();
+  }
+
+  getStudents(mentorId?: number) {
     this.http
-      .get("http://localhost:3000/api/students?mentor=null")
+      .get(
+        `http://localhost:3000/api/students?mentor=${
+          mentorId ? mentorId : null
+        }`
+      )
       .subscribe((students: any) => {
-        students.forEach((s: any) => {
-          delete s.mentorId;
-          delete s.mentorName;
-        });
-        this.students = students;
+        if (!mentorId) this.students = students;
+        else {
+          this.students = [...this.students, ...students];
+          let studentId: any[] = [];
+          students.forEach((s: any) => {
+            studentId.push(s.id);
+          });
+          this.form.controls["studentId"].setValue(studentId);
+        }
       });
   }
 
   submit() {
     if (this.form.valid) {
-      // if (this.studentId === -1)
-      this.http
-        .post("http://localhost:3000/api/users/register", this.form.value)
-        .subscribe((data: any) => {
-          this.form.reset();
-          // this.onFormSubmit.emit();
-        });
-      // else
-      //   this.http
-      //     .put(`http://localhost:3000/api/students/${this.studentId}`, {
-      //       id: this.studentId,
-      //       ...this.form.value,
-      //     })
-      //     .subscribe((data: any) => {
-      //       this.studentId = -1;
-      //       this.form.reset();
-      //       this.onFormSubmit.emit();
-      //     });
+      if (this.mentorId === -1)
+        this.http
+          .post("http://localhost:3000/api/users/register", this.form.value)
+          .subscribe((data: any) => {
+            this.form.reset();
+            this.onFormSubmit.emit();
+          });
+      else
+        this.http
+          .put(`http://localhost:3000/api/users/${this.mentorId}`, {
+            id: this.mentorId,
+            ...this.form.value,
+          })
+          .subscribe((data: any) => {
+            this.mentorId = -1;
+            this.form.reset();
+            this.onFormSubmit.emit();
+          });
     } else {
       Object.values(this.form.controls).forEach((control) => {
         if (control.invalid) {

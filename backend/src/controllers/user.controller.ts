@@ -6,6 +6,7 @@ import { getPagingData } from "../helpers";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sequelize } from "../db";
+import { Sequelize } from "sequelize";
 
 export class UserController {
   private userService: UserService;
@@ -14,7 +15,25 @@ export class UserController {
     this.userService = new UserService(User);
   }
 
-  private options = { where: { role: "MENTOR" } };
+  private options = {
+    attributes: [
+      "id",
+      "name",
+      "role",
+      "email",
+      [sequelize.fn("COUNT", "student.mentor_id"), "studentsCount"],
+    ],
+    include: [
+      {
+        model: Student,
+        as: "student",
+        attributes: [],
+        required: false,
+      },
+    ],
+    group: ["user.id"],
+    where: { role: "MENTOR" },
+  };
 
   getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
@@ -125,17 +144,44 @@ export class UserController {
   update(req: Request, res: Response) {
     let data = req.body;
 
-    this.userService.get(req.params.id).then((user) => {
+    this.userService.get(req.params.id).then(async (user) => {
       if (user) {
-        let updatedDayAttendance = new User({
+        let updatedUser = new User({
           ...user.dataValues,
           ...data,
         });
 
-        this.userService
-          .update(req.params.id, updatedDayAttendance)
-          .then(() => res.status(200).json(updatedDayAttendance))
-          .catch((err) => res.status(400).json(err));
+        // this.userService
+        //   .update(req.params.id, updatedDayAttendance)
+        //   .then(() => res.status(200).json(updatedDayAttendance))
+        //   .catch((err) => res.status(400).json(err));
+
+        const t = await sequelize.transaction();
+
+        User.update(updatedUser.dataValues, {
+          where: { id: req.params.id },
+          transaction: t,
+        })
+          .then((user) => {
+            delete updatedUser.dataValues.password;
+            if (data.studentId.length > 0)
+              Student.update(
+                { mentorId: updatedUser.dataValues.id },
+                { where: { id: data.studentId }, transaction: t }
+              )
+                .then((upS) => {
+                  t.commit();
+                  res.status(201).json(user);
+                })
+                .catch((err) => {
+                  t.rollback();
+                  res.status(400).json(err);
+                });
+          })
+          .catch((err) => {
+            t.rollback();
+            res.status(400).json(err);
+          });
       } else
         res.status(404).json({
           message: `User id:${req.params.id} does not exists`,

@@ -27,8 +27,41 @@ export class LoginGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let token = localStorage.getItem("token");
+
     if (token) {
       this.router.navigate(["/"]);
+      return false;
+    }
+
+    return true;
+  }
+}
+
+@Injectable({ providedIn: "root" })
+export class AdminGuard implements CanActivate {
+  constructor(private router: Router) {}
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    let user = JSON.parse(String(localStorage.getItem("user")));
+
+    if (user.role === "MENTOR") {
+      this.router.navigate(["/day-attendance"]);
+      return false;
+    }
+
+    return true;
+  }
+}
+
+@Injectable({ providedIn: "root" })
+export class MentorGuard implements CanActivate {
+  constructor(private router: Router) {}
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    let user = JSON.parse(String(localStorage.getItem("user")));
+
+    if (user.role === "ADMIN") {
+      this.router.navigate(["/students"]);
       return false;
     }
 

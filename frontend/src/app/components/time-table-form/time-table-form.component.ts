@@ -63,7 +63,6 @@ export class TimeTableFormComponent implements OnInit {
 
     if (this.timeTableId === -1)
       this.form.controls["sectionId"].valueChanges.subscribe((secId) => {
-        console.log(secId);
         if (secId) this.form.controls["day"].enable();
         else this.form.controls["day"].disable();
         this.getDay(secId);

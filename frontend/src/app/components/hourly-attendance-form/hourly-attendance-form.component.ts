@@ -17,6 +17,8 @@ export class HourlyAttendanceFormComponent implements OnInit {
   students: any[];
   timeTables: any[];
 
+  user = JSON.parse(String(localStorage.getItem("user")));
+
   _timeTable: any;
 
   get timeTable() {
@@ -57,7 +59,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
       .get("http://localhost:3000/api/sections")
       .subscribe((sections: any) => {
         this.sections = sections;
-        this.form.controls["sectionId"].setValue(sections[0].id);
+        this.form.controls["sectionId"].setValue(sections[0]?.id);
         this.form.controls["date"].setValue(new Date());
       });
 
@@ -94,7 +96,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
     date = formatDate(date, "yyyy-MM-dd", "en");
     this.http
       .get<any[]>(
-        `http://localhost:3000/api/students/hour-present?sec=${sec}&hour=${period}&date=${date}`
+        `http://localhost:3000/api/students/hour-present?mentor=${this.user.id}&hour=${period}&date=${date}`
       )
       .subscribe((data: any[]) => {
         this.students = data;

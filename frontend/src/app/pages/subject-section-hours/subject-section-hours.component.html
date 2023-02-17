@@ -67,7 +67,12 @@
         cancel
       </button>
     </form>
-    <nz-table [nzData]="hours" #basicTable [nzShowPagination]="false">
+    <nz-table
+      [nzData]="hours"
+      #basicTable
+      [nzShowPagination]="false"
+      class="shadow rounded"
+    >
       <thead>
         <tr>
           <th>Section</th>
