@@ -1,3 +1,4 @@
+import { User } from "./user";
 import { Section } from ".";
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../db";
@@ -34,6 +35,14 @@ Student.init(
         key: "id",
       },
     },
+    mentorId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: User,
+        key: "id",
+      },
+    },
   },
   {
     sequelize,
@@ -46,5 +55,11 @@ Student.init(
 Student.belongsTo(Section, {
   foreignKey: "sectionId",
   as: "section",
+  onDelete: "cascade",
+});
+
+Student.belongsTo(User, {
+  foreignKey: "mentorId",
+  as: "mentor",
   onDelete: "cascade",
 });

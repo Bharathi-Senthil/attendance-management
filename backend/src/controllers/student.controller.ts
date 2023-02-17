@@ -1,3 +1,4 @@
+import { User } from "./../models/user";
 import { Request, Response } from "express";
 import { StudentService, HourlyAttendanceService } from "../services";
 import {
@@ -21,6 +22,8 @@ export class StudentController {
       "regNo",
       "sectionId",
       [Sequelize.col("section.name"), "sectionName"],
+      [Sequelize.col("mentor.id"), "mentorId"],
+      [Sequelize.col("mentor.name"), "mentorName"],
     ],
     include: [
       {
@@ -28,6 +31,7 @@ export class StudentController {
         as: "section",
         attributes: [],
       },
+      { model: User, as: "mentor", attributes: [] },
     ],
   };
 
@@ -102,9 +106,11 @@ export class StudentController {
   }
 
   getAll(req: Request, res: Response) {
-    const { sec } = req.query;
-    let fOptions: any = { ...this.options };
-    if (sec) fOptions = { ...fOptions, where: { sectionId: sec } };
+    const { sec, mentor } = req.query;
+    let where = {};
+    if (sec) where = { ...where, sectionId: sec };
+    if (mentor) where = { ...where, mentorId: mentor };
+    let fOptions: any = { ...this.options, where };
     this.studentService
       .getAll(fOptions)
       .then((students) => res.status(200).json(students));
@@ -155,7 +161,7 @@ export class StudentController {
         options = {
           ...options,
           where: {
-            date,
+            date: new Date(String(date)),
           },
         };
       DayAttendance.findAll(options).then((absStudent) => {

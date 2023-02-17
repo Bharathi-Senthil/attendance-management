@@ -79,9 +79,7 @@ export class DayAttendanceController {
     if (absentees.length === 0)
       return res.status(400).json({ errorMessage: "Students required" });
 
-    let dayAttendance = new DayAttendance(data);
-    this.dayAttendanceService
-      .create(dayAttendance)
+    DayAttendance.bulkCreate(absentees)
       .then((dayAttendance) => res.status(201).json(dayAttendance))
       .catch((err) => res.status(400).json(err));
   }
