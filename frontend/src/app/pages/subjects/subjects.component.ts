@@ -1,4 +1,4 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import {
@@ -7,6 +7,7 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
+import { Subject } from "src/app/models";
 
 @Component({
   selector: "app-subject",
@@ -15,7 +16,7 @@ import {
   animations: [FadeInOut],
 })
 export class SubjectsComponent {
-  sections: any[];
+  subjects: Subject[];
   isLoading = false;
 
   id = -1;
@@ -34,10 +35,10 @@ export class SubjectsComponent {
 
   getSection() {
     this.isLoading = !this.isLoading;
-    this.http.get("http://localhost:3000/api/subjects").subscribe(
-      (data: any) => {
+    this.http.get<Subject[]>("http://localhost:3000/api/subjects").subscribe(
+      (data: Subject[]) => {
         this.isLoading = !this.isLoading;
-        this.sections = data;
+        this.subjects = data;
       },
       (err) => (this.isLoading = !this.isLoading)
     );

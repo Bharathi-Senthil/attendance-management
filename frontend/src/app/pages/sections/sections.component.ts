@@ -1,7 +1,8 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { FormControl, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Section } from "src/app/models";
 
 @Component({
   selector: "app-section",
@@ -10,7 +11,7 @@ import { HttpClient } from "@angular/common/http";
   animations: [FadeInOut],
 })
 export class SectionsComponent implements OnInit {
-  sections: any[];
+  sections: Section[];
   isLoading = false;
 
   id = -1;
@@ -24,8 +25,8 @@ export class SectionsComponent implements OnInit {
 
   getSection() {
     this.isLoading = !this.isLoading;
-    this.http.get("http://localhost:3000/api/sections").subscribe(
-      (data: any) => {
+    this.http.get<Section[]>("http://localhost:3000/api/sections").subscribe(
+      (data: Section[]) => {
         this.isLoading = !this.isLoading;
         this.sections = data;
       },

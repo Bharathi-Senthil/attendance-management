@@ -1,4 +1,4 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 

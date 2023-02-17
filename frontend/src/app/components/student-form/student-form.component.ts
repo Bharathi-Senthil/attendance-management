@@ -1,7 +1,7 @@
-import { FadeInOut } from "./../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Section } from "./../../models";
 
 @Component({
   selector: "app-student-form",
@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
   styleUrls: ["./student-form.component.scss"],
 })
 export class StudentFormComponent implements OnInit {
-  sections: any[];
+  sections: Section[];
   form: FormGroup;
 
   _studentId = -1;
@@ -55,7 +55,6 @@ export class StudentFormComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      console.log(this.studentId);
       if (this.studentId === -1)
         this.http
           .post("http://localhost:3000/api/students", this.form.value)

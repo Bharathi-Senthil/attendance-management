@@ -1,8 +1,9 @@
-import { FadeInOut } from "./../../animations";
+import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { uploadCsv } from "src/app/helpers";
+import { Section, Student } from "src/app/models";
 
 @Component({
   selector: "app-students",
@@ -11,7 +12,7 @@ import { uploadCsv } from "src/app/helpers";
   animations: [FadeInOut],
 })
 export class StudentsComponent implements OnInit {
-  students: any[];
+  students: Student[];
 
   isLoading = false;
 
@@ -21,7 +22,7 @@ export class StudentsComponent implements OnInit {
 
   studentId = -1;
 
-  sections: any[];
+  sections: Section[];
 
   section = new FormControl(null, [Validators.required]);
 
@@ -44,21 +45,20 @@ export class StudentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.http
-      .get("http://localhost:3000/api/sections")
-      .subscribe((data: any) => {
+      .get<Section[]>("http://localhost:3000/api/sections")
+      .subscribe((data: Section[]) => {
         this.sections = data;
       });
-    this.getStudents();
   }
 
   getStudents() {
     this.isLoading = !this.isLoading;
     this.http
-      .get(
+      .get<{ data: Student[]; totalItems: number }>(
         `http://localhost:3000/api/students/page?page=${this.pageIndex}&size=${this.pageSize}&search=${this.search}`
       )
       .subscribe(
-        (res: any) => {
+        (res: { data: Student[]; totalItems: number }) => {
           this.isLoading = !this.isLoading;
           this.students = res.data;
           this.total = res.totalItems;
