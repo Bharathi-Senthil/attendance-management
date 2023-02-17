@@ -78,7 +78,6 @@ export class DayAttendanceFormComponent implements OnInit {
       this.http
         .post(`http://localhost:3000/api/day-attendances`, data)
         .subscribe((data) => {
-          this.form.controls["sectionId"].reset();
           this.form.controls["studentId"].reset();
         });
     } else {
