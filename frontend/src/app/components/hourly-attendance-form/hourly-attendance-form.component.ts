@@ -59,9 +59,8 @@ export class HourlyAttendanceFormComponent implements OnInit {
         this.sections = sections;
         this.form.controls["sectionId"].setValue(sections[0].id);
         this.form.controls["date"].setValue(new Date());
-
-        // this.getTimeTables(data);
       });
+
     this.form.controls["sectionId"].valueChanges.subscribe((data) => {
       this.form.controls["hour"].reset();
       this.form.controls["subjectId"].reset();

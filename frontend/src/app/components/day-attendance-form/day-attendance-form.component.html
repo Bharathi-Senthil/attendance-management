@@ -43,11 +43,13 @@
         nzShowSearch
         nzAllowClear
         nzPlaceHolder="Section"
-        formControlName="section"
+        formControlName="sectionId"
       >
-        <nz-option nzValue="C" nzLabel="C"></nz-option>
-        <nz-option nzValue="D" nzLabel="D"></nz-option>
-        <nz-option nzValue="E" nzLabel="E"></nz-option>
+        <nz-option
+          *ngFor="let s of sections"
+          [nzLabel]="s.name"
+          [nzValue]="s.id"
+        ></nz-option>
       </nz-select>
     </nz-form-item>
   </div>
@@ -59,8 +61,11 @@
       <nz-select
         nzShowSearch
         nzAllowClear
+        [nzMaxTagCount]="1"
+        [nzMaxTagPlaceholder]="tagPlaceHolder"
+        nzMode="multiple"
         nzPlaceHolder="Select a Student"
-        formControlName="student"
+        formControlName="studentId"
         id="student"
       >
         <nz-option
@@ -84,3 +89,8 @@
     Submit
   </button>
 </form>
+
+<ng-template #tagPlaceHolder let-selectedList
+  >and {{ form.controls["studentId"].value.length - 1 }} more
+  selected</ng-template
+>
