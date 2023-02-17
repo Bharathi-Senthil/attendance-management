@@ -21,11 +21,14 @@ export class TimeTableComponent implements OnInit {
   }
 
   getTimeTable() {
-    this.http
-      .get("http://localhost:3000/api/time-tables")
-      .subscribe((data: any) => {
+    this.isLoading = !this.isLoading;
+    this.http.get("http://localhost:3000/api/time-tables").subscribe(
+      (data: any) => {
+        this.isLoading = !this.isLoading;
         this.timeTables = data;
-      });
+      },
+      (err) => (this.isLoading = !this.isLoading)
+    );
   }
 
   deleteTimeTable(id: number) {

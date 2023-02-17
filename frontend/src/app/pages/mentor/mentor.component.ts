@@ -11,15 +11,21 @@ import { Component, OnInit } from "@angular/core";
 export class MentorComponent implements OnInit {
   mentors: any[];
   mentorId = -1;
+  isLoading = false;
   constructor(private http: HttpClient) {}
   ngOnInit(): void {
     this.getMentors();
   }
 
   getMentors() {
-    this.http.get("http://localhost:3000/api/users").subscribe((users: any) => {
-      this.mentors = users;
-    });
+    this.isLoading = !this.isLoading;
+    this.http.get("http://localhost:3000/api/users").subscribe(
+      (users: any) => {
+        this.mentors = users;
+        this.isLoading = !this.isLoading;
+      },
+      (err) => (this.isLoading = !this.isLoading)
+    );
   }
 
   deleteMentor(id: number) {

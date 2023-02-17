@@ -23,13 +23,14 @@ export class SectionsComponent implements OnInit {
   }
 
   getSection() {
-    this.isLoading = true;
-    this.http
-      .get("http://localhost:3000/api/sections")
-      .subscribe((data: any) => {
-        this.isLoading = false;
+    this.isLoading = !this.isLoading;
+    this.http.get("http://localhost:3000/api/sections").subscribe(
+      (data: any) => {
+        this.isLoading = !this.isLoading;
         this.sections = data;
-      });
+      },
+      (err) => (this.isLoading = !this.isLoading)
+    );
   }
 
   submit() {

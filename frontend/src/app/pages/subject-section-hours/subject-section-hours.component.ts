@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 export class SubjectSectionHoursComponent implements OnInit {
   hours: any[];
+  isLoading = false;
 
   tempSubjects: any[];
   subjects: any[];
@@ -31,15 +32,14 @@ export class SubjectSectionHoursComponent implements OnInit {
       this.http
         .get(`http://localhost:3000/api/subject-section-hours/${id}`)
         .subscribe((data: any) => {
-          console.log(data);
           this.form.patchValue(data);
-          let selecteSubject = {
+          let selectedSubject = {
             id: data.subjectId,
             name: data.subjectName,
             code: data.subjectCode,
           };
-          if (!this.subjects.includes(selecteSubject)) {
-            this.subjects.push(selecteSubject);
+          if (!this.subjects.includes(selectedSubject)) {
+            this.subjects.push(selectedSubject);
           }
         });
   }
@@ -74,11 +74,14 @@ export class SubjectSectionHoursComponent implements OnInit {
   }
 
   getSubjectHours() {
-    this.http
-      .get("http://localhost:3000/api/subject-section-hours")
-      .subscribe((data: any) => {
+    this.isLoading = !this.isLoading;
+    this.http.get("http://localhost:3000/api/subject-section-hours").subscribe(
+      (data: any) => {
+        this.isLoading = !this.isLoading;
         this.hours = data;
-      });
+      },
+      (err) => (this.isLoading = !this.isLoading)
+    );
   }
 
   deleteSubjectHours(id: number) {
