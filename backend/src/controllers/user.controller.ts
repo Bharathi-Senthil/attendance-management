@@ -1,18 +1,17 @@
 import { Request, Response } from "express";
-import { StudentService, UserService } from "../services";
+import { UserService } from "../services";
 import { Student, User } from "../models";
 import { getPagingData } from "../helpers";
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { sequelize } from "../db";
 
 export class UserController {
   private userService: UserService;
-  private studentService: StudentService;
 
   constructor() {
     this.userService = new UserService(User);
-    this.studentService = new StudentService(Student);
   }
 
   private options = { where: { role: "MENTOR" } };
@@ -60,17 +59,29 @@ export class UserController {
       role: "MENTOR",
     });
 
-    this.userService
-      .create(user)
+    const t = await sequelize.transaction();
+
+    User.create(user.dataValues, { transaction: t })
       .then((user) => {
         delete user.dataValues.password;
         if (studentId.length > 0)
-          studentId.forEach((s: number) => {
-            this.studentService.update(s, { mentorId: user.dataValues.id });
-          });
-        res.status(201).json(user);
+          Student.update(
+            { mentorId: user.dataValues.id },
+            { where: { id: studentId }, transaction: t }
+          )
+            .then((upS) => {
+              t.commit();
+              res.status(201).json(user);
+            })
+            .catch((err) => {
+              t.rollback();
+              res.status(400).json(err);
+            });
       })
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        t.rollback();
+        res.status(400).json(err);
+      });
   }
 
   async login(req: Request, res: Response) {

@@ -1,7 +1,7 @@
 import { Subject } from "./subject";
 import { Section } from "./section";
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../db";
+import { sequelize } from "../db";
 
 export class TimeTable extends Model {}
 TimeTable.init(

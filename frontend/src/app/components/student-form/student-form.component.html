@@ -61,12 +61,7 @@
   </nz-form-item>
 
   <div class="flex gap-4">
-    <button
-      nz-button
-      [nzType]="'primary'"
-      class="flex-grow submit"
-      (click)="submit()"
-    >
+    <button nz-button [nzType]="'primary'" class="flex-grow" (click)="submit()">
       {{ studentId > 0 ? "Save" : "Add" }}
     </button>
     <button

@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { UserRoutes } from "./routes/user.routes";
 import express from "express";
 import cors from "cors";
-import sequelize from "./db";
+import { sequelize } from "./db";
 import {
   DayAttendanceRoutes,
   HourlyAttendanceRoutes,

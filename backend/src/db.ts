@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
 
-const sequelize = new Sequelize(
+export const sequelize = new Sequelize(
   "attendance-management",
   process.env.DBUSER ? process.env.DBUSER : "",
   process.env.PASSWORD ? process.env.PASSWORD : "",
@@ -13,5 +13,3 @@ const sequelize = new Sequelize(
     logging: false,
   }
 );
-
-export default sequelize;

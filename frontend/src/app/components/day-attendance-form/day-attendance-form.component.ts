@@ -15,7 +15,6 @@ export class DayAttendanceFormComponent implements OnInit {
   students: any[];
 
   sections: any[];
-  _students: any[];
 
   constructor(
     private fb: FormBuilder,

@@ -57,14 +57,14 @@
     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="student" class="w-8"
       >Student</nz-form-label
     >
-    <nz-form-control nzErrorTip="Please select a student!">
+    <nz-form-control nzErrorTip="Please select students!">
       <nz-select
         nzShowSearch
         nzAllowClear
         [nzMaxTagCount]="1"
         [nzMaxTagPlaceholder]="tagPlaceHolder"
         nzMode="multiple"
-        nzPlaceHolder="Select a Student"
+        nzPlaceHolder="Select Students"
         formControlName="studentId"
         id="student"
       >
@@ -90,7 +90,7 @@
   </button>
 </form>
 
-<ng-template #tagPlaceHolder let-selectedList
+<ng-template #tagPlaceHolder
   >and {{ form.controls["studentId"].value.length - 1 }} more
   selected</ng-template
 >

@@ -1,7 +1,7 @@
 import { User } from "./user";
 import { Section } from ".";
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../db";
+import { sequelize } from "../db";
 
 export class Student extends Model {}
 

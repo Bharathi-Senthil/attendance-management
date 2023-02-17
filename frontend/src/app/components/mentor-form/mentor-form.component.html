@@ -1,62 +1,62 @@
-<div class="flex">
-  <nz-table claas="flex-grow" #basicTable>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Address</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.name }}</td>
-        <td>{{ data.age }}</td>
-        <td>{{ data.address }}</td>
-        <td>
-          <a>Action 一 {{ data.name }}</a>
+<!-- form strats from here -->
 
-          <a>Delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+<form nz-form [formGroup]="form" class="w-[400px]" nzLayout="vertical">
+  <h1 class="text-lg font-medium text-center leading">Add Mentor</h1>
+  <nz-form-item>
+    <nz-form-label nzRequired class="text-gray-700"> Name</nz-form-label>
+    <nz-form-control nzErrorTip="Please input mentor name">
+      <input nz-input type="text" formControlName="name" class="w-full" />
+    </nz-form-control>
+  </nz-form-item>
 
-  <!-- form strats from here -->
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="mentor">email</nz-form-label>
+    <nz-form-control nzErrorTip="Please input mentor email">
+      <input nz-input type="email" formControlName="email" class="w-full" />
+    </nz-form-control>
+  </nz-form-item>
 
-  <form nz-form [formGroup]="form" class="w-[400px]" nzLayout="vertical">
-    <h1 class="text-lg font-medium text-start leading pl-24">Add Mentor</h1>
-    <nz-form-item>
-      <nz-form-label nzRequired class="text-gray-700"> Name</nz-form-label>
-      <nz-form-control nzErrorTip="Please input mentor name">
-        <input nz-input type="text" formControlName="name" class="w-full" />
-      </nz-form-control>
-    </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="mentor">password</nz-form-label>
+    <nz-form-control nzErrorTip="">
+      <input
+        nz-input
+        type="password"
+        formControlName="password"
+        class="w-full"
+      />
+    </nz-form-control>
+  </nz-form-item>
 
-    <nz-form-item>
-      <nz-form-label nzRequired nzFor="mentor">email</nz-form-label>
-      <nz-form-control nzErrorTip="Please input mentor email">
-        <input nz-input type="email" formControlName="email" class="w-full" />
-      </nz-form-control>
-    </nz-form-item>
-
-    <nz-form-item>
-      <nz-form-label nzRequired nzFor="mentor">password</nz-form-label>
-      <nz-form-control nzErrorTip="">
-        <input nz-input type="password" formControlName="pwd" class="w-full" />
-      </nz-form-control>
-    </nz-form-item>
-
-    <div class="flex gap-4">
-      <button
-        nz-button
-        [nzType]="'primary'"
-        class="flex-grow submit"
-        (click)="submit()"
+  <nz-form-item *ngIf="students">
+    <nz-form-label nzRequired>Assign Student</nz-form-label>
+    <nz-form-control nzErrorTip="Please select students!">
+      <nz-select
+        nzAllowClear
+        nzShowSearch
+        [nzMaxTagCount]="1"
+        [nzMaxTagPlaceholder]="tagPlaceHolder"
+        nzMode="multiple"
+        nzPlaceHolder="Select Students"
       >
-        Add
-      </button>
-      <button nz-button [nzType]="'default'">cancel</button>
-    </div>
-  </form>
-</div>
+        <nz-option
+          *ngFor="let s of students"
+          [nzLabel]="s.rollNo + ' - ' + s.name"
+          [nzValue]="s.id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="flex gap-4">
+    <button nz-button [nzType]="'primary'" class="flex-grow" (click)="submit()">
+      Add
+    </button>
+    <button nz-button [nzType]="'default'" class="flex-grow">cancel</button>
+  </div>
+</form>
+
+<ng-template #tagPlaceHolder
+  >and {{ form.controls["studentId"].value.length - 1 }} more
+  selected</ng-template
+>

@@ -109,7 +109,10 @@ export class StudentController {
     const { sec, mentor } = req.query;
     let where = {};
     if (sec) where = { ...where, sectionId: sec };
-    if (mentor) where = { ...where, mentorId: mentor };
+    if (mentor) {
+      if (mentor != "null") where = { ...where, mentorId: mentor };
+      else where = { ...where, mentorId: null };
+    }
     let fOptions: any = { ...this.options, where };
     this.studentService
       .getAll(fOptions)
