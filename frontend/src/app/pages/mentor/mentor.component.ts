@@ -19,9 +19,7 @@ export class MentorComponent implements OnInit {
   total: number;
 
   constructor(private http: HttpClient) {}
-  ngOnInit(): void {
-    this.getMentors();
-  }
+  ngOnInit(): void {}
 
   getMentors() {
     this.isLoading = !this.isLoading;
