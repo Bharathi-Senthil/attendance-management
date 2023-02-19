@@ -128,9 +128,10 @@ export class StudentController {
         ],
       };
     let fOptions: any = { ...this.options, where };
-    this.studentService
-      .getPaged(page, size, fOptions)
-      .then((students) => res.status(200).json(getPagingData(students)));
+    this.studentService.getPaged(page, size, fOptions).then((students) => {
+      console.log(students);
+      res.status(200).json(getPagingData(students));
+    });
   }
 
   getAll(req: Request, res: Response) {

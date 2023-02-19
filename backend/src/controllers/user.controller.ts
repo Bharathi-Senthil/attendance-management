@@ -37,8 +37,10 @@ export class UserController {
 
   getPaged(req: Request, res: Response) {
     const { page, size } = req.query;
-    this.userService.getPaged(page, size, this.options).then((user) => {
-      res.status(200).json(getPagingData(user));
+    this.userService.getPaged(page, size, this.options).then((users) => {
+      res
+        .status(200)
+        .json({ data: users?.rows, totalItems: users?.count.length });
     });
   }
 

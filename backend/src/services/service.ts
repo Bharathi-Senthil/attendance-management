@@ -20,7 +20,7 @@ export abstract class IRepository<T extends Model> {
     page: any,
     size: any,
     options?: any
-  ): Promise<{ rows: T[]; count: number } | null> {
+  ): Promise<{ rows: T[]; count: any } | null> {
     const pagingOptions = getPagingOptions(page - 1, size, options);
     return this.model.findAndCountAll<T>(pagingOptions);
   }
