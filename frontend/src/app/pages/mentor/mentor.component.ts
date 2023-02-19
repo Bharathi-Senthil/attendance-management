@@ -13,6 +13,11 @@ export class MentorComponent implements OnInit {
   mentors: Mentor[];
   mentorId = -1;
   isLoading = false;
+
+  pageSize = 5;
+  pageIndex = 1;
+  total: number;
+
   constructor(private http: HttpClient) {}
   ngOnInit(): void {
     this.getMentors();
@@ -20,13 +25,19 @@ export class MentorComponent implements OnInit {
 
   getMentors() {
     this.isLoading = !this.isLoading;
-    this.http.get<Mentor[]>("http://localhost:3000/api/users").subscribe(
-      (users: Mentor[]) => {
-        this.mentors = users;
-        this.isLoading = !this.isLoading;
-      },
-      (err) => (this.isLoading = !this.isLoading)
-    );
+    this.http
+      .get<{ data: Mentor[]; totalItems: number }>(
+        `http://localhost:3000/api/users/page?page=${this.pageIndex}&size=${this.pageSize}`
+      )
+      .subscribe(
+        (res: { data: Mentor[]; totalItems: number }) => {
+          this.mentors = res.data;
+          this.isLoading = !this.isLoading;
+          this.total = res.totalItems;
+          // console.log(res);
+        },
+        (err) => (this.isLoading = !this.isLoading)
+      );
   }
 
   deleteMentor(id: number) {
