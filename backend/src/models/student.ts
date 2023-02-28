@@ -23,6 +23,14 @@ Student.init(
       allowNull: false,
       unique: { msg: "Roll No must be unique!", name: "rollNo" },
     },
+    studentMobile: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    parentMobile: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     regNo: {
       type: DataTypes.STRING,
       allowNull: false,

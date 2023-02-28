@@ -22,6 +22,8 @@ export class StudentController {
       "rollNo",
       "regNo",
       "sectionId",
+      "studentMobile",
+      "parentMobile",
       [Sequelize.col("section.name"), "sectionName"],
       "yearId",
       [Sequelize.col("year.name"), "yearName"],
