@@ -1,4 +1,5 @@
 import { User } from "./user";
+import { Year } from "./year";
 import { Section } from ".";
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../db";
@@ -35,6 +36,14 @@ Student.init(
         key: "id",
       },
     },
+    yearId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Year,
+        key: "id",
+      },
+    },
     mentorId: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -55,6 +64,12 @@ Student.init(
 Student.belongsTo(Section, {
   foreignKey: "sectionId",
   as: "section",
+  onDelete: "cascade",
+});
+
+Student.belongsTo(Year, {
+  foreignKey: "yearId",
+  as: "year",
   onDelete: "cascade",
 });
 

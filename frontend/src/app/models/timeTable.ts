@@ -3,6 +3,8 @@ export interface TimeTable {
   day: string;
   sectionId: number;
   sectionName?: string;
+  yearId: number;
+  yearName?: string;
   period1SubjectId: number;
   period1SubjectName?: string;
   period2SubjectId: number;

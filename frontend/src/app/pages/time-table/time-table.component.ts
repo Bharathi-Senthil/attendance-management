@@ -29,6 +29,7 @@ export class TimeTableComponent implements OnInit {
         (data: TimeTable[]) => {
           this.isLoading = !this.isLoading;
           this.timeTables = data;
+          console.log(data);
         },
         (err) => (this.isLoading = !this.isLoading)
       );

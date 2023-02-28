@@ -11,6 +11,7 @@
       <thead>
         <tr>
           <th>Day</th>
+          <th>year</th>
           <th>Section</th>
           <th>Period 1</th>
           <th>Period 2</th>
@@ -26,6 +27,7 @@
       <tbody>
         <tr *ngFor="let t of basicTable.data">
           <td>{{ t.day }}</td>
+          <td>{{ t.yearName }}</td>
           <td>{{ t.sectionName }}</td>
           <td>{{ t.period1SubjectName }}</td>
           <td>{{ t.period2SubjectName }}</td>

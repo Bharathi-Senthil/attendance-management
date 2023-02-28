@@ -1,3 +1,4 @@
+import { Year } from "./year";
 import { Subject } from "./subject";
 import { Section } from "./section";
 import { DataTypes, Model } from "sequelize";
@@ -20,6 +21,14 @@ TimeTable.init(
       allowNull: false,
       references: {
         model: Section,
+        key: "id",
+      },
+    },
+    yearId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Year,
         key: "id",
       },
     },
@@ -95,6 +104,12 @@ TimeTable.init(
     underscored: true,
   }
 );
+
+TimeTable.belongsTo(Year, {
+  foreignKey: "yearId",
+  as: "year",
+  onDelete: "cascade",
+});
 
 TimeTable.belongsTo(Section, {
   foreignKey: "sectionId",

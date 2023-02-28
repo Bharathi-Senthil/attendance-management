@@ -5,6 +5,8 @@ export interface Student {
   regNo: string;
   sectionId: number;
   sectionName?: number;
+  yearId: number;
+  yearName?: number;
   mentorId?: number;
   mentorName?: number;
 }
