@@ -58,8 +58,6 @@ export class StudentController {
       [Sequelize.col("student.reg_no"), "studentRegNo"],
       [Sequelize.col("student.section_id"), "studentSectionId"],
       [Sequelize.col("student.section.name"), "sectionName"],
-      "yearId",
-      [Sequelize.col("year.name"), "yearName"],
     ],
     include: [
       {
@@ -70,10 +68,6 @@ export class StudentController {
           {
             model: Section,
             as: "section",
-          },
-          {
-            model: Year,
-            as: "year",
           },
         ],
       },
@@ -91,8 +85,6 @@ export class StudentController {
       [Sequelize.col("student.reg_no"), "studentRegNo"],
       [Sequelize.col("student.section_id"), "studentSectionId"],
       [Sequelize.col("student.section.name"), "sectionName"],
-      "yearId",
-      [Sequelize.col("year.name"), "yearName"],
       "isAbsent",
     ],
     include: [
@@ -104,10 +96,6 @@ export class StudentController {
           {
             model: Section,
             as: "section",
-          },
-          {
-            model: Year,
-            as: "year",
           },
         ],
       },
@@ -164,7 +152,6 @@ export class StudentController {
     }
     let fOptions: any = { ...this.options, where };
     this.studentService.getAll(fOptions).then((students) => {
-      console.log(students);
       res.status(200).json(students);
     });
   }
