@@ -57,6 +57,18 @@
       <input nz-input type="text" formControlName="rollNo" />
     </nz-form-control>
   </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="mobile no">Parent Mobile </nz-form-label>
+    <nz-form-control nzErrorTip="Please enter parent mobile!">
+      <input nz-input type="text" formControlName="parentMobile" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="mobile no">Student Mobile </nz-form-label>
+    <nz-form-control nzErrorTip="Please enter student mobile!">
+      <input nz-input type="text" formControlName="studentMobile" />
+    </nz-form-control>
+  </nz-form-item>
 
   <div class="flex gap-4">
     <button nz-button [nzType]="'primary'" class="flex-grow" (click)="submit()">

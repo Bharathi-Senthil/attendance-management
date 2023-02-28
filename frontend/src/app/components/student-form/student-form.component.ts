@@ -43,6 +43,8 @@ export class StudentFormComponent implements OnInit {
       rollNo: ["", [Validators.required]],
       yearId: [null, [Validators.required]],
       sectionId: ["", [Validators.required]],
+      parentMobile: ["", [Validators.required]],
+      studentMobile: ["", [Validators.required]],
     });
   }
 
