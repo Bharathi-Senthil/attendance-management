@@ -5,8 +5,13 @@
   <div class="grid grid-cols-2 gap-4">
     <nz-form-item>
       <nz-form-label nzRequired nzFor="student">Year</nz-form-label>
-      <nz-form-control nzErrorTip="Please select a section!">
-        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Year">
+      <nz-form-control nzErrorTip="Please select a year!">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Year"
+          formControlName="yearId"
+        >
           <nz-option nzValue="1" nzLabel="I"></nz-option>
           <nz-option nzValue="2" nzLabel="II"></nz-option>
           <nz-option nzValue="3" nzLabel="III"></nz-option>
@@ -16,18 +21,20 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzRequired nzFor="student">Section</nz-form-label>
-      <nz-select
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Section"
-        formControlName="sectionId"
-      >
-        <nz-option
-          *ngFor="let s of sections"
-          [nzValue]="s.id"
-          [nzLabel]="s.name"
-        ></nz-option>
-      </nz-select>
+      <nz-form-control nzErrorTip="Please select section">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Section"
+          formControlName="sectionId"
+        >
+          <nz-option
+            *ngFor="let s of sections"
+            [nzValue]="s.id"
+            [nzLabel]="s.name"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
     </nz-form-item>
   </div>
   <nz-form-item>

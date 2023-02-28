@@ -50,6 +50,7 @@ export class TimeTableFormComponent implements OnInit {
     this.form = this.fb.group({
       day: [null, [Validators.required]],
       sectionId: [null, [Validators.required]],
+      yearId: [null, [Validators.required]],
       period1SubjectId: [null, [Validators.required]],
       period2SubjectId: [null, [Validators.required]],
       period3SubjectId: [null, [Validators.required]],

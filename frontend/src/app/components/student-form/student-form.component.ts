@@ -41,6 +41,7 @@ export class StudentFormComponent implements OnInit {
       name: ["", [Validators.required]],
       regNo: ["", [Validators.required]],
       rollNo: ["", [Validators.required]],
+      yearId: [null, [Validators.required]],
       sectionId: ["", [Validators.required]],
     });
   }
