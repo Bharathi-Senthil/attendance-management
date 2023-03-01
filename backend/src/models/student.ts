@@ -1,4 +1,5 @@
 import { User } from "./user";
+import { Year } from "./year";
 import { Section } from ".";
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../db";
@@ -22,6 +23,14 @@ Student.init(
       allowNull: false,
       unique: { msg: "Roll No must be unique!", name: "rollNo" },
     },
+    studentMobile: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    parentMobile: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     regNo: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -32,6 +41,14 @@ Student.init(
       allowNull: false,
       references: {
         model: Section,
+        key: "id",
+      },
+    },
+    yearId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Year,
         key: "id",
       },
     },
@@ -55,6 +72,12 @@ Student.init(
 Student.belongsTo(Section, {
   foreignKey: "sectionId",
   as: "section",
+  onDelete: "cascade",
+});
+
+Student.belongsTo(Year, {
+  foreignKey: "yearId",
+  as: "year",
   onDelete: "cascade",
 });
 

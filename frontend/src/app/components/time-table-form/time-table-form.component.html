@@ -4,37 +4,37 @@
 <form nz-form [formGroup]="form" class="w-[400px]" nzLayout="vertical">
   <div class="grid grid-cols-2 gap-4">
     <nz-form-item>
-      <nz-form-label nzRequired nzFor="student">Dept</nz-form-label>
-      <nz-form-control nzErrorTip="Please select a section!">
+      <nz-form-label nzRequired nzFor="student">Year</nz-form-label>
+      <nz-form-control nzErrorTip="Please select a year!">
         <nz-select
           nzShowSearch
           nzAllowClear
-          nzPlaceHolder="Department"
-          nzDisabled
+          nzPlaceHolder="Year"
+          formControlName="yearId"
         >
-          <nz-option nzValue="CSE" nzLabel="CSE"></nz-option>
-          <nz-option nzValue="ECE" nzLabel="ECE"></nz-option>
-          <nz-option nzValue="EEE" nzLabel="EEE"></nz-option>
-          <nz-option nzValue="CIVIL" nzLabel="CIVIL"></nz-option>
-          <nz-option nzValue="MECH" nzLabel="MECH"></nz-option>
-          <nz-option nzValue="IT" nzLabel="IT"></nz-option>
+          <nz-option [nzValue]="1" nzLabel="I"></nz-option>
+          <nz-option [nzValue]="2" nzLabel="II"></nz-option>
+          <nz-option [nzValue]="3" nzLabel="III"></nz-option>
+          <nz-option [nzValue]="4" nzLabel="IV"></nz-option>
         </nz-select>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzRequired nzFor="student">Section</nz-form-label>
-      <nz-select
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Section"
-        formControlName="sectionId"
-      >
-        <nz-option
-          *ngFor="let s of sections"
-          [nzValue]="s.id"
-          [nzLabel]="s.name"
-        ></nz-option>
-      </nz-select>
+      <nz-form-control nzErrorTip="Please select section">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Section"
+          formControlName="sectionId"
+        >
+          <nz-option
+            *ngFor="let s of sections"
+            [nzValue]="s.id"
+            [nzLabel]="s.name"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
     </nz-form-item>
   </div>
   <nz-form-item>

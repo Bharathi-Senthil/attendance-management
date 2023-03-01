@@ -22,6 +22,7 @@ import {
   DayAttendance,
   SubjectSectionHours,
   User,
+  Year,
 } from "./models";
 import { verifyToken } from "./middleware";
 
@@ -51,13 +52,31 @@ User.sync().then(() => {
       });
   });
 });
+Year.sync().then(() => {
+  Year.count().then((res) => {
+    if (res < 4) {
+      Year.sync({ force: true }).then(() => {
+        Year.bulkCreate([
+          { name: "I" },
+          { name: "II" },
+          { name: "III" },
+          { name: "IV" },
+        ]);
+      });
+    }
+  });
+});
 // Section.sync({ force: true });
 // Subject.sync({ force: true });
-// TimeTable.sync();
+// TimeTable.sync({ force: true });
 // Student.sync({ force: true });
 // HourlyAttendance.sync({ force: true });
 // DayAttendance.sync({ force: true });
 // SubjectSectionHours.sync({ force: true });
+
+
+
+// this is the raw query
 
 let query = `SELECT a.student_id, a.student_name, a.roll_no,
                   a.section_name,

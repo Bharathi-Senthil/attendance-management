@@ -6,3 +6,4 @@ export * from "./hourlyAttendance";
 export * from "./dayAttendance";
 export * from "./subjectSectionHours";
 export * from "./user";
+export * from "./year";

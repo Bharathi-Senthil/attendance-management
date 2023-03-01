@@ -6,6 +6,18 @@
           class="w-[100px]"
           nzShowSearch
           nzAllowClear
+          nzPlaceHolder="Year"
+          [formControl]="year"
+        >
+          <nz-option nzValue="1" nzLabel="I"></nz-option>
+          <nz-option nzValue="2" nzLabel="II"></nz-option>
+          <nz-option nzValue="3" nzLabel="III"></nz-option>
+          <nz-option nzValue="4" nzLabel="IV"></nz-option>
+        </nz-select>
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
           nzPlaceHolder="Section"
           [formControl]="section"
         >
@@ -22,7 +34,11 @@
           #file
           (change)="handleUpload(file)"
         />
-        <button nz-button [disabled]="section.invalid" (click)="file.click()">
+        <button
+          nz-button
+          [disabled]="section.invalid || year.invalid"
+          (click)="file.click()"
+        >
           <span nz-icon nzType="upload"></span>
           Upload Student CSV
         </button>
@@ -44,7 +60,7 @@
       [nzFrontPagination]="false"
       [(nzPageSize)]="pageSize"
       [(nzPageIndex)]="pageIndex"
-      (nzQueryParams)="getStudents()"
+      (nzQueryParams)="getStudents($event)"
       class="shadow rounded"
     >
       <thead>
@@ -52,7 +68,31 @@
           <th>Name</th>
           <th>RollNo</th>
           <th>RegNo</th>
-          <th>Section</th>
+          <th
+            nzColumnKey="year"
+            [nzFilterFn]="true"
+            [nzFilters]="[
+              { text: 'I', value: 1 },
+              { text: 'II', value: 2 },
+              { text: 'III', value: 3 },
+              { text: 'IV', value: 4 }
+            ]"
+          >
+            Year
+          </th>
+          <th
+            nzColumnKey="section"
+            [nzFilterFn]="true"
+            [nzFilters]="[
+              { text: 'A', value: 1 },
+              { text: 'B', value: 2 },
+              { text: 'C', value: 3 },
+              { text: 'D', value: 4 },
+              { text: 'E', value: 5 }
+            ]"
+          >
+            Section
+          </th>
           <th>Mentor</th>
           <th>Action</th>
         </tr>
@@ -62,6 +102,7 @@
           <td>{{ s.name }}</td>
           <td>{{ s.rollNo }}</td>
           <td>{{ s.regNo }}</td>
+          <td>{{ s.yearName }}</td>
           <td>{{ s.sectionName }}</td>
           <td>{{ s.mentorName }}</td>
           <td>

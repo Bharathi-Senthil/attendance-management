@@ -4,6 +4,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { uploadCsv } from "src/app/helpers";
 import { Section, Student } from "src/app/models";
+import { listOfColumns } from "./studentHeader";
 
 @Component({
   selector: "app-students",
@@ -12,12 +13,13 @@ import { Section, Student } from "src/app/models";
   animations: [FadeInOut],
 })
 export class StudentsComponent implements OnInit {
+  studentColumn = listOfColumns;
   students: Student[];
 
   isLoading = false;
 
   total: number;
-  pageSize = 5;
+  pageSize = 10;
   pageIndex = 1;
 
   studentId = -1;
@@ -25,6 +27,7 @@ export class StudentsComponent implements OnInit {
   sections: Section[];
 
   section = new FormControl(null, [Validators.required]);
+  year = new FormControl(null, [Validators.required]);
 
   _search = "";
   debounce: any;
@@ -51,11 +54,12 @@ export class StudentsComponent implements OnInit {
       });
   }
 
-  getStudents() {
+  getStudents(p?: any) {
+    console.log(p.filter);
     this.isLoading = !this.isLoading;
     this.http
       .get<{ data: Student[]; totalItems: number }>(
-        `http://localhost:3000/api/students/page?page=${this.pageIndex}&size=${this.pageSize}&search=${this.search}`
+        `http://localhost:3000/api/students/page?page=${this.pageIndex}&size=${this.pageSize}&search=${this.search}&filter=${p.filter}`
       )
       .subscribe(
         (res: { data: Student[]; totalItems: number }) => {
@@ -77,8 +81,10 @@ export class StudentsComponent implements OnInit {
     uploadCsv(file).subscribe((students) => {
       students.forEach((s: any) => {
         s["sectionId"] = this.section.value;
+        s["yearId"] = this.year.value;
         file.value = null;
       });
+      console.log(students);
       this.http
         .post("http://localhost:3000/api/students", students)
         .subscribe((data: any) => {

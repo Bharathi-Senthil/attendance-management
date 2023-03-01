@@ -8,8 +8,8 @@ export const sequelize = new Sequelize(
   process.env.DBUSER ? process.env.DBUSER : "",
   process.env.PASSWORD ? process.env.PASSWORD : "",
   {
-    host: "localhost",
-    dialect: "mysql",
-    logging: true,
+    dialect: "sqlite",
+    storage: "./db.sqlite",
+    logging: false,
   }
 );

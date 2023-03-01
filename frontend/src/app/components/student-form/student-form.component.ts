@@ -27,6 +27,7 @@ export class StudentFormComponent implements OnInit {
         .get(`http://localhost:3000/api/students/${id}`)
         .subscribe((data: any) => {
           this.form.patchValue(data);
+          console.log(data)
         });
   }
 
@@ -41,7 +42,10 @@ export class StudentFormComponent implements OnInit {
       name: ["", [Validators.required]],
       regNo: ["", [Validators.required]],
       rollNo: ["", [Validators.required]],
+      yearId: [null, [Validators.required]],
       sectionId: ["", [Validators.required]],
+      parentMobile: ["", [Validators.required]],
+      studentMobile: ["", [Validators.required]],
     });
   }
 

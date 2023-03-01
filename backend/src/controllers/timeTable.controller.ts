@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { TimeTableService } from "../services";
-import { Section, Subject, TimeTable } from "../models";
+import { Section, Subject, TimeTable, Year } from "../models";
 import { Sequelize } from "sequelize";
 import { getPagingData } from "../helpers";
 
@@ -13,6 +13,8 @@ export class TimeTableController {
       "day",
       "sectionId",
       [Sequelize.col("section.name"), "sectionName"],
+      "yearId",
+      [Sequelize.col("year.name"), "yearName"],
       "period1SubjectId",
       [Sequelize.col("period1Subject.name"), "period1SubjectName"],
       "period2SubjectId",
@@ -31,6 +33,7 @@ export class TimeTableController {
       [Sequelize.col("period8Subject.name"), "period8SubjectName"],
     ],
     include: [
+      { model: Year, as: "year", attributes: [] },
       { model: Section, as: "section", attributes: [] },
       { model: Subject, as: "period1Subject", attributes: [] },
       { model: Subject, as: "period2Subject", attributes: [] },

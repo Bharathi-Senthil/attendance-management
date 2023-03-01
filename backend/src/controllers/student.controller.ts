@@ -7,6 +7,7 @@ import {
   HourlyAttendance,
   DayAttendance,
   Subject,
+  Year,
 } from "../models";
 import { Op, Sequelize } from "sequelize";
 import { getPagingData } from "../helpers";
@@ -21,14 +22,23 @@ export class StudentController {
       "rollNo",
       "regNo",
       "sectionId",
+      "studentMobile",
+      "parentMobile",
       [Sequelize.col("section.name"), "sectionName"],
-      [Sequelize.col("mentor.id"), "mentorId"],
+      "yearId",
+      [Sequelize.col("year.name"), "yearName"],
+      "mentorId",
       [Sequelize.col("mentor.name"), "mentorName"],
     ],
     include: [
       {
         model: Section,
         as: "section",
+        attributes: [],
+      },
+      {
+        model: Year,
+        as: "year",
         attributes: [],
       },
       { model: User, as: "mentor", attributes: [] },
@@ -71,13 +81,13 @@ export class StudentController {
     attributes: [
       "id",
       "date",
-      "isAbsent",
       "studentId",
       [Sequelize.col("student.name"), "studentName"],
       [Sequelize.col("student.roll_no"), "studentRollNo"],
       [Sequelize.col("student.reg_no"), "studentRegNo"],
       [Sequelize.col("student.section_id"), "studentSectionId"],
       [Sequelize.col("student.section.name"), "sectionName"],
+      "isAbsent",
     ],
     include: [
       {
@@ -99,7 +109,8 @@ export class StudentController {
   }
 
   getPaged(req: Request, res: Response) {
-    const { page, size, sec, mentor, search } = req.query;
+    const { page, size, sec, mentor, search, filter } = req.query;
+    console.log(filter);
     let where = {};
     if (sec) where = { ...where, sectionId: sec };
     if (mentor) {
@@ -129,23 +140,23 @@ export class StudentController {
       };
     let fOptions: any = { ...this.options, where };
     this.studentService.getPaged(page, size, fOptions).then((students) => {
-      console.log(students);
       res.status(200).json(getPagingData(students));
     });
   }
 
   getAll(req: Request, res: Response) {
-    const { sec, mentor } = req.query;
+    const { sec, mentor, year } = req.query;
     let where = {};
     if (sec) where = { ...where, sectionId: sec };
+    if (year) where = { ...where, yearId: year };
     if (mentor) {
       if (mentor != "null") where = { ...where, mentorId: mentor };
       else where = { ...where, mentorId: null };
     }
     let fOptions: any = { ...this.options, where };
-    this.studentService
-      .getAll(fOptions)
-      .then((students) => res.status(200).json(students));
+    this.studentService.getAll(fOptions).then((students) => {
+      res.status(200).json(students);
+    });
   }
 
   getById(req: Request, res: Response) {
