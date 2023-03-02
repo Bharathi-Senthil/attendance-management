@@ -7,8 +7,8 @@ export function getPagingOptions(page: any, size: any, options?: any) {
   const limit = size ? +size : 10;
   const offset = page ? page * limit : 0;
   return {
+    ...options,
     limit,
     offset,
-    ...options,
   };
 }

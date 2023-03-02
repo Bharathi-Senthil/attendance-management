@@ -13,10 +13,10 @@ export class UserRoutes {
   }
 
   private routes() {
-    //! GetPaged
-    this.router.get("/page", verifyToken, (req, res) =>
-      this.controller.getPaged(req, res)
-    );
+    // //! GetPaged
+    // this.router.get("/page", verifyToken, (req, res) =>
+    //   this.controller.getPaged(req, res)
+    // );
 
     //! GetAll
     this.router.get("/", verifyToken, (req, res) =>

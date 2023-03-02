@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserService } from "../services";
+import { StudentService, UserService } from "../services";
 import { Student, User } from "../models";
 import { getPagingData } from "../helpers";
 
@@ -21,28 +21,24 @@ export class UserController {
       "name",
       "role",
       "email",
-      [sequelize.fn("COUNT", "student.mentor_id"), "studentsCount"],
+      [sequelize.fn("COUNT", "student.id"), "studentsCount"],
     ],
     include: [
       {
         model: Student,
         as: "student",
         attributes: [],
-        required: false,
       },
     ],
-    group: ["user.id"],
     where: { role: "MENTOR" },
+    group: ["user.id"],
   };
 
-  getPaged(req: Request, res: Response) {
-    const { page, size } = req.query;
-    this.userService.getPaged(page, size, this.options).then((users) => {
-      res
-        .status(200)
-        .json({ data: users?.rows, totalItems: users?.count.length });
-    });
-  }
+  // getPaged(req: Request, res: Response) {
+  //   this.userService.getAll(this.options).then((users) => {
+  //     res.status(200).json(users);
+  //   });
+  // }
 
   getAll(req: Request, res: Response) {
     this.userService.getAll(this.options).then((users) => {
@@ -153,37 +149,49 @@ export class UserController {
           ...data,
         });
 
-        // this.userService
-        //   .update(req.params.id, updatedDayAttendance)
-        //   .then(() => res.status(200).json(updatedDayAttendance))
-        //   .catch((err) => res.status(400).json(err));
-
         const t = await sequelize.transaction();
 
-        User.update(updatedUser.dataValues, {
-          where: { id: req.params.id },
-          transaction: t,
-        })
-          .then((user) => {
-            delete updatedUser.dataValues.password;
-            if (data.studentId.length > 0)
-              Student.update(
-                { mentorId: updatedUser.dataValues.id },
-                { where: { id: data.studentId }, transaction: t }
-              )
-                .then((upS) => {
-                  t.commit();
-                  res.status(201).json(user);
+        Student.findAll({ where: { mentorId: req.params.id } }).then(
+          (students) => {
+            console.clear();
+
+            let studentId: any[] = [];
+            students.forEach((student) => {
+              studentId.push(student.dataValues.id);
+            });
+            studentId = studentId.filter((id) => !data.studentId.includes(id));
+
+            Student.update(
+              { mentorId: null },
+              { where: { id: studentId }, transaction: t }
+            ).then(() => {
+              User.update(updatedUser.dataValues, {
+                where: { id: req.params.id },
+                transaction: t,
+              })
+                .then((user) => {
+                  delete updatedUser.dataValues.password;
+                  if (data.studentId.length > 0)
+                    Student.update(
+                      { mentorId: updatedUser.dataValues.id },
+                      { where: { id: data.studentId }, transaction: t }
+                    )
+                      .then((upS) => {
+                        t.commit();
+                        res.status(201).json(user);
+                      })
+                      .catch((err) => {
+                        t.rollback();
+                        res.status(400).json(err);
+                      });
                 })
                 .catch((err) => {
                   t.rollback();
                   res.status(400).json(err);
                 });
-          })
-          .catch((err) => {
-            t.rollback();
-            res.status(400).json(err);
-          });
+            });
+          }
+        );
       } else
         res.status(404).json({
           message: `User id:${req.params.id} does not exists`,

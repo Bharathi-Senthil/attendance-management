@@ -43,6 +43,11 @@ export class StudentController {
       },
       { model: User, as: "mentor", attributes: [] },
     ],
+    order: [
+      ["yearId", "ASC"],
+      ["sectionId", "ASC"],
+      ["rollNo", "ASC"],
+    ],
   };
 
   private hourlyOptions = {
@@ -109,10 +114,11 @@ export class StudentController {
   }
 
   getPaged(req: Request, res: Response) {
-    const { page, size, sec, mentor, search, filter } = req.query;
-    console.log(filter);
+    const { page, size, sec, mentor, search, fYear, fSec } = req.query;
     let where = {};
     if (sec) where = { ...where, sectionId: sec };
+    if (fYear) where = { ...where, yearId: fYear };
+    if (fSec) where = { ...where, sectionId: fSec };
     if (mentor) {
       if (mentor != "null") where = { ...where, mentorId: mentor };
       else where = { ...where, mentorId: null };

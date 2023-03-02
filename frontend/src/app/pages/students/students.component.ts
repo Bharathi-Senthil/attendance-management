@@ -1,5 +1,5 @@
 import { FadeInOut } from "../../animations";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { uploadCsv } from "src/app/helpers";
@@ -21,6 +21,7 @@ export class StudentsComponent implements OnInit {
   total: number;
   pageSize = 10;
   pageIndex = 1;
+  filter = [];
 
   studentId = -1;
 
@@ -55,14 +56,30 @@ export class StudentsComponent implements OnInit {
   }
 
   getStudents(p?: any) {
-    console.log(p.filter);
+    let params = new HttpParams()
+      .append("page", `${this.pageIndex}`)
+      .append("size", `${this.pageSize}`)
+      .append("search", `${this.search}`);
+    let url = `http://localhost:3000/api/students/page?page=${this.pageIndex}&size=${this.pageSize}&search=${this.search}`;
+    if (p) this.filter = p.filter;
+
+    if (this.filter) {
+      url += `&filter[]=${this.filter}`;
+      this.filter.forEach((filter: { value: any[]; key: string }) => {
+        filter.value.forEach((value) => {
+          params = params.append(filter.key, value);
+        });
+      });
+    }
     this.isLoading = !this.isLoading;
     this.http
       .get<{ data: Student[]; totalItems: number }>(
-        `http://localhost:3000/api/students/page?page=${this.pageIndex}&size=${this.pageSize}&search=${this.search}&filter=${p.filter}`
+        "http://localhost:3000/api/students/page",
+        { params }
       )
       .subscribe(
         (res: { data: Student[]; totalItems: number }) => {
+          console.log(res);
           this.isLoading = !this.isLoading;
           this.students = res.data;
           this.total = res.totalItems;

@@ -86,6 +86,7 @@ export class MentorFormComponent implements OnInit {
         this.http
           .post("http://localhost:3000/api/users/register", this.form.value)
           .subscribe((data: any) => {
+            this.getStudents(this.mentorId);
             this.form.reset();
             this.onFormSubmit.emit();
           });
