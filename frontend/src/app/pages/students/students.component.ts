@@ -4,7 +4,6 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { uploadCsv } from "src/app/helpers";
 import { Section, Student } from "src/app/models";
-import { listOfColumns } from "./studentHeader";
 
 @Component({
   selector: "app-students",
@@ -13,7 +12,6 @@ import { listOfColumns } from "./studentHeader";
   animations: [FadeInOut],
 })
 export class StudentsComponent implements OnInit {
-  studentColumn = listOfColumns;
   students: Student[];
 
   isLoading = false;
@@ -79,7 +77,6 @@ export class StudentsComponent implements OnInit {
       )
       .subscribe(
         (res: { data: Student[]; totalItems: number }) => {
-          console.log(res);
           this.isLoading = !this.isLoading;
           this.students = res.data;
           this.total = res.totalItems;
@@ -101,7 +98,6 @@ export class StudentsComponent implements OnInit {
         s["yearId"] = this.year.value;
         file.value = null;
       });
-      console.log(students);
       this.http
         .post("http://localhost:3000/api/students", students)
         .subscribe((data: any) => {
