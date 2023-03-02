@@ -28,7 +28,7 @@ import { verifyToken } from "./middleware";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:60069" }));
+app.use(cors({ origin: "http://localhost:4200" }));
 
 sequelize
   .authenticate()
