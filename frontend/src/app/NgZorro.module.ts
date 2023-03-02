@@ -17,6 +17,7 @@ import { NzCalendarModule } from "ng-zorro-antd/calendar";
 import { NzInputNumberModule } from "ng-zorro-antd/input-number";
 import { NzNotificationModule } from "ng-zorro-antd/notification";
 import { NzUploadModule } from "ng-zorro-antd/upload";
+import { NzRadioModule } from "ng-zorro-antd/radio";
 
 @NgModule({
   exports: [
@@ -37,6 +38,7 @@ import { NzUploadModule } from "ng-zorro-antd/upload";
     NzInputNumberModule,
     NzNotificationModule,
     NzUploadModule,
+    NzRadioModule,
   ],
 })
 export class NgZorroModule {}

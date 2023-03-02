@@ -1,9 +1,11 @@
+import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Validators } from "@angular/forms";
 import { FormControl } from "@angular/forms";
 import { SlideInOut } from "./../../animations";
 import { Component, Input, OnInit } from "@angular/core";
 import { Menu, Section } from "../../models";
+import { downloadFile } from "src/app/helpers";
 
 @Component({
   selector: "app-sider",
@@ -26,6 +28,7 @@ export class SiderComponent implements OnInit {
 
   section = new FormControl(null, [Validators.required]);
   year = new FormControl(null, [Validators.required]);
+  date = new FormControl(null, [Validators.required]);
 
   constructor(private http: HttpClient) {}
 
@@ -43,13 +46,27 @@ export class SiderComponent implements OnInit {
     this.dropdown.id = id;
   }
 
+  changeReportType(type: string) {
+    if (type === "day") this.date.enable();
+    else this.date.disable();
+  }
+
   getReport() {
+    let fDate: any;
+    if (this.date.value)
+      fDate = formatDate(String(this.date.value), "yyyy-MM-dd", "en");
     this.http
-      .get(
-        `http://localhost:3000/api/report/day?year=${this.year.value}&sec=${this.section.value}`
+      .get<any>(
+        `http://localhost:3000/api/report/day?year=${this.year.value}&sec=${
+          this.section.value
+        }${fDate ? `&date=${fDate}` : ""}`
       )
       .subscribe((res) => {
         console.log(res);
+        if (res.length > 0) downloadFile(res);
+        this.section.reset();
+        this.year.reset();
+        this.date.reset();
       });
   }
 }

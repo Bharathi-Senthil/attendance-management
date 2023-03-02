@@ -73,40 +73,51 @@
   [nzFooter]="null"
 >
   <ng-container *nzModalContent>
-    <div class="flex items-center gap-4">
-      <nz-select
-        class="w-[100px]"
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Year"
-        [formControl]="year"
-      >
-        <nz-option nzValue="1" nzLabel="I"></nz-option>
-        <nz-option nzValue="2" nzLabel="II"></nz-option>
-        <nz-option nzValue="3" nzLabel="III"></nz-option>
-        <nz-option nzValue="4" nzLabel="IV"></nz-option>
-      </nz-select>
-      <nz-select
-        class="w-[100px]"
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Section"
-        [formControl]="section"
-      >
-        <nz-option
-          *ngFor="let s of sections"
-          [nzValue]="s.id"
-          [nzLabel]="s.name"
-        ></nz-option>
-      </nz-select>
-      <button
-        nz-button
-        [nzType]="'primary'"
-        [disabled]="year.invalid || section.invalid"
-        (click)="getReport()"
-      >
-        Download
-      </button>
+    <div class="flex flex-col gap-5">
+      <nz-radio-group ngModel="day" (ngModelChange)="changeReportType($event)">
+        <label nz-radio nzValue="day">Day Report</label>
+        <label nz-radio nzValue="full">Full Report</label>
+      </nz-radio-group>
+      <div class="flex items-center gap-4">
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Year"
+          [formControl]="year"
+        >
+          <nz-option nzValue="1" nzLabel="I"></nz-option>
+          <nz-option nzValue="2" nzLabel="II"></nz-option>
+          <nz-option nzValue="3" nzLabel="III"></nz-option>
+          <nz-option nzValue="4" nzLabel="IV"></nz-option>
+        </nz-select>
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Section"
+          [formControl]="section"
+        >
+          <nz-option
+            *ngFor="let s of sections"
+            [nzValue]="s.id"
+            [nzLabel]="s.name"
+          ></nz-option>
+        </nz-select>
+        <nz-date-picker [formControl]="date"></nz-date-picker>
+        <button
+          nz-button
+          [nzType]="'primary'"
+          [disabled]="
+            year.invalid ||
+            section.invalid ||
+            (date.enabled ? date.invalid : false)
+          "
+          (click)="getReport()"
+        >
+          Download
+        </button>
+      </div>
     </div>
   </ng-container>
 </nz-modal>
