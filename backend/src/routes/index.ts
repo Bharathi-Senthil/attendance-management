@@ -6,3 +6,4 @@ export * from "./hourlyAttendance.routes";
 export * from "./dayAttendance.routes";
 export * from "./subjectSectionHours.routes";
 export * from "./user.routes";
+export * from "./report.routes";
