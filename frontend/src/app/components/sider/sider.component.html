@@ -13,6 +13,7 @@
         routerLinkActive="bg-[#334155]"
         [routerLinkActiveOptions]="{ exact: true }"
       >
+
         <span
           nz-icon
           [nzType]="m.icon"
@@ -33,6 +34,7 @@
             nzTheme="outline"
             *ngIf="m.children"
           ></span>
+         
         </div>
       </li>
       <div
@@ -49,8 +51,14 @@
         >
           <span nz-icon [nzType]="cm.icon" nzTheme="outline"></span>
           <span>{{ cm.title }}</span>
+          
         </div>
+      
       </div>
+     
     </ng-container>
   </ul>
+  <button nz-button [nzType]="'primary'" class="w-full " >
+    Export Data
+  </button>
 </div>
