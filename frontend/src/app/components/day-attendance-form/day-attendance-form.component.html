@@ -1,39 +1,19 @@
 <form nz-form [formGroup]="form" class="w-[450px]">
-  <div class="grid grid-cols-2">
-    <nz-form-item>
-      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="date"
-        >Date</nz-form-label
-      >
-      <nz-form-control nzErrorTip="Please select date">
-        <nz-date-picker
-          nzFormat="dd-MM-yyyy"
-          formControlName="date"
-          id="date"
-          class="w-[130px]"
-        ></nz-date-picker>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="student"
-        >Section</nz-form-label
-      >
-      <nz-select
-        class="w-[130px]"
-        nzShowSearch
-        nzAllowClear
-        nzPlaceHolder="Section"
-        formControlName="sectionId"
-      >
-        <nz-option
-          *ngFor="let s of sections"
-          [nzLabel]="s.name"
-          [nzValue]="s.id"
-        ></nz-option>
-      </nz-select>
-    </nz-form-item>
-  </div>
   <nz-form-item>
-    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="student" class="w-8"
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="date"
+      >Date</nz-form-label
+    >
+    <nz-form-control nzErrorTip="Please select date">
+      <nz-date-picker
+        nzFormat="dd-MM-yyyy"
+        formControlName="date"
+        id="date"
+        class="w-full"
+      ></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="student"
       >Student</nz-form-label
     >
     <nz-form-control nzErrorTip="Please select students!">
@@ -55,14 +35,14 @@
       </nz-select>
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item>
+  <!-- <nz-form-item>
     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="absent"
       >Absent</nz-form-label
     >
     <nz-form-control nzErrorTip="Please select value!">
       <label nz-checkbox formControlName="isAbsent" id="absent"></label>
     </nz-form-control>
-  </nz-form-item>
+  </nz-form-item> -->
 
   <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
     Submit

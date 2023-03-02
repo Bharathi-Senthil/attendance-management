@@ -6,6 +6,7 @@ import { sequelize } from "./db";
 import {
   DayAttendanceRoutes,
   HourlyAttendanceRoutes,
+  ReportRoutes,
   SectionRoutes,
   StudentRoutes,
   SubjectRoutes,
@@ -154,6 +155,8 @@ app.use(
   verifyToken,
   new SubjectSectionHoursRoutes().getRouter()
 );
+
+app.use("/api/report", verifyToken, new ReportRoutes().getRouter());
 
 app.get("/api/hourly-report", (req, res) => {
   sequelize.query(query).then((data) => {

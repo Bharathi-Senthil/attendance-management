@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataService } from "src/app/helpers/data.service";
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
-import { Section, Student } from "src/app/models";
+import { Student } from "src/app/models";
 
 @Component({
   selector: "day-attendance-form",
@@ -14,8 +14,6 @@ export class DayAttendanceFormComponent implements OnInit {
   form: FormGroup;
 
   students: Student[];
-
-  sections: Section[];
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
@@ -29,7 +27,6 @@ export class DayAttendanceFormComponent implements OnInit {
     this.form = this.fb.group({
       id: null,
       department: [{ value: "CSE", disabled: true }, [Validators.required]],
-      sectionId: [null, [Validators.required]],
       studentId: [null, [Validators.required]],
       date: [{ value: null, disabled: true }, [Validators.required]],
       isAbsent: [true, [Validators.required]],
@@ -44,23 +41,11 @@ export class DayAttendanceFormComponent implements OnInit {
     });
 
     this.form.controls["date"].valueChanges.subscribe((date) => {
-      let sec = this.form.controls["sectionId"];
-      this.getStudents(sec.value, date);
+      this.getStudents(date);
     });
-
-    this.form.controls["sectionId"].valueChanges.subscribe((sec) => {
-      let date = this.form.controls["date"];
-      this.getStudents(sec, date.value);
-    });
-    this.http
-      .get<Section[]>(`http://localhost:3000/api/sections`)
-      .subscribe((sections: Section[]) => {
-        this.sections = sections;
-        this.form.controls["sectionId"].setValue(sections[0]?.id);
-        this.form.controls["date"].setValue(new Date());
-      });
+    this.form.controls["date"].setValue(new Date());
   }
-  getStudents(sec: number, date: Date) {
+  getStudents(date: Date) {
     let Fdate = formatDate(date, "yyyy-MM-dd", "en");
     this.http
       .get<Student[]>(

@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import { StudentService, UserService } from "../services";
+import { UserService } from "../services";
 import { Student, User } from "../models";
-import { getPagingData } from "../helpers";
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sequelize } from "../db";
-import { Sequelize } from "sequelize";
 
 export class UserController {
   private userService: UserService;
