@@ -48,7 +48,7 @@ export class MentorFormComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validators.maxLength(12),
+          Validators.maxLength(13),
           Validators.minLength(8),
         ],
       ],

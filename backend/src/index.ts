@@ -28,7 +28,7 @@ import { verifyToken } from "./middleware";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:4200" }));
+app.use(cors({ origin: "http://localhost:60069" }));
 
 sequelize
   .authenticate()
@@ -73,8 +73,6 @@ Year.sync().then(() => {
 // HourlyAttendance.sync({ force: true });
 // DayAttendance.sync({ force: true });
 // SubjectSectionHours.sync({ force: true });
-
-
 
 // this is the raw query
 
