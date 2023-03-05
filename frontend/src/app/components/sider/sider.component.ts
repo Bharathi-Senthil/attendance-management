@@ -5,7 +5,9 @@ import { FormControl } from "@angular/forms";
 import { SlideInOut } from "./../../animations";
 import { Component, Input, OnInit } from "@angular/core";
 import { Menu, Section } from "../../models";
-import { downloadFile } from "src/app/helpers";
+import { downloadCSV } from "src/app/helpers";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-sider",
@@ -34,7 +36,7 @@ export class SiderComponent implements OnInit {
 
   ngOnInit(): void {
     this.http
-      .get<Section[]>("http://localhost:3000/api/sections")
+      .get<Section[]>(`${environment.apiUrl}/sections`)
       .subscribe((data: Section[]) => {
         this.sections = data;
       });
@@ -57,13 +59,14 @@ export class SiderComponent implements OnInit {
       fDate = formatDate(String(this.date.value), "yyyy-MM-dd", "en");
     this.http
       .get<any>(
-        `http://localhost:3000/api/report/day?year=${this.year.value}&sec=${
+        `${environment.apiUrl}/report/day?year=${this.year.value}&sec=${
           this.section.value
         }${fDate ? `&date=${fDate}` : ""}`
       )
       .subscribe((res) => {
         console.log(res);
-        if (res.length > 0) downloadFile(res);
+        if (res.length > 0)
+          downloadCSV(res, this.year.value, this.section.value, fDate);
         this.section.reset();
         this.year.reset();
         this.date.reset();

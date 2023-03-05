@@ -1,13 +1,10 @@
 import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subject } from "src/app/models";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-subject",
@@ -35,7 +32,7 @@ export class SubjectsComponent {
 
   getSection() {
     this.isLoading = !this.isLoading;
-    this.http.get<Subject[]>("http://localhost:3000/api/subjects").subscribe(
+    this.http.get<Subject[]>(`${environment.apiUrl}/subjects`).subscribe(
       (data: Subject[]) => {
         this.isLoading = !this.isLoading;
         this.subjects = data;
@@ -48,14 +45,14 @@ export class SubjectsComponent {
     if (this.form.valid) {
       if (this.id === -1)
         this.http
-          .post("http://localhost:3000/api/subjects", this.form.value)
+          .post(`${environment.apiUrl}/subjects`, this.form.value)
           .subscribe((data: any) => {
             this.form.reset();
             this.getSection();
           });
       else
         this.http
-          .put(`http://localhost:3000/api/subjects/${this.id}`, {
+          .put(`${environment.apiUrl}/subjects/${this.id}`, {
             id: this.id,
             ...this.form.value,
           })
@@ -75,11 +72,9 @@ export class SubjectsComponent {
   }
 
   delete(id: number) {
-    this.http
-      .delete(`http://localhost:3000/api/subjects/${id}`)
-      .subscribe(() => {
-        this.getSection();
-      });
+    this.http.delete(`${environment.apiUrl}/subjects/${id}`).subscribe(() => {
+      this.getSection();
+    });
   }
 
   edit(id: number, name: string, code: string) {

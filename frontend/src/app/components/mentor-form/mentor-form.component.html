@@ -64,7 +64,7 @@
       [nzType]="'default'"
       class="flex-grow"
       *ngIf="mentorId > 0"
-      (click)="mentorId = -1; form.reset()"
+      (click)="mentorId = -1; form.reset(); students = []"
     >
       cancel
     </button>

@@ -4,6 +4,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Section, TotalHours } from "src/app/models";
 
+import { environment } from "src/environments/environment";
+
 @Component({
   selector: "app-subject-section-hours",
   templateUrl: "./subject-section-hours.component.html",
@@ -31,9 +33,7 @@ export class SubjectSectionHoursComponent implements OnInit {
     this._hourId = id;
     if (id > 0)
       this.http
-        .get<TotalHours>(
-          `http://localhost:3000/api/subject-section-hours/${id}`
-        )
+        .get<TotalHours>(`${environment.apiUrl}/subject-section-hours/${id}`)
         .subscribe((data: TotalHours) => {
           this.form.patchValue(data);
           let selectedSubject = {
@@ -64,13 +64,13 @@ export class SubjectSectionHoursComponent implements OnInit {
     0;
     this.getSubjectHours();
     this.http
-      .get<TotalHours[]>("http://localhost:3000/api/subjects")
+      .get<TotalHours[]>(`${environment.apiUrl}/subjects`)
       .subscribe((data: TotalHours[]) => {
         this.subjects = data;
         this.tempSubjects = data;
       });
     this.http
-      .get<Section[]>("http://localhost:3000/api/sections")
+      .get<Section[]>(`${environment.apiUrl}/sections`)
       .subscribe((data: Section[]) => {
         this.sections = data;
       });
@@ -79,7 +79,7 @@ export class SubjectSectionHoursComponent implements OnInit {
   getSubjectHours() {
     this.isLoading = !this.isLoading;
     this.http
-      .get<TotalHours[]>("http://localhost:3000/api/subject-section-hours")
+      .get<TotalHours[]>(`${environment.apiUrl}/subject-section-hours`)
       .subscribe(
         (data: TotalHours[]) => {
           this.isLoading = !this.isLoading;
@@ -91,7 +91,7 @@ export class SubjectSectionHoursComponent implements OnInit {
 
   deleteSubjectHours(id: number) {
     this.http
-      .delete(`http://localhost:3000/api/subject-section-hours/${id}`)
+      .delete(`${environment.apiUrl}/subject-section-hours/${id}`)
       .subscribe((data: any) => {
         this.getSubjectHours();
       });
@@ -101,10 +101,7 @@ export class SubjectSectionHoursComponent implements OnInit {
     if (this.form.valid) {
       if (this.hourId < 0)
         this.http
-          .post(
-            "http://localhost:3000/api/subject-section-hours",
-            this.form.value
-          )
+          .post(`${environment.apiUrl}/subject-section-hours`, this.form.value)
           .subscribe((data: any) => {
             this.getSubjectHours();
             this.form.reset();
@@ -112,7 +109,7 @@ export class SubjectSectionHoursComponent implements OnInit {
       else
         this.http
           .put(
-            `http://localhost:3000/api/subject-section-hours/${this.hourId}`,
+            `${environment.apiUrl}/subject-section-hours/${this.hourId}`,
             this.form.value
           )
           .subscribe((data: any) => {

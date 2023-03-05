@@ -5,6 +5,7 @@ import { Student, User } from "../models";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sequelize } from "../db";
+import { Op } from "sequelize";
 
 export class UserController {
   private userService: UserService;
@@ -45,11 +46,24 @@ export class UserController {
   }
 
   getById(req: Request, res: Response) {
-    this.userService.get(req.params.id, this.options).then((user) => {
-      if (user) res.status(200).json(user);
-      else
+    const { id } = req.params;
+    this.userService.get(id, this.options).then((user) => {
+      if (user) {
+        Student.findAll({
+          where: {
+            mentorId: {
+              [Op.or]: [null, id],
+            },
+          },
+        }).then((students) => {
+          let studentId: any = [];
+          students.forEach((s) => studentId.push(s.dataValues));
+          let data = { ...user.dataValues, students };
+          res.status(200).json(data);
+        });
+      } else
         res.status(404).json({
-          message: `User id:${req.params.id} does not exists`,
+          message: `User id:${id} does not exists`,
         });
     });
   }

@@ -3,6 +3,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
+import { environment } from "src/environments/environment";
+
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -14,7 +16,7 @@ export class LoginComponent implements OnInit {
   submitForm(): void {
     if (this.validateForm.valid) {
       this.http
-        .post("http://localhost:3000/api/users/login", this.validateForm.value)
+        .post(`${environment.apiUrl}/users/login`, this.validateForm.value)
         .subscribe((user: any) => {
           localStorage.setItem("token", user.token);
           delete user.token;

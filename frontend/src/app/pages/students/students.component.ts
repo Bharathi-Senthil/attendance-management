@@ -1,9 +1,12 @@
+import { NzMessageService } from "ng-zorro-antd/message";
 import { FadeInOut } from "../../animations";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { uploadCsv } from "src/app/helpers";
 import { Section, Student } from "src/app/models";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-students",
@@ -43,11 +46,11 @@ export class StudentsComponent implements OnInit {
     }, 300);
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private message: NzMessageService) {}
 
   ngOnInit(): void {
     this.http
-      .get<Section[]>("http://localhost:3000/api/sections")
+      .get<Section[]>(`${environment.apiUrl}/sections`)
       .subscribe((data: Section[]) => {
         this.sections = data;
       });
@@ -58,7 +61,7 @@ export class StudentsComponent implements OnInit {
       .append("page", `${this.pageIndex}`)
       .append("size", `${this.pageSize}`)
       .append("search", `${this.search}`);
-    let url = `http://localhost:3000/api/students/page?page=${this.pageIndex}&size=${this.pageSize}&search=${this.search}`;
+    let url = `${environment.apiUrl}/students/page?page=${this.pageIndex}&size=${this.pageSize}&search=${this.search}`;
     if (p) this.filter = p.filter;
 
     if (this.filter) {
@@ -72,7 +75,7 @@ export class StudentsComponent implements OnInit {
     this.isLoading = !this.isLoading;
     this.http
       .get<{ data: Student[]; totalItems: number }>(
-        "http://localhost:3000/api/students/page",
+        `${environment.apiUrl}/students/page`,
         { params }
       )
       .subscribe(
@@ -87,8 +90,11 @@ export class StudentsComponent implements OnInit {
 
   deleteStudent(id: number) {
     this.http
-      .delete(`http://localhost:3000/api/students/${id}`)
-      .subscribe((data: any) => this.getStudents());
+      .delete(`${environment.apiUrl}/students/${id}`)
+      .subscribe((data: any) => {
+        this.message.success("Student deleted successfully");
+        this.getStudents();
+      });
   }
 
   handleUpload(file: any) {
@@ -99,7 +105,7 @@ export class StudentsComponent implements OnInit {
         file.value = null;
       });
       this.http
-        .post("http://localhost:3000/api/students", students)
+        .post(`${environment.apiUrl}/students`, students)
         .subscribe((data: any) => {
           this.getStudents();
         });

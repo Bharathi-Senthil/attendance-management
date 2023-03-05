@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataService } from "src/app/helpers/data.service";
 import { Section, Student } from "src/app/models";
 
+import { environment } from "src/environments/environment";
+
 @Component({
   selector: "hourly-attendance-form",
   templateUrl: "./hourly-attendance-form.component.html",
@@ -57,7 +59,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
     });
 
     this.http
-      .get<Section[]>("http://localhost:3000/api/sections")
+      .get<Section[]>(`${environment.apiUrl}/sections`)
       .subscribe((sections: Section[]) => {
         this.sections = sections;
         this.form.controls["sectionId"].setValue(sections[0]?.id);
@@ -97,7 +99,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
     date = formatDate(date, "yyyy-MM-dd", "en");
     this.http
       .get<Student[]>(
-        `http://localhost:3000/api/students/hour-present?mentor=${this.user.id}&hour=${period}&date=${date}`
+        `${environment.apiUrl}/students/hour-present?mentor=${this.user.id}&hour=${period}&date=${date}`
       )
       .subscribe((data: Student[]) => {
         this.students = data;
@@ -114,7 +116,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
   }
 
   getTimeTables(sec: number): Observable<any> {
-    return this.http.get(`http://localhost:3000/api/time-tables?sec=${sec}`);
+    return this.http.get(`${environment.apiUrl}/time-tables?sec=${sec}`);
   }
 
   getHours(sectionId: number) {}
@@ -124,7 +126,7 @@ export class HourlyAttendanceFormComponent implements OnInit {
       let data = this.form.getRawValue();
       data.date = formatDate(data.date, "yyyy-MM-dd", "en");
       this.http
-        .post(`http://localhost:3000/api/hourly-attendances`, data)
+        .post(`${environment.apiUrl}/hourly-attendances`, data)
         .subscribe((data) => {
           this.form.controls["hour"].reset();
           this.form.controls["subjectId"].reset();

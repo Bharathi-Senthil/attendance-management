@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="form" class="w-[450px]">
+<form nz-form [formGroup]="form" class="w-[450px] mt-10">
   <nz-form-item>
     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="date"
       >Date</nz-form-label
@@ -49,7 +49,48 @@
   </button>
 </form>
 
+<div>
+  <h1 class="my-4 text-lg font-medium text-center">Absentees</h1>
+  <nz-empty nzNotFoundContent="No Absentees" *ngIf="!absentees"></nz-empty>
+  <nz-table
+    #basicTable
+    [nzData]="absentees"
+    *ngIf="absentees"
+    nzSize="small"
+    [nzShowPagination]="false"
+    [nzScroll]="{ y: '200px' }"
+    class="max-w-[500px]"
+  >
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let abs of basicTable.data">
+        <td>{{ abs.studentRollNo }}</td>
+        <td>{{ abs.studentName }}</td>
+        <td>
+          <span
+            class="text-red-400 text-base cursor-pointer"
+            nz-icon
+            nzType="delete"
+            nzTheme="outline"
+            nz-tooltip
+            nzTooltipTitle="Delete"
+            nz-popconfirm
+            nzPopconfirmPlacement="bottom"
+            nzPopconfirmTitle="Are you sure delete?"
+            (nzOnConfirm)="deleteAttendance(abs.id)"
+          ></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
 <ng-template #tagPlaceHolder
-  >and {{ form.controls["studentId"].value.length - 1 }} more
-  selected</ng-template
->
+  >and {{ form.controls["studentId"].value.length - 1 }} more selected
+</ng-template>

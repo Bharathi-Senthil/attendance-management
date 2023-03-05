@@ -1,7 +1,10 @@
+import { NzMessageService } from "ng-zorro-antd/message";
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Section, Subject, TimeTable } from "src/app/models";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-time-table-form",
@@ -31,7 +34,7 @@ export class TimeTableFormComponent implements OnInit {
     this.timeTableIdChange.emit(id);
     if (id > 0)
       this.http
-        .get(`http://localhost:3000/api/time-tables/${id}`)
+        .get(`${environment.apiUrl}/time-tables/${id}`)
         .subscribe((data: any) => {
           this.form.patchValue(data);
           this.getDay(data.sectionId);
@@ -46,7 +49,11 @@ export class TimeTableFormComponent implements OnInit {
   @Output()
   onFormSubmit = new EventEmitter();
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private message: NzMessageService
+  ) {
     this.form = this.fb.group({
       day: [null, [Validators.required]],
       sectionId: [null, [Validators.required]],
@@ -72,16 +79,12 @@ export class TimeTableFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http
-      .get(`http://localhost:3000/api/sections`)
-      .subscribe((data: any) => {
-        this.sections = data;
-      });
-    this.http
-      .get(`http://localhost:3000/api/subjects`)
-      .subscribe((data: any) => {
-        this.subjects = data;
-      });
+    this.http.get(`${environment.apiUrl}/sections`).subscribe((data: any) => {
+      this.sections = data;
+    });
+    this.http.get(`${environment.apiUrl}/subjects`).subscribe((data: any) => {
+      this.subjects = data;
+    });
   }
 
   getDay(secId: number) {
@@ -106,18 +109,20 @@ export class TimeTableFormComponent implements OnInit {
       console.log(this.timeTableId);
       if (this.timeTableId === -1)
         this.http
-          .post("http://localhost:3000/api/time-tables", this.form.value)
+          .post(`${environment.apiUrl}/time-tables`, this.form.value)
           .subscribe((data: any) => {
+            this.message.success("Time Table added successfully");
             this.form.reset();
             this.onFormSubmit.emit();
           });
       else
         this.http
-          .put(`http://localhost:3000/api/time-tables/${this.timeTableId}`, {
+          .put(`${environment.apiUrl}/time-tables/${this.timeTableId}`, {
             id: this.timeTableId,
             ...this.form.value,
           })
           .subscribe((data: any) => {
+            this.message.success("Time Table updated successfully");
             this.timeTableId = -1;
             this.form.reset();
             this.onFormSubmit.emit();

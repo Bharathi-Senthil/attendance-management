@@ -1,9 +1,12 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { NzMessageService } from "ng-zorro-antd/message";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataService } from "src/app/helpers/data.service";
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Student } from "src/app/models";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "day-attendance-form",
@@ -14,13 +17,15 @@ export class DayAttendanceFormComponent implements OnInit {
   form: FormGroup;
 
   students: Student[];
+  absentees: any[];
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
   constructor(
     private fb: FormBuilder,
     private data: DataService,
-    private http: HttpClient
+    private http: HttpClient,
+    private message: NzMessageService
   ) {}
 
   ngOnInit(): void {
@@ -36,34 +41,46 @@ export class DayAttendanceFormComponent implements OnInit {
       this.form.controls["date"].setValue(date);
     });
 
-    this.data.getDate().subscribe((date) => {
-      this.form.controls["date"].setValue(date);
-    });
-
     this.form.controls["date"].valueChanges.subscribe((date) => {
       this.getStudents(date);
     });
     this.form.controls["date"].setValue(new Date());
   }
+
   getStudents(date: Date) {
     let Fdate = formatDate(date, "yyyy-MM-dd", "en");
     this.http
       .get<Student[]>(
-        `http://localhost:3000/api/students/day-present?mentor=${this.user.id}&date=${Fdate}`
+        `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=${Fdate}`
       )
-      .subscribe((data: Student[]) => {
-        this.students = data;
-        if (data.length > 0) this.form.controls["studentId"].enable();
+      .subscribe((data: any) => {
+        console.log(data);
+        this.students = data.preStudents;
+        this.absentees = data.absStudents;
+        if (data.preStudents.length > 0)
+          this.form.controls["studentId"].enable();
         else this.form.controls["studentId"].disable();
       });
   }
+
+  deleteAttendance(id: number) {
+    this.http
+      .delete(`${environment.apiUrl}/day-attendances/${id}`)
+      .subscribe((data) => {
+        this.message.success("Attendance deleted successfully");
+        this.getStudents(this.form.controls["date"].value);
+      });
+  }
+
   submit() {
     if (this.form.valid && this.form.controls["studentId"].value.length > 0) {
       let data = this.form.getRawValue();
       data.date = formatDate(data.date, "yyyy-MM-dd", "en");
       this.http
-        .post(`http://localhost:3000/api/day-attendances`, data)
+        .post(`${environment.apiUrl}/day-attendances`, data)
         .subscribe((data) => {
+          this.message.success("Attendance added successfully");
+          this.getStudents(this.form.controls["date"].value);
           this.form.controls["studentId"].reset();
         });
     } else {

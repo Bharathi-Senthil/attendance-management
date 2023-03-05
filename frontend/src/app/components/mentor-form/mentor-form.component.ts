@@ -1,7 +1,10 @@
+import { NzMessageService } from "ng-zorro-antd/message";
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Student } from "src/app/models";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-mentor-form",
@@ -24,10 +27,15 @@ export class MentorFormComponent implements OnInit {
     if (id > 0) {
       this.form.controls["password"].disable();
       this.http
-        .get(`http://localhost:3000/api/users/${id}`)
+        .get(`${environment.apiUrl}/users/${id}`)
         .subscribe((user: any) => {
-          this.getStudents(user.id);
           this.form.patchValue(user);
+          this.students = user.students;
+          let studentId: any[] = [];
+          user.students.forEach((s: any) => {
+            if (s.mentorId) studentId.push(s.id);
+          });
+          this.form.controls["studentId"].setValue(studentId);
         });
     } else this.form.controls["password"].enable();
   }
@@ -40,7 +48,11 @@ export class MentorFormComponent implements OnInit {
 
   students: Student[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private message: NzMessageService
+  ) {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
@@ -56,48 +68,29 @@ export class MentorFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getStudents();
-  }
-
-  getStudents(mentorId?: number) {
-    this.http
-      .get(
-        `http://localhost:3000/api/students?mentor=${
-          mentorId ? mentorId : null
-        }`
-      )
-      .subscribe((students: any) => {
-        if (!mentorId) this.students = students;
-        else {
-          this.students = [...this.students, ...students];
-          let studentId: any[] = [];
-          students.forEach((s: any) => {
-            studentId.push(s.id);
-          });
-          this.form.controls["studentId"].setValue(studentId);
-        }
-      });
-  }
+  ngOnInit(): void {}
 
   submit() {
     if (this.form.valid) {
       if (this.mentorId === -1)
         this.http
-          .post("http://localhost:3000/api/users/register", this.form.value)
+          .post(`${environment.apiUrl}/users/register`, this.form.value)
           .subscribe((data: any) => {
-            this.getStudents(this.mentorId);
+            this.message.success("Mentor added successfully");
+            this.students = [];
             this.form.reset();
             this.onFormSubmit.emit();
           });
       else
         this.http
-          .put(`http://localhost:3000/api/users/${this.mentorId}`, {
+          .put(`${environment.apiUrl}/users/${this.mentorId}`, {
             id: this.mentorId,
             ...this.form.value,
           })
           .subscribe((data: any) => {
+            this.message.success("Mentor updated successfully");
             this.mentorId = -1;
+            this.students = [];
             this.form.reset();
             this.onFormSubmit.emit();
           });

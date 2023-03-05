@@ -1,7 +1,10 @@
+import { NzMessageService } from "ng-zorro-antd/message";
 import { FadeInOut } from "../../animations";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { Mentor } from "src/app/models";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-mentor",
@@ -18,20 +21,18 @@ export class MentorComponent implements OnInit {
   pageIndex = 1;
   total: number;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private message: NzMessageService) {}
   ngOnInit(): void {
     this.getMentors();
   }
 
   getMentors() {
     this.isLoading = !this.isLoading;
-    this.http.get<Mentor[]>(`http://localhost:3000/api/users`).subscribe(
+    this.http.get<Mentor[]>(`${environment.apiUrl}/users`).subscribe(
       (res: Mentor[]) => {
-        console.log(res);
         this.mentors = res;
         this.isLoading = !this.isLoading;
         this.total = res.length;
-        // console.log(res);
       },
       (err) => (this.isLoading = !this.isLoading)
     );
@@ -39,7 +40,10 @@ export class MentorComponent implements OnInit {
 
   deleteMentor(id: number) {
     this.http
-      .delete(`http://localhost:3000/api/users/${id}`)
-      .subscribe((data: any) => this.getMentors());
+      .delete(`${environment.apiUrl}/users/${id}`)
+      .subscribe((data: any) => {
+        this.message.success("Mentor deleted successfully");
+        this.getMentors();
+      });
   }
 }

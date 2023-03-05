@@ -26,17 +26,17 @@ export class ErrorInterceptor implements HttpInterceptor {
         let err = error.error;
         let errorMessage: string = "";
         if (error.status == 401) {
+          this.message.warning("Warning", "Invalid Credentials");
           localStorage.clear();
           this.router.navigateByUrl("/login");
         }
         if (error.status >= 400 && error.status !== 401) {
-          if (err.errors) {
+          if (err.errors)
             err.errors.map((e: any) => {
               errorMessage += e.message + "</br>";
             });
-          } else {
-            errorMessage = err.errorMessage;
-          }
+          else errorMessage = err;
+
           this.message.warning("Warning", errorMessage);
         }
         return throwError(errorMessage);

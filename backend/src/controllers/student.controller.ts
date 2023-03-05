@@ -107,6 +107,7 @@ export class StudentController {
         ],
       },
     ],
+    order: [["studentRollNo", "ASC"]],
   };
 
   constructor() {
@@ -213,13 +214,13 @@ export class StudentController {
             date: new Date(String(date)),
           },
         };
-      DayAttendance.findAll(options).then((absStudent) => {
-        absStudent.forEach((abs) => {
+      DayAttendance.findAll(options).then((absStudents) => {
+        absStudents.forEach((abs) => {
           preStudents = preStudents.filter(
             (pre) => pre.dataValues.id != abs.dataValues.studentId
           );
         });
-        res.status(200).json(preStudents);
+        res.status(200).json({ preStudents, absStudents });
       });
     });
   }

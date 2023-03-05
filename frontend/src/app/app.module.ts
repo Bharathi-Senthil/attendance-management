@@ -1,3 +1,4 @@
+import { AuthenticationModule } from "./authentication/authentication.module";
 import { ComponentsModule } from "./components/components.module";
 import { PagesModule } from "./pages/pages.module";
 import { NgModule } from "@angular/core";
@@ -31,6 +32,7 @@ registerLocaleData(en);
     NgZorroModule,
     PagesModule,
     ComponentsModule,
+    AuthenticationModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

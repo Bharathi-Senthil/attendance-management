@@ -29,7 +29,27 @@ import { verifyToken } from "./middleware";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:4200" }));
+const allowlist = [
+  "http://localhost:4200",
+  "http://localhost",
+  /^http:\/\/192\.168\.1\.\d{1,3}$/,
+];
+
+const corsOptions: any = {
+  origin: function (origin: string, callback: any) {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (allowlist.some((pattern) => new RegExp(pattern).test(origin))) {
+      callback(null, true);
+    } else {
+      callback(new Error("Unauthorized"));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 
 sequelize
   .authenticate()
@@ -134,6 +154,11 @@ let query = `SELECT a.student_id, a.student_name, a.roll_no,
 `;
 
 app.use(express.json());
+
+// app.use(express.static(__dirname + "/attendance-management", { index: false }));
+// app.get(/^((?!(api)).)*$/, function (req, res) {
+//   res.sendFile(__dirname + "/attendance-management/index.html");
+// });
 
 app.use("/api/users", new UserRoutes().getRouter());
 app.use("/api/sections", verifyToken, new SectionRoutes().getRouter());

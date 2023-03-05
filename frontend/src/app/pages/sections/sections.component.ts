@@ -4,6 +4,8 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Section } from "src/app/models";
 
+import { environment } from "src/environments/environment";
+
 @Component({
   selector: "app-section",
   templateUrl: "./sections.component.html",
@@ -25,7 +27,7 @@ export class SectionsComponent implements OnInit {
 
   getSection() {
     this.isLoading = !this.isLoading;
-    this.http.get<Section[]>("http://localhost:3000/api/sections").subscribe(
+    this.http.get<Section[]>(`${environment.apiUrl}/sections`).subscribe(
       (data: Section[]) => {
         this.isLoading = !this.isLoading;
         this.sections = data;
@@ -38,7 +40,7 @@ export class SectionsComponent implements OnInit {
     if (this.section.valid) {
       if (this.id === -1)
         this.http
-          .post("http://localhost:3000/api/sections", {
+          .post(`${environment.apiUrl}/sections`, {
             name: this.section.value,
           })
           .subscribe((data: any) => {
@@ -47,7 +49,7 @@ export class SectionsComponent implements OnInit {
           });
       else
         this.http
-          .put(`http://localhost:3000/api/sections/${this.id}`, {
+          .put(`${environment.apiUrl}/sections/${this.id}`, {
             id: this.id,
             name: this.section.value,
           })
@@ -63,11 +65,9 @@ export class SectionsComponent implements OnInit {
   }
 
   delete(id: number) {
-    this.http
-      .delete(`http://localhost:3000/api/sections/${id}`)
-      .subscribe(() => {
-        this.getSection();
-      });
+    this.http.delete(`${environment.apiUrl}/sections/${id}`).subscribe(() => {
+      this.getSection();
+    });
   }
 
   edit(id: number, name: string) {
