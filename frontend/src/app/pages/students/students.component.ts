@@ -107,6 +107,7 @@ export class StudentsComponent implements OnInit {
       this.http
         .post(`${environment.apiUrl}/students`, students)
         .subscribe((data: any) => {
+          this.message.success("Students added successfully");
           this.getStudents();
         });
     });

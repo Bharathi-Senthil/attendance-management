@@ -34,6 +34,8 @@ export function uploadCsv(file: any): Observable<any> {
 }
 
 export function downloadCSV(data: any, year: any, sec: any, date?: any) {
+  const yearName = ["I", "II", "III", "IV"];
+  const secName = ["A", "B", "C", "D", "E", "F"];
   const replacer = (key: any, value: any) => (value === null ? "" : value);
   const header = Object.keys(data[0]);
   const csv = data.map((row: any) =>
@@ -49,7 +51,9 @@ export function downloadCSV(data: any, year: any, sec: any, date?: any) {
   const url = window.URL.createObjectURL(blob);
 
   a.href = url;
-  a.download = date ? `${date}-${year}-${sec}.csv` : `${year}-${sec}Full.csv`;
+  a.download = date
+    ? `${date}-${yearName[year - 1]}-${secName[sec - 1]}.csv`
+    : `${yearName[year - 1]}-${secName[sec - 1]}Full.csv`;
   a.click();
   window.URL.revokeObjectURL(url);
   a.remove();
