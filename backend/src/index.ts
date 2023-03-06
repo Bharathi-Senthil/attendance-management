@@ -32,7 +32,7 @@ const app = express();
 const allowlist = [
   "http://localhost:4200",
   "http://localhost",
-  /^http:\/\/192\.168\.1\.\d{1,3}$/,
+  /^http:\/\/172\.16\.5\.\d{1,3}:88$/,
 ];
 
 const corsOptions: any = {

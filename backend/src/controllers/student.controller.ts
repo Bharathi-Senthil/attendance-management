@@ -92,6 +92,7 @@ export class StudentController {
       [Sequelize.col("student.reg_no"), "studentRegNo"],
       [Sequelize.col("student.section_id"), "studentSectionId"],
       [Sequelize.col("student.section.name"), "sectionName"],
+      [Sequelize.col("student.mentor_id"), "mentorId"],
       "isAbsent",
     ],
     include: [
@@ -196,13 +197,14 @@ export class StudentController {
             (pre) => pre.dataValues.id != abs.dataValues.studentId
           );
         });
+
         res.status(200).json(preStudents);
       });
     });
   }
 
   getDayPresent(req: Request, res: Response) {
-    const { mentor, date } = req.query;
+    const { mentor, date }: any = req.query;
     let preStudents: Student[];
     Student.findAll({ where: { mentorId: mentor } }).then((students) => {
       preStudents = students;
@@ -220,6 +222,9 @@ export class StudentController {
             (pre) => pre.dataValues.id != abs.dataValues.studentId
           );
         });
+        absStudents = absStudents.filter(
+          (abs) => abs.dataValues.mentorId === parseInt(mentor)
+        );
         res.status(200).json({ preStudents, absStudents });
       });
     });
