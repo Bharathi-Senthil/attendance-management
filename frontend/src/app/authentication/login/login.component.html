@@ -3,19 +3,19 @@
     nz-form
     [formGroup]="validateForm"
     (ngSubmit)="submitForm()"
-    class="form bg-[#95C1E2]"
+    class="form bg-[#FFFF]"
   >
     <h1
       class="text-3xl font-medium pb-[25px] leading-none flex justify-center text-[#061C3D]"
     >
-      Please enter your details
+      Enter your crendiatials
     </h1>
 
     <nz-form-item>
       <nz-form-label
         nzRequired
         [nzSpan]="7"
-        class="text-2xl text-[#061C3D] font-semibold"
+        class="text-2xl text-[#061C3D] font-semibold leading-3"
         >Email</nz-form-label
       >
       <nz-form-control nzErrorTip="Please input your email!">
@@ -33,7 +33,7 @@
       <nz-form-label
         nzRequired
         [nzSpan]="7"
-        class="text-2xl font-semibold text-[#061C3D]"
+        class="text-2xl font-semibold text-[#061C3D] leading-3"
         >Password</nz-form-label
       >
       <nz-form-control nzErrorTip="Please input your Password!">
