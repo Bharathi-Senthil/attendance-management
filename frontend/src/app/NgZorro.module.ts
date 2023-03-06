@@ -41,6 +41,7 @@ import { NzEmptyModule } from "ng-zorro-antd/empty";
     NzUploadModule,
     NzRadioModule,
     NzEmptyModule,
+    NzInputModule,
   ],
 })
 export class NgZorroModule {}
