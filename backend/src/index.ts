@@ -92,7 +92,7 @@ Year.sync().then(() => {
 // TimeTable.sync({ force: true });
 // Student.sync({ force: true });
 // HourlyAttendance.sync({ force: true });
-// DayAttendance.sync({ force: true });
+// DayAttendance.sync();
 // SubjectSectionHours.sync({ force: true });
 
 // this is the raw query
@@ -155,10 +155,10 @@ let query = `SELECT a.student_id, a.student_name, a.roll_no,
 
 app.use(express.json());
 
-// app.use(express.static(__dirname + "/attendance-management", { index: false }));
-// app.get(/^((?!(api)).)*$/, function (req, res) {
-//   res.sendFile(__dirname + "/attendance-management/index.html");
-// });
+app.use(express.static(__dirname + "/attendance-management", { index: false }));
+app.get(/^((?!(api)).)*$/, function (req, res) {
+  res.sendFile(__dirname + "/attendance-management/index.html");
+});
 
 app.use("/api/users", new UserRoutes().getRouter());
 app.use("/api/sections", verifyToken, new SectionRoutes().getRouter());

@@ -28,6 +28,10 @@ DayAttendance.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    reason: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
   },
   {
     sequelize,
