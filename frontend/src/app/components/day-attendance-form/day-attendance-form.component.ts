@@ -17,7 +17,7 @@ export class DayAttendanceFormComponent implements OnInit {
   form: FormGroup;
 
   students: Student[];
-  absentees: any[];
+  absentees: any[] = [];
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
@@ -62,6 +62,7 @@ export class DayAttendanceFormComponent implements OnInit {
       )
       .subscribe(
         (data: any) => {
+          console.log(data);
           this.isLoading = false;
           this.students = data.preStudents;
           this.absentees = data.absStudents;

@@ -207,7 +207,6 @@ export class StudentController {
     const { mentor, date }: any = req.query;
     let preStudents: Student[];
     User.findByPk(mentor).then((user) => {
-      console.log(user?.dataValues);
       let options = {};
       if (user?.dataValues.role != "ADMIN")
         options = { where: { mentorId: mentor } };

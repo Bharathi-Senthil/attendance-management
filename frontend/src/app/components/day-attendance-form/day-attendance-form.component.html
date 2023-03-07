@@ -53,16 +53,18 @@
   </button>
 </form>
 
-<div>
+<div class="w-[500px]">
   <h1 class="my-4 text-lg font-medium text-center">Absentees</h1>
-  <nz-empty nzNotFoundContent="No Absentees" *ngIf="!absentees"></nz-empty>
+  <nz-empty
+    nzNotFoundContent="No Absentees"
+    *ngIf="absentees.length == 0"
+  ></nz-empty>
   <nz-table
     [nzData]="absentees"
-    *ngIf="absentees"
+    *ngIf="absentees.length > 0"
     nzSize="small"
     [nzShowPagination]="false"
     [nzScroll]="{ y: '200px' }"
-    class="max-w-[500px]"
   >
     <thead>
       <tr>
