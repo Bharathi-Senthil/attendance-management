@@ -65,7 +65,6 @@ export class DayAttendanceFormComponent implements OnInit {
           this.isLoading = false;
           this.students = data.preStudents;
           this.absentees = data.absStudents;
-          console.log(data);
           if (data.preStudents.length > 0)
             this.form.controls["studentId"].enable();
           else this.form.controls["studentId"].disable();
