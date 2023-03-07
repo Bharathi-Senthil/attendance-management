@@ -32,15 +32,16 @@ export class ReportController {
 
   getDayReport(req: Request, res: Response) {
     const { year, sec, date }: any = req.query;
-
+    let where = `WHERE da.is_absent = TRUE AND s.year_id = ${year}`;
+    if (sec != "null") where += ` AND s.section_id = ${sec}`;
     sequelize
       .query(
         `
-          SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS totalAbsent
-          FROM students s
+          SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS totalAbsent 
+          FROM students s 
           LEFT JOIN day_attendances da ON s.id = da.student_id 
-          WHERE da.is_absent = TRUE AND s.section_id = ${sec} AND s.year_id = ${year}
-          GROUP BY s.id, s.name
+          ${where} 
+          GROUP BY s.id, s.name 
           HAVING SUM(${
             date
               ? `CASE WHEN da.date = "${date} 00:00:00.000 +00:00" THEN 1 ELSE 0 END`

@@ -108,11 +108,7 @@
         <button
           nz-button
           [nzType]="'primary'"
-          [disabled]="
-            year.invalid ||
-            section.invalid ||
-            (date.enabled ? date.invalid : false)
-          "
+          [disabled]="year.invalid || (date.enabled ? date.invalid : false)"
           (click)="getReport()"
         >
           Download

@@ -51,9 +51,11 @@ export function downloadCSV(data: any, year: any, sec: any, date?: any) {
   const url = window.URL.createObjectURL(blob);
 
   a.href = url;
+
   a.download = date
-    ? `${date}-${yearName[year - 1]}-${secName[sec - 1]}.csv`
-    : `${yearName[year - 1]}-${secName[sec - 1]}Full.csv`;
+    ? `${date}-${yearName[year - 1]}-${sec ? secName[sec - 1] : ""}.csv`
+    : `${yearName[year - 1]}-${sec ? secName[sec - 1] : ""}Full.csv`;
+
   a.click();
   window.URL.revokeObjectURL(url);
   a.remove();
