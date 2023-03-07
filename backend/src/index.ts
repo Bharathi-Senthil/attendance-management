@@ -92,7 +92,7 @@ Year.sync().then(() => {
 // TimeTable.sync({ force: true });
 // Student.sync({ force: true });
 // HourlyAttendance.sync({ force: true });
-// DayAttendance.sync();
+// DayAttendance.sync({ force: true });
 // SubjectSectionHours.sync({ force: true });
 
 // this is the raw query

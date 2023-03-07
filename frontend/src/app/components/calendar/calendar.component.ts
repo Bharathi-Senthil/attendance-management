@@ -126,8 +126,7 @@ export class CalendarComponent implements OnInit {
         let month = this.date.getMonth();
         let date: any = start + idx;
         let fullDate = new Date(year, month, date);
-        let isDisabled =
-          fullDate.getDay() === 0 || fullDate.getDay() === 6 ? true : false;
+        let isDisabled = fullDate.getDay() === 0 ? true : false;
         return {
           date,
           month,
