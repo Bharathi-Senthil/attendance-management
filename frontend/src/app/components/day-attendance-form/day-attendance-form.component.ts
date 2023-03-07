@@ -21,6 +21,8 @@ export class DayAttendanceFormComponent implements OnInit {
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
+  isLoading: boolean;
+
   constructor(
     private fb: FormBuilder,
     private data: DataService,
@@ -42,24 +44,34 @@ export class DayAttendanceFormComponent implements OnInit {
     });
 
     this.form.controls["date"].valueChanges.subscribe((date) => {
-      this.getStudents(date);
+      this.getStudents();
     });
     this.form.controls["date"].setValue(new Date());
   }
 
-  getStudents(date: Date) {
-    let Fdate = formatDate(date, "yyyy-MM-dd", "en");
+  getStudents() {
+    this.isLoading = true;
+    let Fdate = formatDate(
+      this.form.controls["date"].value,
+      "yyyy-MM-dd",
+      "en"
+    );
     this.http
       .get<Student[]>(
         `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=${Fdate}`
       )
-      .subscribe((data: any) => {
-        this.students = data.preStudents;
-        this.absentees = data.absStudents;
-        if (data.preStudents.length > 0)
-          this.form.controls["studentId"].enable();
-        else this.form.controls["studentId"].disable();
-      });
+      .subscribe(
+        (data: any) => {
+          this.isLoading = false;
+          this.students = data.preStudents;
+          this.absentees = data.absStudents;
+          console.log(data);
+          if (data.preStudents.length > 0)
+            this.form.controls["studentId"].enable();
+          else this.form.controls["studentId"].disable();
+        },
+        (err) => (this.isLoading = false)
+      );
   }
 
   deleteAttendance(id: number) {
@@ -67,7 +79,7 @@ export class DayAttendanceFormComponent implements OnInit {
       .delete(`${environment.apiUrl}/day-attendances/${id}`)
       .subscribe((data) => {
         this.message.success("Attendance deleted successfully");
-        this.getStudents(this.form.controls["date"].value);
+        this.getStudents();
       });
   }
 
@@ -79,7 +91,7 @@ export class DayAttendanceFormComponent implements OnInit {
         .post(`${environment.apiUrl}/day-attendances`, data)
         .subscribe((data) => {
           this.message.success("Attendance added successfully");
-          this.getStudents(this.form.controls["date"].value);
+          this.getStudents();
           this.form.controls["studentId"].reset();
         });
     } else {

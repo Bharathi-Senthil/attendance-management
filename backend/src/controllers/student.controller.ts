@@ -208,10 +208,10 @@ export class StudentController {
     let preStudents: Student[];
     User.findByPk(mentor).then((user) => {
       console.log(user?.dataValues);
-      let where = {};
+      let options = {};
       if (user?.dataValues.role != "ADMIN")
-        where = { where: { mentorId: mentor } };
-      Student.findAll(where).then((students) => {
+        options = { where: { mentorId: mentor } };
+      Student.findAll(options).then((students) => {
         preStudents = students;
         let options: any = this.dayOptions;
         if (date)
