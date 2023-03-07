@@ -24,7 +24,7 @@ const routes: Routes = [
       {
         path: "day-attendance",
         component: DayAttendanceComponent,
-        canActivate: [AuthGuard, MentorGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: "hourly-attendance",

@@ -54,7 +54,6 @@ export class DayAttendanceFormComponent implements OnInit {
         `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=${Fdate}`
       )
       .subscribe((data: any) => {
-        console.log(data);
         this.students = data.preStudents;
         this.absentees = data.absStudents;
         if (data.preStudents.length > 0)

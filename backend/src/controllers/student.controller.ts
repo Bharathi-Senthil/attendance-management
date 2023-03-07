@@ -206,26 +206,33 @@ export class StudentController {
   getDayPresent(req: Request, res: Response) {
     const { mentor, date }: any = req.query;
     let preStudents: Student[];
-    Student.findAll({ where: { mentorId: mentor } }).then((students) => {
-      preStudents = students;
-      let options: any = this.dayOptions;
-      if (date)
-        options = {
-          ...options,
-          where: {
-            date: new Date(String(date)),
-          },
-        };
-      DayAttendance.findAll(options).then((absStudents) => {
-        absStudents.forEach((abs) => {
-          preStudents = preStudents.filter(
-            (pre) => pre.dataValues.id != abs.dataValues.studentId
-          );
+    User.findByPk(mentor).then((user) => {
+      console.log(user?.dataValues);
+      let where = {};
+      if (user?.dataValues.role != "ADMIN")
+        where = { where: { mentorId: mentor } };
+      Student.findAll(where).then((students) => {
+        preStudents = students;
+        let options: any = this.dayOptions;
+        if (date)
+          options = {
+            ...options,
+            where: {
+              date: new Date(String(date)),
+            },
+          };
+        DayAttendance.findAll(options).then((absStudents) => {
+          absStudents.forEach((abs) => {
+            preStudents = preStudents.filter(
+              (pre) => pre.dataValues.id != abs.dataValues.studentId
+            );
+          });
+          if (user?.dataValues.role != "ADMIN")
+            absStudents = absStudents.filter(
+              (abs) => abs.dataValues.mentorId === parseInt(mentor)
+            );
+          res.status(200).json({ preStudents, absStudents });
         });
-        absStudents = absStudents.filter(
-          (abs) => abs.dataValues.mentorId === parseInt(mentor)
-        );
-        res.status(200).json({ preStudents, absStudents });
       });
     });
   }

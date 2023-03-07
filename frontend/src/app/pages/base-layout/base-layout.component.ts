@@ -42,6 +42,11 @@ export class BaseLayoutComponent implements OnInit {
           path: "students",
         },
         {
+          title: "Day Attendance",
+          icon: "team",
+          path: "day-attendance",
+        },
+        {
           title: "Time Table",
           icon: "timetable",
           path: "time-tables",
