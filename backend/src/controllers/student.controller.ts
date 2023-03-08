@@ -116,11 +116,25 @@ export class StudentController {
   }
 
   getPaged(req: Request, res: Response) {
-    const { page, size, sec, mentor, search, fYear, fSec } = req.query;
+    const { page, size, sec, mentor, search, fYear, fSec, fMentor }: any =
+      req.query;
     let where = {};
     if (sec) where = { ...where, sectionId: sec };
     if (fYear) where = { ...where, yearId: fYear };
     if (fSec) where = { ...where, sectionId: fSec };
+    if (fMentor) {
+      if (fMentor.includes("null")) {
+        if (typeof fMentor === "object") {
+          fMentor.splice(fMentor.indexOf("null"), 1);
+          where = {
+            ...where,
+            mentorId: {
+              [Op.or]: [null, ...fMentor],
+            },
+          };
+        } else where = { ...where, mentorId: { [Op.eq]: null } };
+      } else where = { ...where, mentorId: fMentor };
+    }
     if (mentor) {
       if (mentor != "null") where = { ...where, mentorId: mentor };
       else where = { ...where, mentorId: null };
@@ -147,6 +161,7 @@ export class StudentController {
         ],
       };
     let fOptions: any = { ...this.options, where };
+    console.log(fOptions);
     this.studentService.getPaged(page, size, fOptions).then((students) => {
       res.status(200).json(getPagingData(students));
     });

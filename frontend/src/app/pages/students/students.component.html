@@ -94,7 +94,14 @@
           >
             Section
           </th>
-          <th>Mentor</th>
+          <th
+            nzColumnKey="fMentor"
+            [nzFilterFn]="true"
+            [nzFilters]="mentors"
+            *ngIf="mentors.length > 1"
+          >
+            Mentor
+          </th>
           <th>Action</th>
         </tr>
       </thead>

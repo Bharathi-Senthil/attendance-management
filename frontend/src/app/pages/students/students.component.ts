@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { uploadCsv } from "src/app/helpers";
-import { Section, Student } from "src/app/models";
+import { Mentor, Section, Student } from "src/app/models";
 
 import { environment } from "src/environments/environment";
 
@@ -16,6 +16,7 @@ import { environment } from "src/environments/environment";
 })
 export class StudentsComponent implements OnInit {
   students: Student[];
+  mentors: any[] = [{ text: "Not Assigned", value: null }];
 
   isLoading = false;
 
@@ -53,6 +54,13 @@ export class StudentsComponent implements OnInit {
       .get<Section[]>(`${environment.apiUrl}/sections`)
       .subscribe((data: Section[]) => {
         this.sections = data;
+      });
+    this.http
+      .get<Mentor[]>(`${environment.apiUrl}/users`)
+      .subscribe((users) => {
+        users.map((u) => {
+          this.mentors.push({ text: u.name, value: u.id });
+        });
       });
   }
 

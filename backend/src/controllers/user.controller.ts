@@ -55,6 +55,7 @@ export class UserController {
               [Op.or]: [null, id],
             },
           },
+          order: [["mentorId", "ASC"]],
         }).then((students) => {
           let studentId: any = [];
           students.forEach((s) => studentId.push(s.dataValues));

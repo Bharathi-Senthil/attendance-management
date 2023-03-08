@@ -30,7 +30,6 @@ export class StudentFormComponent implements OnInit {
         .get(`${environment.apiUrl}/students/${id}`)
         .subscribe((data: any) => {
           this.form.patchValue(data);
-          console.log(data);
         });
   }
 
