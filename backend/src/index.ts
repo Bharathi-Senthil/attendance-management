@@ -6,6 +6,7 @@ import { sequelize } from "./db";
 import {
   DayAttendanceRoutes,
   HourlyAttendanceRoutes,
+  ReasonRoutes,
   ReportRoutes,
   SectionRoutes,
   StudentRoutes,
@@ -24,6 +25,7 @@ import {
   SubjectSectionHours,
   User,
   Year,
+  Reason,
 } from "./models";
 import { verifyToken } from "./middleware";
 
@@ -94,9 +96,9 @@ Year.sync().then(() => {
 // HourlyAttendance.sync({ force: true });
 // DayAttendance.sync({ force: true });
 // SubjectSectionHours.sync({ force: true });
+// Reason.sync({ force: true });
 
 // this is the raw query
-
 let query = `SELECT a.student_id, a.student_name, a.roll_no,
                   a.section_name,
                   sum(a.sub1_tot_hrs) sub1_tot_hrs,
@@ -182,6 +184,7 @@ app.use(
 );
 
 app.use("/api/report", verifyToken, new ReportRoutes().getRouter());
+app.use("/api/reason", verifyToken, new ReasonRoutes().getRouter());
 
 app.get("/api/hourly-report", (req, res) => {
   sequelize.query(query).then((data) => {

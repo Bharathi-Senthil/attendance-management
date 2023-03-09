@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { DayAttendanceService } from "../services";
-import { DayAttendance, Student, Section } from "../models";
+import { DayAttendance, Student, Section, Reason } from "../models";
 import { getPagingData } from "../helpers";
 import { Sequelize } from "sequelize";
+import { sequelize } from "../db";
 
 export class DayAttendanceController {
   private dayAttendanceService: DayAttendanceService;
@@ -70,6 +71,7 @@ export class DayAttendanceController {
 
     let students = data.studentId;
     delete data.studentId;
+    delete data.mentorId;
 
     let absentees: any[] = [];
     students?.forEach((s: any) => {
@@ -80,8 +82,12 @@ export class DayAttendanceController {
       return res.status(400).json({ errorMessage: "Students required" });
 
     DayAttendance.bulkCreate(absentees)
-      .then((dayAttendance) => res.status(201).json(dayAttendance))
-      .catch((err) => res.status(400).json(err));
+      .then(async (dayAttendance) => {
+        res.status(201).json(dayAttendance);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
   }
 
   update(req: Request, res: Response) {

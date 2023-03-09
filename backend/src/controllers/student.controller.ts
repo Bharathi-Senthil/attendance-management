@@ -161,7 +161,6 @@ export class StudentController {
         ],
       };
     let fOptions: any = { ...this.options, where };
-    console.log(fOptions);
     this.studentService.getPaged(page, size, fOptions).then((students) => {
       res.status(200).json(getPagingData(students));
     });

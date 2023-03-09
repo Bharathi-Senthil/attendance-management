@@ -72,6 +72,11 @@ export class DayAttendanceFormComponent implements OnInit {
         },
         (err) => (this.isLoading = false)
       );
+    this.http
+      .get(`${environment.apiUrl}/reason/${this.user.id}?date=${Fdate}`)
+      .subscribe((res: any) => {
+        this.form.controls["reason"].setValue(res.reason);
+      });
   }
 
   deleteAttendance(id: number) {
@@ -88,7 +93,10 @@ export class DayAttendanceFormComponent implements OnInit {
       let data = this.form.getRawValue();
       data.date = formatDate(data.date, "yyyy-MM-dd", "en");
       this.http
-        .post(`${environment.apiUrl}/day-attendances`, data)
+        .post(`${environment.apiUrl}/day-attendances`, {
+          ...data,
+          mentorId: this.user.id,
+        })
         .subscribe((data) => {
           this.message.success("Attendance added successfully");
           this.getStudents();
