@@ -3,6 +3,7 @@ let date = new Date("2022-12-31");
 let attendance = [];
 
 function generate(student_id, noOfDays) {
+  date = new Date("2022-12-31");
   for (let i = 0; i < noOfDays; i++) {
     attendance.push({
       date: new Date(date.setDate(date.getDate() + 1)),
@@ -11,6 +12,8 @@ function generate(student_id, noOfDays) {
     });
   }
 }
+
+// 00:00:00.000 +00:00
 
 // generate(614, 3);
 // generate(615, 9);
@@ -138,6 +141,7 @@ function generate(student_id, noOfDays) {
 // generate(730, 4);
 // generate(731, 5);
 // generate(732, 6);
+
 // generate(733, 7);
 // generate(734, 10);
 // generate(735, 7);
@@ -148,6 +152,7 @@ function generate(student_id, noOfDays) {
 // generate(740, 5);
 // generate(741, 4);
 // generate(742, 1);
+
 // generate(743, 5);
 // generate(744, 11);
 // generate(745, 4);
@@ -158,6 +163,7 @@ function generate(student_id, noOfDays) {
 // generate(750, 16);
 // generate(751, 6);
 // generate(752, 2);
+
 // generate(753, 5);
 // generate(754, 5);
 // generate(756, 4);
@@ -168,6 +174,7 @@ function generate(student_id, noOfDays) {
 // generate(761, 9);
 // generate(762, 9);
 // generate(763, 4);
+
 // generate(764, 11);
 // generate(765, 3);
 // generate(766, 16);
@@ -179,6 +186,7 @@ function generate(student_id, noOfDays) {
 // generate(846, 4);
 // generate(847, 10);
 // generate(848, 15);
+
 // generate(849, 4);
 // generate(850, 11);
 // generate(851, 6);
@@ -189,6 +197,7 @@ function generate(student_id, noOfDays) {
 // generate(856, 14);
 // generate(857, 6);
 // generate(858, 4);
+
 // generate(860, 7);
 // generate(861, 8);
 // generate(769, 8);
@@ -199,6 +208,7 @@ function generate(student_id, noOfDays) {
 // generate(774, 11);
 // generate(775, 9);
 // generate(776, 16);
+
 // generate(777, 21);
 // generate(778, 8);
 // generate(779, 4);
@@ -209,6 +219,7 @@ function generate(student_id, noOfDays) {
 // generate(784, 8);
 // generate(785, 4);
 // generate(786, 4);
+
 // generate(787, 4);
 // generate(713, 8);
 // generate(788, 7);
@@ -219,6 +230,7 @@ function generate(student_id, noOfDays) {
 // generate(793, 3);
 // generate(794, 23);
 // generate(795, 5);
+
 // generate(796, 4);
 // generate(797, 2);
 // generate(798, 4);
@@ -229,6 +241,7 @@ function generate(student_id, noOfDays) {
 // generate(802, 7);
 // generate(803, 5);
 // generate(804, 3);
+
 // generate(805, 2);
 // generate(806, 7);
 // generate(807, 4);
@@ -239,6 +252,7 @@ function generate(student_id, noOfDays) {
 // generate(811, 9);
 // generate(812, 6);
 // generate(813, 2);
+
 // generate(814, 3);
 // generate(815, 4);
 // generate(816, 7);
@@ -249,6 +263,7 @@ function generate(student_id, noOfDays) {
 // generate(821, 9);
 // generate(822, 3);
 // generate(823, 0);
+
 // generate(824, 1);
 // generate(825, 6);
 // generate(826, 3);
@@ -259,6 +274,7 @@ function generate(student_id, noOfDays) {
 // generate(831, 8);
 // generate(832, 2);
 // generate(833, 1);
+
 // generate(834, 2);
 // generate(835, 6);
 // generate(836, 6);
@@ -269,6 +285,7 @@ function generate(student_id, noOfDays) {
 // generate(891, 5);
 // generate(892, 6);
 // generate(893, 12);
+
 // generate(894, 2);
 // generate(895, 3);
 // generate(896, 5);
@@ -279,6 +296,7 @@ function generate(student_id, noOfDays) {
 // generate(901, 5);
 // generate(902, 8);
 // generate(903, 21);
+
 // generate(904, 29);
 // generate(905, 10);
 // generate(906, 5);
@@ -289,6 +307,7 @@ function generate(student_id, noOfDays) {
 // generate(912, 3);
 // generate(913, 3);
 // generate(914, 7);
+
 // generate(915, 7);
 // generate(916, 1);
 // generate(917, 3);
@@ -299,6 +318,7 @@ function generate(student_id, noOfDays) {
 // generate(923, 3);
 // generate(924, 2);
 // generate(925, 7);
+
 // generate(926, 4);
 // generate(927, 2);
 // generate(928, 1);
@@ -309,6 +329,7 @@ function generate(student_id, noOfDays) {
 // generate(935, 2);
 // generate(862, 15);
 // generate(863, 30);
+
 // generate(864, 22);
 // generate(865, 3);
 // generate(866, 6);
@@ -319,6 +340,7 @@ function generate(student_id, noOfDays) {
 // generate(840, 9);
 // generate(841, 15);
 // generate(715, 6);
+
 // generate(842, 6);
 // generate(936, 11);
 // generate(937, 2);
@@ -329,10 +351,11 @@ function generate(student_id, noOfDays) {
 // generate(942, 4);
 // generate(943, 16);
 // generate(944, 1);
-// generate(843, 15);
-// generate(716, 9);
-// generate(717, 6);
-// generate(718, 10);
-// generate(868, 1);
+
+generate(843, 15);
+generate(716, 9);
+generate(717, 6);
+generate(718, 10);
+generate(868, 1);
 
 console.log(attendance);

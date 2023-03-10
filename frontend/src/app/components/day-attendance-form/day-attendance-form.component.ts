@@ -19,7 +19,6 @@ export class DayAttendanceFormComponent implements OnInit {
 
   students: Student[];
   absentees: any[] = [];
-  reason: string;
   user = JSON.parse(String(localStorage.getItem("user")));
 
   isLoading: boolean;
@@ -66,7 +65,6 @@ export class DayAttendanceFormComponent implements OnInit {
       )
       .subscribe(
         (data: any) => {
-          console.log(data);
           this.isLoading = false;
           this.students = data.preStudents;
           this.absentees = data.absStudents;
@@ -79,6 +77,7 @@ export class DayAttendanceFormComponent implements OnInit {
     this.http
       .get(`${environment.apiUrl}/reason/${this.user.id}?date=${Fdate}`)
       .subscribe((res: any) => {
+        this.reasonForm.reset();
         this.reasonForm.patchValue(res);
         console.log(this.reasonForm.value);
       });
@@ -120,10 +119,16 @@ export class DayAttendanceFormComponent implements OnInit {
       let data = this.form.getRawValue();
       reason.date = formatDate(data.date, "yyyy-MM-dd", "en");
       reason.mentorId = this.user.id;
-      console.log(reason);
-      this.http.post(`${environment.apiUrl}/reason`, reason).subscribe(() => {
-        console.log(reason);
-      });
+      if (reason.id)
+        this.http
+          .put(`${environment.apiUrl}/reason/${reason.id}`, reason)
+          .subscribe(() => {
+            console.log(reason);
+          });
+      else
+        this.http.post(`${environment.apiUrl}/reason`, reason).subscribe(() => {
+          console.log(reason);
+        });
     }
   }
 }

@@ -21,8 +21,11 @@ export class ReasonController {
         },
       })
       .then((reason) => {
-        if (reason) res.status(200).json(reason);
-        else res.status(200).json({ message: `Reason does not exists` });
+        console.log({
+          mentorId,
+          date: new Date(String(date)),
+        });
+        res.status(200).json(reason);
       });
   }
 
