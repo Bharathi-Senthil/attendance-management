@@ -61,3 +61,17 @@ export class ReportController {
       });
   }
 }
+
+
+
+// SELECT COUNT(*) as totalStudents  from students s
+// WHERE s.year_id = 2
+// AND s.section_id = 1
+
+
+// SELECT COUNT (*) as totalAbsent from day_attendances da 
+// INNER JOIN students s  ON da.student_id =s.id
+// WHERE da.date = "2023-02-01 00:00:00.000 +00:00"
+// And s.year_id = 2
+// And s.section_id = 1
+// And da.is_absent = 1
