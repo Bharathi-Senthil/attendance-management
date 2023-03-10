@@ -15,14 +15,14 @@ import { environment } from "src/environments/environment";
 })
 export class DayAttendanceFormComponent implements OnInit {
   form: FormGroup;
+  reasonForm: FormGroup;
 
   students: Student[];
   absentees: any[] = [];
-
+  reason: string;
   user = JSON.parse(String(localStorage.getItem("user")));
 
   isLoading: boolean;
-
   constructor(
     private fb: FormBuilder,
     private data: DataService,
@@ -31,6 +31,11 @@ export class DayAttendanceFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.reasonForm = this.fb.group({
+      id: null,
+      reason: ["", [Validators.required]],
+    });
+
     this.form = this.fb.group({
       id: null,
       department: [{ value: "CSE", disabled: true }, [Validators.required]],
@@ -38,7 +43,6 @@ export class DayAttendanceFormComponent implements OnInit {
       date: [{ value: null, disabled: true }, [Validators.required]],
       isAbsent: [true, [Validators.required]],
     });
-
     this.data.getDate().subscribe((date) => {
       this.form.controls["date"].setValue(date);
     });
@@ -75,7 +79,8 @@ export class DayAttendanceFormComponent implements OnInit {
     this.http
       .get(`${environment.apiUrl}/reason/${this.user.id}?date=${Fdate}`)
       .subscribe((res: any) => {
-        this.form.controls["reason"].setValue(res.reason);
+        this.reasonForm.patchValue(res);
+        console.log(this.reasonForm.value);
       });
   }
 
@@ -108,6 +113,16 @@ export class DayAttendanceFormComponent implements OnInit {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
         }
+      });
+    }
+    if (this.reasonForm.valid) {
+      let reason = this.reasonForm.value;
+      let data = this.form.getRawValue();
+      reason.date = formatDate(data.date, "yyyy-MM-dd", "en");
+      reason.mentorId = this.user.id;
+      console.log(reason);
+      this.http.post(`${environment.apiUrl}/reason`, reason).subscribe(() => {
+        console.log(reason);
       });
     }
   }
