@@ -16,6 +16,11 @@ export class ReportRoutes {
     this.router.get("/day", (req, res) =>
       this.controller.getDayReport(req, res)
     );
+
+    //! DashboardReport
+    this.router.get("/dashboard", (req, res) =>
+      this.controller.getDashboardReport(req, res)
+    );
   }
 
   public getRouter() {
