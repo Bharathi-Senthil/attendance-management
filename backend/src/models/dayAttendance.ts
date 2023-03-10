@@ -28,6 +28,13 @@ DayAttendance.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    isOd: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    reason: {
+      type: DataTypes.STRING,
+    },
   },
   {
     sequelize,

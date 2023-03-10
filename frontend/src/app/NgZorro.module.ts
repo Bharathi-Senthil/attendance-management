@@ -19,6 +19,7 @@ import { NzNotificationModule } from "ng-zorro-antd/notification";
 import { NzUploadModule } from "ng-zorro-antd/upload";
 import { NzRadioModule } from "ng-zorro-antd/radio";
 import { NzEmptyModule } from "ng-zorro-antd/empty";
+import { NzTransferModule } from "ng-zorro-antd/transfer";
 
 @NgModule({
   exports: [
@@ -42,6 +43,7 @@ import { NzEmptyModule } from "ng-zorro-antd/empty";
     NzRadioModule,
     NzEmptyModule,
     NzInputModule,
+    NzTransferModule,
   ],
 })
 export class NgZorroModule {}

@@ -1,5 +1,5 @@
 .calendar {
-  @apply w-auto max-w-[500px] bg-white shadow border border-gray-200 rounded py-4 px-5 select-none;
+  @apply w-auto max-w-[400px] bg-white shadow border border-gray-200 rounded py-4 px-5 select-none;
 }
 
 .calender-header {
@@ -7,11 +7,11 @@
 }
 
 .calendar-body {
-  @apply gap-8 h-[300px] grid grid-cols-7;
+  @apply gap-4 h-auto grid grid-cols-7;
 }
 
 .weekdays {
-  @apply grid grid-cols-7 gap-8 mb-1;
+  @apply grid grid-cols-7 gap-6 mb-1;
   div {
     @apply flex items-center justify-center text-xs font-semibold text-gray-400 p-4;
   }
@@ -54,10 +54,11 @@
   font-weight: 500;
   line-height: 15px;
 
+  padding-block: 0.5rem;
+
   cursor: pointer;
 
   transition: background-color 0.1s ease-in;
-  animation: to-top 1s forwards;
 }
 
 .date:hover:not(.today, .active, .inactive) {

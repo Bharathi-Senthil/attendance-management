@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { DayAttendanceService } from "../services";
-import { DayAttendance, Student, Section, Reason } from "../models";
+import { DayAttendance, Student, Section } from "../models";
 import { getPagingData } from "../helpers";
 import { Sequelize } from "sequelize";
 import { sequelize } from "../db";

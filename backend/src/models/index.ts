@@ -7,4 +7,4 @@ export * from "./dayAttendance";
 export * from "./subjectSectionHours";
 export * from "./user";
 export * from "./year";
-export * from "./reason";
+// export * from "./reason";

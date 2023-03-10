@@ -7,4 +7,4 @@ export * from "./dayAttendance.controller";
 export * from "./subjectSectionHours.controller";
 export * from "./user.controller";
 export * from "./report.controller";
-export * from "./reason.controller";
+// export * from "./reason.controller";

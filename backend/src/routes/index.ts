@@ -7,4 +7,4 @@ export * from "./dayAttendance.routes";
 export * from "./subjectSectionHours.routes";
 export * from "./user.routes";
 export * from "./report.routes";
-export * from "./reason.routes";
+// export * from "./reason.routes";

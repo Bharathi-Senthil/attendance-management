@@ -21,10 +21,6 @@ export class ReasonController {
         },
       })
       .then((reason) => {
-        console.log({
-          mentorId,
-          date: new Date(String(date)),
-        });
         res.status(200).json(reason);
       });
   }

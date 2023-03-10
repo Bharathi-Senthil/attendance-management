@@ -15,6 +15,11 @@ function generate(student_id, noOfDays) {
 
 // 00:00:00.000 +00:00
 
+// generate(610, 6);
+// generate(611, 1);
+// generate(612, 4);
+// generate(613, 12);
+
 // generate(614, 3);
 // generate(615, 9);
 // generate(616, 3);
@@ -352,10 +357,10 @@ function generate(student_id, noOfDays) {
 // generate(943, 16);
 // generate(944, 1);
 
-generate(843, 15);
-generate(716, 9);
-generate(717, 6);
-generate(718, 10);
-generate(868, 1);
+// generate(843, 15);
+// generate(716, 9);
+// generate(717, 6);
+// generate(718, 10);
+// generate(868, 1);
 
 console.log(attendance);
