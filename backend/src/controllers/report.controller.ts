@@ -6,30 +6,6 @@ import { Sequelize } from "sequelize";
 export class ReportController {
   constructor() {}
 
-  private options = (year: number, sec: number) => {
-    return {
-      attributes: [
-        [Sequelize.col("student.name"), "name"],
-        [Sequelize.col("student.roll_no"), "rollNo"],
-        [Sequelize.col("student.reg_no"), "regNo"],
-        [Sequelize.col("student.parent_mobile"), "parentMobile"],
-        [sequelize.fn("COUNT", "id"), "totalAbsent"],
-      ],
-      include: [
-        {
-          model: Student,
-          as: "student",
-          attributes: [],
-          where: {
-            year_id: year,
-            section_id: sec,
-          },
-        },
-      ],
-      group: ["student.id"],
-    };
-  };
-
   getDayReport(req: Request, res: Response) {
     const { year, sec, date }: any = req.query;
     let where = `WHERE da.is_absent = TRUE AND s.year_id = ${year}`;
@@ -80,14 +56,14 @@ export class ReportController {
   }
 
   getDashboardReportByDateRange(req: Request, res: Response) {
-    const { year, sec, stateDate, endDate }: any = req.query;
+    const { year, sec, startDate, endDate }: any = req.query;
     sequelize
       .query(
         `
-        SELECT Date(date) AS date, COUNT(*) AS total_absent,
-        (SELECT COUNT(*) FROM students WHERE year_id = ${year} AND section_id = ${sec}) AS total_student
+        SELECT Date(date) AS date, COUNT(*) AS totalAbsent,
+        (SELECT COUNT(*) FROM students WHERE year_id = ${year} AND section_id = ${sec}) AS totalStudent
         FROM day_attendances
-        WHERE date BETWEEN ${stateDate} AND ${endDate}
+        WHERE date BETWEEN "${startDate}" AND "${endDate}"
         AND student_id IN (SELECT id FROM students WHERE year_id = ${year} AND section_id = ${sec})
         AND is_absent = 1
         GROUP BY date

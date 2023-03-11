@@ -1,3 +1,6 @@
+import { formatDate } from "@angular/common";
+import { environment } from "src/environments/environment";
+import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import {
   Chart,
@@ -17,29 +20,49 @@ import {
   styleUrls: ["./chart.component.scss"],
 })
 export class ChartComponent implements OnInit {
-  config = {
+  // isLoading: boolean;
+  lineChart: any;
+  barChart: any;
+  doughNut: any;
+
+  _date: Date;
+  dateRange: Date[];
+
+  get date() {
+    return this._date;
+  }
+
+  set date(value: Date) {
+    this._date = value;
+    this.http
+      .get(
+        `${environment.apiUrl}/report/dashboard?year=2&sec=1&date=${formatDate(
+          this.date,
+          "yyyy-MM-dd",
+          "en"
+        )}`
+      )
+      .subscribe((res: any) => {
+        this.doughNut.data.datasets[0].data[0] = res[0].totalAbsent;
+        this.doughNut.data.datasets[0].data[1] = res[0].totalPresent;
+        this.doughNut.update();
+      });
+  }
+
+  config: any = {
     data: {
       // values on X-Axis
-      labels: [
-        "2022-05-10",
-        "2022-05-11",
-        "2022-05-12",
-        "2022-05-13",
-        "2022-05-14",
-        "2022-05-15",
-        "2022-05-16",
-        "2022-05-17",
-      ],
+      labels: [],
       datasets: [
         {
           label: "Present",
-          data: ["467", "576", "572", "79", "92", "574", "573", "576"],
+          data: [],
           backgroundColor: "#22c55e",
           borderColor: "#22c55e",
         },
         {
           label: "Absent",
-          data: ["542", "542", "536", "327", "17", "0.00", "538", "541"],
+          data: [],
           backgroundColor: "#ef4444",
           borderColor: "#ef4444",
         },
@@ -49,7 +72,9 @@ export class ChartComponent implements OnInit {
       aspectRatio: 2.5,
     },
   };
-  constructor() {
+  constructor(private http: HttpClient) {
+    // this.isLoading = true;
+
     Chart.register(
       BarElement,
       BarController,
@@ -63,29 +88,58 @@ export class ChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    new Chart("lineChart", {
-      type: "line", //this denotes tha type of chart
-      ...this.config,
-    });
+    this.date = new Date();
 
-    new Chart("barChart", {
-      type: "bar", //this denotes tha type of chart
-      ...this.config,
-    });
+    let addedDate = new Date();
+    addedDate.setDate(new Date().getDate() + 4);
+    this.dateRange = [new Date(), addedDate];
 
-    new Chart("doughnut", {
-      type: "doughnut", //this denotes tha type of chart
+    this.doughNut = new Chart("doughnut", {
+      type: "doughnut",
       data: {
-        labels: ["Present", "Absent", "OD"],
+        labels: ["Absent", "Present"],
         datasets: [
           {
-            label: "My First Dataset",
-            data: [300, 50, 100],
-            backgroundColor: ["#22c55e", "#ef4444", "#facc15"],
+            label: "Student",
+            data: [0, 0],
+            backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
             hoverOffset: 4,
           },
         ],
       },
     });
+    this.lineChart = new Chart("lineChart", {
+      type: "line",
+      ...this.config,
+    });
+
+    this.barChart = new Chart("barChart", {
+      type: "bar",
+      ...this.config,
+    });
+    this.generateChart([this.dateRange[0], this.dateRange[1]]);
+  }
+
+  generateChart(date: Date[]) {
+    let startDate = formatDate(date[0], "yyyy-MM-dd", "en");
+    let endDate = formatDate(date[1], "yyyy-MM-dd", "en");
+    this.config.data.labels = [];
+    this.config.data.datasets[0].data = [];
+    this.config.data.datasets[1].data = [];
+    this.http
+      .get(
+        `${environment.apiUrl}/report/dashboard/range?year=2&sec=1&startDate=${startDate}&endDate=${endDate}`
+      )
+      .subscribe((res: any) => {
+        res.forEach((data: any) => {
+          this.config.data.labels.push(data.date);
+          this.config.data.datasets[0].data.push(
+            data.totalStudent - data.totalAbsent
+          );
+          this.config.data.datasets[1].data.push(data.totalAbsent);
+        });
+        this.lineChart.update();
+        this.barChart.update();
+      });
   }
 }

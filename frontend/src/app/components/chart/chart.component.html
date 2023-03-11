@@ -1,12 +1,20 @@
+<div class="flex items-center gap-10">
+  <nz-date-picker [(ngModel)]="date"></nz-date-picker>
+  <nz-range-picker
+    [(ngModel)]="dateRange"
+    (ngModelChange)="generateChart($event)"
+  ></nz-range-picker>
+</div>
+
 <div class="grid grid-cols-3 justify-center items-center mb-2">
   <div class="max-h-[400px]">
-    <canvas id="doughnut" class="doughnut"></canvas>
+    <canvas id="doughnut"></canvas>
   </div>
   <div class="col-span-2">
-    <canvas id="lineChart" class="lineChart"></canvas>
+    <canvas id="lineChart"></canvas>
   </div>
 </div>
 
-<div class="max-h-[450px] w-full flex justify-center">
-  <canvas id="barChart" class="barChart"></canvas>
+<div class="max-h-[400px] w-full flex justify-center">
+  <canvas id="barChart"></canvas>
 </div>
