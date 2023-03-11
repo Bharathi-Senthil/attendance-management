@@ -32,6 +32,11 @@ export class BaseLayoutComponent implements OnInit {
     else
       this.menu = [
         {
+          title: "Home",
+          icon: "home",
+          path: "home",
+        },
+        {
           title: "Mentor",
           icon: "crown",
           path: "mentor",
@@ -46,6 +51,7 @@ export class BaseLayoutComponent implements OnInit {
           icon: "team",
           path: "day-attendance",
         },
+
         {
           title: "Time Table",
           icon: "timetable",
