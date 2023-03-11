@@ -1,9 +1,11 @@
+import { DataService } from "src/app/helpers/data.service";
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { TransferItem } from "ng-zorro-antd/transfer";
 import { Student } from "src/app/models";
 import { environment } from "src/environments/environment";
+import { NzMessageService } from "ng-zorro-antd/message";
 
 @Component({
   selector: "day-attendance-form",
@@ -15,20 +17,32 @@ export class DayAttendanceFormComponent implements OnInit {
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
+  selectedDate: Date = new Date();
+
   students: Student[];
   absentees: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private data: DataService,
+    private message: NzMessageService
+  ) {}
 
   ngOnInit(): void {
-    // this.form.controls["date"].value,
-    let Fdate = formatDate(new Date(), "yyyy-MM-dd", "en");
+    this.data.getDate().subscribe((date) => {
+      this.selectedDate = date;
+      this.getStudents();
+    });
+    this.getStudents();
+  }
+
+  getStudents() {
+    let Fdate = formatDate(this.selectedDate, "yyyy-MM-dd", "en");
     this.http
       .get<Student[]>(
-        `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=2023-01-01`
+        `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=${Fdate}`
       )
       .subscribe((data: any) => {
-        console.log(data);
         this.students = data.preStudents;
         this.absentees = data.absStudents;
         this.getData(data);
@@ -36,14 +50,8 @@ export class DayAttendanceFormComponent implements OnInit {
   }
 
   getData(data: any): void {
+    this.list = [];
     let { preStudents, absStudents } = data;
-    // ret.push({
-    //     key: i.toString(),
-    //     title: `content${i + 1}`,
-    //     direction: Math.random() * 2 > 1 ? "right" : undefined,
-    //     rollNo: `description of content${i + 1}`,
-    //     name: `description of content${i + 1}`,
-    //   });
     preStudents.forEach((s: any) => {
       this.list.push({
         key: s.id,
@@ -57,10 +65,42 @@ export class DayAttendanceFormComponent implements OnInit {
       this.list.push({
         key: s.id,
         title: s.studentName,
-        direction: "left",
+        direction: "right",
         rollNo: s.studentRollNo,
         name: s.studentName,
       });
     });
+  }
+
+  change(ret: any): void {
+    if (ret.from === "left" && ret.to === "right") {
+      let Fdate = formatDate(this.selectedDate, "yyyy-MM-dd", "en");
+      let studentId: any = [];
+      ret.list.forEach((student: any) => {
+        studentId.push(student.key);
+      });
+      let data = {
+        date: formatDate(this.selectedDate, "yyyy-MM-dd", "en"),
+        isAbsent: true,
+        studentId,
+      };
+      this.http
+        .post(`${environment.apiUrl}/day-attendances`, data)
+        .subscribe((data) => {
+          this.message.success("Attendance added successfully");
+          this.getStudents();
+        });
+    } else if (ret.from === "right" && ret.to === "left") {
+      let id: any = [];
+      ret.list.forEach((att: any) => {
+        id.push(att.key);
+      });
+      this.http
+        .delete(`${environment.apiUrl}/day-attendances?id=${id}`)
+        .subscribe((data) => {
+          this.message.success("Attendance deleted successfully");
+          this.getStudents();
+        });
+    }
   }
 }

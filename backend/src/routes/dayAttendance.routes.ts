@@ -29,6 +29,9 @@ export class DayAttendanceRoutes {
 
     //! Delete
     this.router.delete("/:id", (req, res) => this.controller.delete(req, res));
+
+    //! BulkDelete
+    this.router.delete("/", (req, res) => this.controller.bulkDelete(req, res));
   }
 
   public getRouter() {

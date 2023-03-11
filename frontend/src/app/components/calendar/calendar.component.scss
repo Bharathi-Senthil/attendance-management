@@ -7,7 +7,7 @@
 }
 
 .calendar-body {
-  @apply gap-4 h-auto grid grid-cols-7;
+  @apply gap-4 h-[270px] grid grid-cols-7;
 }
 
 .weekdays {

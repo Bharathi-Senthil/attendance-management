@@ -71,7 +71,6 @@ export class DayAttendanceController {
 
     let students = data.studentId;
     delete data.studentId;
-    delete data.mentorId;
 
     let absentees: any[] = [];
     students?.forEach((s: any) => {
@@ -123,5 +122,17 @@ export class DayAttendanceController {
           message: `Day Attendance id:${req.params.id} does not exists`,
         });
     });
+  }
+
+  bulkDelete(req: Request, res: Response) {
+    const { id }: any = req.query;
+
+    DayAttendance.destroy({
+      where: {
+        id: id.split(","),
+      },
+    })
+      .then((dayAttendance) => res.status(200).json())
+      .catch((err) => res.status(400).json(err));
   }
 }
