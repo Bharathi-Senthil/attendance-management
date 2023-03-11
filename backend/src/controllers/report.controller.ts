@@ -61,16 +61,37 @@ export class ReportController {
       });
   }
 
-  getDashboardReport(req: Request, res: Response) {
+  getDashboardReportByDate(req: Request, res: Response) {
     const { year, sec, date }: any = req.query;
     sequelize
       .query(
-        `SELECT COUNT(CASE WHEN da.date IS NULL THEN 1 END) as totalPresent,
+        `
+        SELECT COUNT(CASE WHEN da.date IS NULL THEN 1 END) as totalPresent,
         COUNT(CASE WHEN da.date IS NOT NULL THEN 1 END) as totalAbsent,
         COUNT(s.id) as totalStudents
         FROM students s
         LEFT JOIN day_attendances da ON s.id = da.student_id AND da.date = '${date} 00:00:00.000 +00:00'
-        WHERE s.year_id = ${year} AND s.section_id = ${sec}`
+        WHERE s.year_id = ${year} AND s.section_id = ${sec}
+        `
+      )
+      .then((data) => {
+        res.status(200).json(data[0]);
+      });
+  }
+
+  getDashboardReportByDateRange(req: Request, res: Response) {
+    const { year, sec, stateDate, endDate }: any = req.query;
+    sequelize
+      .query(
+        `
+        SELECT Date(date) AS date, COUNT(*) AS total_absent,
+        (SELECT COUNT(*) FROM students WHERE year_id = ${year} AND section_id = ${sec}) AS total_student
+        FROM day_attendances
+        WHERE date BETWEEN ${stateDate} AND ${endDate}
+        AND student_id IN (SELECT id FROM students WHERE year_id = ${year} AND section_id = ${sec})
+        AND is_absent = 1
+        GROUP BY date
+        `
       )
       .then((data) => {
         res.status(200).json(data[0]);

@@ -1,3 +1,4 @@
+import { ChartComponent } from "./components/chart/chart.component";
 import { TimeTableComponent } from "./pages/time-table/time-table.component";
 import { SubjectSectionHoursComponent } from "./pages/subject-section-hours/subject-section-hours.component";
 import { StudentsComponent } from "./pages/students/students.component";
@@ -60,6 +61,10 @@ const routes: Routes = [
         path: "mentor",
         component: MentorComponent,
         canActivate: [AuthGuard, AdminGuard],
+      },
+      {
+        path: "dashboard",
+        component: ChartComponent,
       },
     ],
   },

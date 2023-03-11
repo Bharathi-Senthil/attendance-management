@@ -17,9 +17,14 @@ export class ReportRoutes {
       this.controller.getDayReport(req, res)
     );
 
-    //! DashboardReport
+    //! DashboardReportByDate
     this.router.get("/dashboard", (req, res) =>
-      this.controller.getDashboardReport(req, res)
+      this.controller.getDashboardReportByDate(req, res)
+    );
+
+    //! DashboardReportByDateRange
+    this.router.get("/dashboard/range", (req, res) =>
+      this.controller.getDashboardReportByDateRange(req, res)
     );
   }
 
