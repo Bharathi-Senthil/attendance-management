@@ -20,6 +20,7 @@ import { NzUploadModule } from "ng-zorro-antd/upload";
 import { NzRadioModule } from "ng-zorro-antd/radio";
 import { NzEmptyModule } from "ng-zorro-antd/empty";
 import { NzTransferModule } from "ng-zorro-antd/transfer";
+import { NzSpinModule } from "ng-zorro-antd/spin";
 
 @NgModule({
   exports: [
@@ -44,6 +45,7 @@ import { NzTransferModule } from "ng-zorro-antd/transfer";
     NzEmptyModule,
     NzInputModule,
     NzTransferModule,
+    NzSpinModule,
   ],
 })
 export class NgZorroModule {}

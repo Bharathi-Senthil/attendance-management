@@ -21,14 +21,15 @@ import "chartjs-plugin-datalabels";
   styleUrls: ["./chart.component.scss"],
 })
 export class ChartComponent implements OnInit {
-  @ViewChild("canvas") canvasRef: ElementRef<HTMLCanvasElement>;
-  // isLoading: boolean;
   lineChart: any;
   barChart: any;
   doughNut: any;
 
-  _date: Date;
+  user = JSON.parse(String(localStorage.getItem("user")));
   dateRange: Date[];
+
+  year = 1;
+  _date: Date;
 
   get date() {
     return this._date;
@@ -36,19 +37,7 @@ export class ChartComponent implements OnInit {
 
   set date(value: Date) {
     this._date = value;
-    this.http
-      .get(
-        `${environment.apiUrl}/report/dashboard?year=2&sec=1&date=${formatDate(
-          this.date,
-          "yyyy-MM-dd",
-          "en"
-        )}`
-      )
-      .subscribe((res: any) => {
-        this.doughNut.data.datasets[0].data[0] = res[0].totalAbsent;
-        this.doughNut.data.datasets[0].data[1] = res[0].totalPresent;
-        this.doughNut.update();
-      });
+    this.generateDonut();
   }
 
   config: any = {
@@ -185,9 +174,14 @@ export class ChartComponent implements OnInit {
     this.config.data.labels = [];
     this.config.data.datasets[0].data = [];
     this.config.data.datasets[1].data = [];
+
+    let params = ``;
+    if (this.user.role === "MENTOR") params = `mentorId=${this.user.id}`;
+    else params = `year=${this.year}`;
+
     this.http
       .get(
-        `${environment.apiUrl}/report/dashboard/range?year=2&sec=1&startDate=${startDate}&endDate=${endDate}`
+        `${environment.apiUrl}/report/dashboard/range?${params}&startDate=${startDate}&endDate=${endDate}`
       )
       .subscribe((res: any) => {
         res.forEach((data: any) => {
@@ -199,6 +193,26 @@ export class ChartComponent implements OnInit {
         });
         this.lineChart.update();
         this.barChart.update();
+      });
+  }
+
+  generateDonut() {
+    let params = ``;
+    if (this.user.role === "MENTOR") params = `mentorId=${this.user.id}`;
+    else params = `year=${this.year}`;
+    this.http
+      .get(
+        `${environment.apiUrl}/report/dashboard?${params}&date=${formatDate(
+          this.date,
+          "yyyy-MM-dd",
+          "en"
+        )}`
+      )
+      .subscribe((res: any) => {
+        console.log(res);
+        this.doughNut.data.datasets[0].data[0] = res[0].totalAbsent;
+        this.doughNut.data.datasets[0].data[1] = res[0].totalPresent;
+        this.doughNut.update();
       });
   }
 }

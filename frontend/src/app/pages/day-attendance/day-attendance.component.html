@@ -1,22 +1,50 @@
 <div class="container max-w-[1100px]" @fade>
-  <div class="flex gap-10 justify-between">
-    <app-calendar></app-calendar>
-    <day-attendance-form></day-attendance-form>
+  <div class="flex justify-between">
+    <app-calendar *ngIf="absentees" @fade></app-calendar>
+    <day-attendance-form
+      (getAbsentees)="getAbsentees($event)"
+    ></day-attendance-form>
   </div>
 
-  <div class="my-[10px] shadow-lg border border-gray-300 mt-[50px] rounded">
+  <div
+    class="my-[10px] shadow-lg border border-gray-300 mt-[60px] rounded p-2"
+    *ngIf="absentees && absentees?.length > 0"
+    @fade
+  >
     <div class="flex justify-between border-b-2 p-2">
-      <span>Student Data</span>
+      <nz-select
+        [(ngModel)]="selectedStudent"
+        (ngModelChange)="onSelectedStudentChange()"
+        class="w-[200px]"
+      >
+        <nz-option
+          *ngFor="let a of absentees"
+          [nzValue]="a.id"
+          [nzLabel]="a.studentName"
+        ></nz-option>
+      </nz-select>
 
-      <button nz-button nzType="primary">submit</button>
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="!reason"
+        (click)="addReason()"
+      >
+        submit
+      </button>
     </div>
 
     <textarea
       class="my-[10px]"
+      [(ngModel)]="reason"
       nzBorderless
       nz-input
       placeholder="Enter the reason"
       [nzAutosize]="{ minRows: 6, maxRows: 10 }"
     ></textarea>
   </div>
+</div>
+
+<div class="absolute top-[40%] left-[55%]" *ngIf="!absentees">
+  <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
 </div>

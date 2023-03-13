@@ -1,7 +1,8 @@
+import { FadeInOut } from "./../../animations";
 import { DataService } from "src/app/helpers/data.service";
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { TransferItem } from "ng-zorro-antd/transfer";
 import { Student } from "src/app/models";
 import { environment } from "src/environments/environment";
@@ -11,6 +12,7 @@ import { NzMessageService } from "ng-zorro-antd/message";
   selector: "day-attendance-form",
   templateUrl: "./day-attendance-form.component.html",
   styleUrls: ["./day-attendance-form.component.scss"],
+  animations: [FadeInOut],
 })
 export class DayAttendanceFormComponent implements OnInit {
   list: Array<TransferItem & { rollNo: string; name: string }> = [];
@@ -21,6 +23,9 @@ export class DayAttendanceFormComponent implements OnInit {
 
   students: Student[];
   absentees: any[] = [];
+
+  @Output("getAbsentees")
+  sendAbsentees = new EventEmitter();
 
   constructor(
     private http: HttpClient,
@@ -45,6 +50,7 @@ export class DayAttendanceFormComponent implements OnInit {
       .subscribe((data: any) => {
         this.students = data.preStudents;
         this.absentees = data.absStudents;
+        this.sendAbsentees.emit(this.absentees);
         this.getData(data);
       });
   }
@@ -80,7 +86,7 @@ export class DayAttendanceFormComponent implements OnInit {
         studentId.push(student.key);
       });
       let data = {
-        date: formatDate(this.selectedDate, "yyyy-MM-dd", "en"),
+        date: Fdate,
         isAbsent: true,
         studentId,
       };
