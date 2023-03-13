@@ -61,7 +61,7 @@ export class MentorGuard implements CanActivate {
     let user = JSON.parse(String(localStorage.getItem("user")));
 
     if (user.role === "ADMIN") {
-      this.router.navigate(["/students"]);
+      this.router.navigate(["/home"]);
       return false;
     }
 

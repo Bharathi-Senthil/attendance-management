@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("user", JSON.stringify(user));
           this.route.queryParams.subscribe((qp: any) => {
             if (qp.returnUrl) this.router.navigateByUrl(qp.returnUrl);
-            else this.router.navigateByUrl("/day-attendance");
+            else this.router.navigateByUrl("/home");
           });
         });
     } else {

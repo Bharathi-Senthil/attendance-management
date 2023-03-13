@@ -19,7 +19,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "day-attendance",
+        redirectTo: "home",
         pathMatch: "full",
       },
       {
@@ -65,7 +65,7 @@ const routes: Routes = [
       {
         path: "home",
         component: ChartComponent,
-        canActivate: [AuthGuard, AdminGuard],
+        canActivate: [AuthGuard],
       },
     ],
   },
