@@ -29,7 +29,7 @@ export class LoginGuard implements CanActivate {
     let token = localStorage.getItem("token");
 
     if (token) {
-      this.router.navigate(["/"]);
+      this.router.navigate(["/home"]);
       return false;
     }
 
@@ -45,7 +45,7 @@ export class AdminGuard implements CanActivate {
     let user = JSON.parse(String(localStorage.getItem("user")));
 
     if (user.role === "MENTOR") {
-      this.router.navigate(["/day-attendance"]);
+      this.router.navigate(["/home"]);
       return false;
     }
 
