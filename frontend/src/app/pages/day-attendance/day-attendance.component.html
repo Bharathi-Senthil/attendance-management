@@ -1,12 +1,19 @@
-<div class="container" @fade>
-  <div class="flex gap-10 justify-center">
+<div class="container max-w-[1100px]" @fade>
+  <div class="flex gap-10 justify-between">
     <app-calendar></app-calendar>
     <day-attendance-form></day-attendance-form>
   </div>
-  <div>
-    <button class=" " nz-button nzType="primary">submit</button>
+
+  <div class="my-[10px] shadow-lg border border-gray-300 mt-[50px] rounded">
+    <div class="flex justify-between border-b-2 p-2">
+      <span>Student Data</span>
+
+      <button nz-button nzType="primary">submit</button>
+    </div>
+
     <textarea
-      class="my-[30px]"
+      class="my-[10px]"
+      nzBorderless
       nz-input
       placeholder="Enter the reason"
       [nzAutosize]="{ minRows: 6, maxRows: 10 }"
