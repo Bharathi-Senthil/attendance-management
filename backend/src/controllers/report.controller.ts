@@ -38,7 +38,15 @@ export class ReportController {
   }
 
   getDashboardReportByDate(req: Request, res: Response) {
-    const { year, sec, date }: any = req.query;
+    const { year, sec, date, mentorId }: any = req.query;
+
+    let where = ``;
+    if (year) where += ` s.year_id = ${year}`;
+    if (sec)
+      where += ` ${where.length === 0 ? "" : " AND"} s.section_id = ${sec}`;
+    if (mentorId)
+      where += ` ${where.length === 0 ? "" : " AND"} s.mentor_id = ${mentorId}`;
+
     sequelize
       .query(
         `
@@ -47,7 +55,7 @@ export class ReportController {
         COUNT(s.id) as totalStudents
         FROM students s
         LEFT JOIN day_attendances da ON s.id = da.student_id AND da.date = '${date} 00:00:00.000 +00:00'
-        WHERE s.year_id = ${year} AND s.section_id = ${sec}
+        WHERE${where}
         `
       )
       .then((data) => {
@@ -56,15 +64,23 @@ export class ReportController {
   }
 
   getDashboardReportByDateRange(req: Request, res: Response) {
-    const { year, sec, startDate, endDate }: any = req.query;
+    const { year, sec, mentorId, startDate, endDate }: any = req.query;
+
+    let where = ``;
+    if (year) where += ` year_id = ${year}`;
+    if (sec)
+      where += ` ${where.length === 0 ? "" : " AND"} section_id = ${sec}`;
+    if (mentorId)
+      where += ` ${where.length === 0 ? "" : " AND"} mentor_id = ${mentorId}`;
+
     sequelize
       .query(
         `
         SELECT Date(date) AS date, COUNT(*) AS totalAbsent,
-        (SELECT COUNT(*) FROM students WHERE year_id = ${year} AND section_id = ${sec}) AS totalStudent
+        (SELECT COUNT(*) FROM students WHERE${where}) AS totalStudent
         FROM day_attendances
         WHERE date BETWEEN "${startDate}" AND "${endDate}"
-        AND student_id IN (SELECT id FROM students WHERE year_id = ${year} AND section_id = ${sec})
+        AND student_id IN (SELECT id FROM students WHERE${where})
         AND is_absent = 1
         GROUP BY date
         `

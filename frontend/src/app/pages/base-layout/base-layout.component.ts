@@ -19,6 +19,11 @@ export class BaseLayoutComponent implements OnInit {
     if (this.user.role === "MENTOR")
       this.menu = [
         {
+          title: "Home",
+          icon: "home",
+          path: "home",
+        },
+        {
           title: "Day Attendance",
           icon: "team",
           path: "day-attendance",

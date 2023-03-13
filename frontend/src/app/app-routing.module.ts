@@ -65,7 +65,7 @@ const routes: Routes = [
       {
         path: "home",
         component: ChartComponent,
-        canActivate: [AuthGuard, AdminGuard],
+        canActivate: [AuthGuard],
       },
     ],
   },
