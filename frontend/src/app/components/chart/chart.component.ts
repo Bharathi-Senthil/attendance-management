@@ -1,7 +1,7 @@
 import { formatDate } from "@angular/common";
 import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   Chart,
   BarElement,
@@ -13,6 +13,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js/auto";
+import "chartjs-plugin-datalabels";
 
 @Component({
   selector: "app-chart",
@@ -20,6 +21,7 @@ import {
   styleUrls: ["./chart.component.scss"],
 })
 export class ChartComponent implements OnInit {
+  @ViewChild("canvas") canvasRef: ElementRef<HTMLCanvasElement>;
   // isLoading: boolean;
   lineChart: any;
   barChart: any;

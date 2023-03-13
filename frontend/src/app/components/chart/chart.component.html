@@ -8,7 +8,12 @@
 
 <div class="grid grid-cols-3 justify-center items-center mb-2">
   <div class="max-h-[400px]">
-    <canvas id="doughnut"></canvas>
+    <figure class="absolute top-28">
+      <canvas id="doughnut" class=""></canvas>
+      <figcaption class="relative ml-[90px] bottom-36 font-bold">
+        {{ date.toDateString() }}
+      </figcaption>
+    </figure>
   </div>
   <div class="col-span-2">
     <canvas id="lineChart"></canvas>
