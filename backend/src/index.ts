@@ -27,12 +27,30 @@ import {
 } from "./models";
 import { verifyToken } from "./middleware";
 
+import { google } from "googleapis";
+import * as googleAuth from "google-auth-library";
+import * as fs from "fs";
+import path from "path";
+
+// const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
+// const KEY_FILE = __dirname + "/keyfile.json";
+
+// const auth = new googleAuth.GoogleAuth({
+//   scopes: SCOPES,
+//   keyFilename: KEY_FILE,
+// });
+
+// const drive = google.drive({
+//   version: "v3",
+//   auth: auth.fromJSON(JSON.parse(fs.readFileSync(KEY_FILE, "utf8"))),
+// });
+
 const app = express();
 
 const allowlist = [
   "http://localhost:4200",
   "http://localhost",
-  /^http:\/\/172\.16\.5\.\d{1,3}:88$/,
+  /^http:\/\/172\.16\.\d{1,3}\.\d{1,3}:88$/,
 ];
 
 const corsOptions: any = {
@@ -189,6 +207,56 @@ app.get("/api/hourly-report", (req, res) => {
     res.json(data);
   });
 });
+
+// app.get("/api/upload", async (req: any, res) => {
+//   try {
+//     const fileMetadata = {
+//       name: new Date().toDateString() + ".sqlite",
+//       parents: ["1txrsixiYOCS1uHGG88dsj_S4lW75ckwR"],
+//     };
+//     const media = {
+//       mimeType: "application/x-sqlite3",
+//       body: fs.createReadStream(path.join(__dirname + "/db/db.sqlite")),
+//     };
+//     const file: any = await drive.files.create({
+//       requestBody: fileMetadata,
+//       media: media,
+//       fields: "id",
+//     });
+//     res.send(`File ID: ${file.data.id}`);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Error uploading file");
+//   }
+// });
+
+// // Define a function to get the latest uploaded file
+// async function getLatestFile(): Promise<any> {
+//   const files: any = await drive.files.list({
+//     q: "mimeType != 'application/vnd.google-apps.folder' and trashed = false",
+//     orderBy: "createdTime desc",
+//     fields: "files(name, createdTime)",
+//   });
+
+//   if (files.data.files.length === 0) {
+//     throw new Error("No files found");
+//   }
+
+//   return files.data.files[0];
+// }
+
+// // Example usage
+// app.get("/api/restore", async (req, res) => {
+//   try {
+//     const latestFile = await getLatestFile();
+//     res.send(
+//       `Latest file: ${latestFile.name}, created on ${latestFile.createdTime}`
+//     );
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Error getting latest file");
+//   }
+// });
 
 app.listen(3000, () => {
   console.log("App listening on port http://localhost:3000");
