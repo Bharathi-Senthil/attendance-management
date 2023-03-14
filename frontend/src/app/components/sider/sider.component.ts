@@ -64,7 +64,6 @@ export class SiderComponent implements OnInit {
         }${fDate ? `&date=${fDate}` : ""}`
       )
       .subscribe((res) => {
-        console.log(res);
         if (res.length > 0)
           downloadCSV(res, this.year.value, this.section.value, fDate);
         this.section.reset();

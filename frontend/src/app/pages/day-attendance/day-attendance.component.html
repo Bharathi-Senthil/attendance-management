@@ -1,6 +1,6 @@
 <div class="container max-w-[1100px]" @fade>
   <div class="flex justify-between">
-    <app-calendar *ngIf="absentees" @fade></app-calendar>
+    <app-calendar @fade></app-calendar>
     <day-attendance-form
       (getAbsentees)="getAbsentees($event)"
     ></day-attendance-form>
@@ -43,8 +43,4 @@
       [nzAutosize]="{ minRows: 6, maxRows: 10 }"
     ></textarea>
   </div>
-</div>
-
-<div class="absolute top-[40%] left-[55%]" *ngIf="!absentees">
-  <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
 </div>
