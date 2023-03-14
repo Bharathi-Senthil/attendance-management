@@ -209,7 +209,6 @@ export class ChartComponent implements OnInit {
         )}`
       )
       .subscribe((res: any) => {
-        console.log(res);
         this.doughNut.data.datasets[0].data[0] = res[0].totalAbsent;
         this.doughNut.data.datasets[0].data[1] = res[0].totalPresent;
         this.doughNut.update();

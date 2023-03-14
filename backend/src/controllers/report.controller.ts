@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { sequelize } from "../db";
-import { Sequelize } from "sequelize";
 import fs from "fs";
 
 var nodemailer = require("nodemailer");
