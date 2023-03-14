@@ -30,7 +30,7 @@ const routes: Routes = [
       {
         path: "hourly-attendance",
         component: HourlyAttendanceComponent,
-        canActivate: [AuthGuard, MentorGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: "sections",

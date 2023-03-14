@@ -28,11 +28,11 @@ export class BaseLayoutComponent implements OnInit {
           icon: "team",
           path: "day-attendance",
         },
-        {
-          title: "Hourly Attendance",
-          icon: "houricon",
-          path: "hourly-attendance",
-        },
+        // {
+        //   title: "Hourly Attendance",
+        //   icon: "houricon",
+        //   path: "hourly-attendance",
+        // },
       ];
     else
       this.menu = [
