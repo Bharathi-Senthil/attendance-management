@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { sequelize } from "../db";
+import { Sequelize } from "sequelize";
+import fs from "fs";
 
+var nodemailer = require("nodemailer");
 export class ReportController {
   constructor() {}
 
@@ -26,6 +29,8 @@ export class ReportController {
         `
       )
       .then((data) => {
+        this.sendMail();
+
         res.status(200).json(data[0]);
       });
   }
@@ -81,5 +86,45 @@ export class ReportController {
       .then((data) => {
         res.status(200).json(data[0]);
       });
+  }
+
+  sendMail() {
+    const pathToFile = __dirname + "/test.csv";
+
+    let mailTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "panimalar.backup@gmail.com",
+        pass: "tlktpezddakdlkfv",
+      },
+    });
+
+    let mailDetails = {
+      from: "panimalar.backup@gmail.com",
+      to: "sbharathi261@gmail.com",
+      subject: "Test mail",
+      attachments: [
+        {
+          filename: "test.csv",
+
+          path: pathToFile,
+        },
+      ],
+    };
+
+    mailTransporter.sendMail(mailDetails, function (err: any, data: any) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Email sent successfully");
+        fs.unlink(pathToFile, function (err) {
+          if (err) {
+            throw err;
+          } else {
+            console.log("Successfully deleted the file.");
+          }
+        });
+      }
+    });
   }
 }
