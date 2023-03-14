@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 
 import dotenv from "dotenv";
+import path from "path";
 dotenv.config();
 
 export const sequelize = new Sequelize(
@@ -9,7 +10,7 @@ export const sequelize = new Sequelize(
   process.env.PASSWORD ? process.env.PASSWORD : "",
   {
     dialect: "sqlite",
-    storage: "./db.sqlite",
+    storage: path.join(__dirname + "/db/db.sqlite"),
     logging: false,
   }
 );
