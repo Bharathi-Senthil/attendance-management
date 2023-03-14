@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { DayAttendance, Student } from "./../models";
 import { sequelize } from "../db";
-import { Sequelize } from "sequelize";
 
 export class ReportController {
   constructor() {}
@@ -14,15 +12,10 @@ export class ReportController {
       .query(
         `
           SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS totalAbsent ${
-            date ? `, r.reason` : ""
+            date ? `, da.reason` : ""
           }
           FROM students s 
           LEFT JOIN day_attendances da ON s.id = da.student_id 
-          ${
-            date
-              ? `LEFT JOIN reasons r ON r.date = "${date} 00:00:00.000 +00:00"`
-              : ""
-          }
           ${where} 
           GROUP BY s.id, s.name 
           HAVING SUM(${

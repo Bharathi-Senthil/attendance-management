@@ -61,7 +61,7 @@ export class DayAttendanceFormComponent implements OnInit {
     preStudents.forEach((s: any) => {
       this.list.push({
         key: s.id,
-        title: s.name,
+        title: s.rollNo + "-" + s.name.toLowerCase() + s.name.toUpperCase(),
         direction: "left",
         rollNo: s.rollNo,
         name: s.name,
@@ -70,7 +70,11 @@ export class DayAttendanceFormComponent implements OnInit {
     absStudents.forEach((s: any) => {
       this.list.push({
         key: s.id,
-        title: s.studentName,
+        title:
+          s.studentRollNo +
+          "-" +
+          s.studentName.toLowerCase() +
+          s.studentName.toUpperCase(),
         direction: "right",
         rollNo: s.studentRollNo,
         name: s.studentName,

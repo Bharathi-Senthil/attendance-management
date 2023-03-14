@@ -1,3 +1,4 @@
+import { NzMessageService } from "ng-zorro-antd/message";
 import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { FadeInOut } from "../../animations";
@@ -15,7 +16,7 @@ export class DayAttendanceComponent implements OnInit {
   selectedStudent: any;
   reason: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private message: NzMessageService) {}
   ngOnInit(): void {}
 
   onSelectedStudentChange() {
@@ -32,8 +33,6 @@ export class DayAttendanceComponent implements OnInit {
       this.selectedStudent = absentees[0].id;
       this.reason = absentees[0].reason;
     } else this.selectedStudent = 0;
-
-    console.log(absentees);
   }
 
   addReason() {
@@ -43,7 +42,7 @@ export class DayAttendanceComponent implements OnInit {
         reason: this.reason,
       })
       .subscribe((res) => {
-        console.log(res);
+        this.message.success("Reason Added.");
       });
   }
 }
