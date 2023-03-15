@@ -11,6 +11,7 @@ export class ReportController {
     const { year, sec, date }: any = req.query;
     let where = `WHERE da.is_absent = TRUE AND s.year_id = ${year}`;
     if (sec != "null") where += ` AND s.section_id = ${sec}`;
+    if (date) where += ` AND da.date = "${date} 00:00:00.000 +00:00"`;
     sequelize
       .query(
         `
@@ -30,7 +31,6 @@ export class ReportController {
       )
       .then((data) => {
         let csv = jsonToCSV(data[0], year, sec, date);
-        this.sendMail(csv);
         res.status(200).json(csv);
       });
   }
