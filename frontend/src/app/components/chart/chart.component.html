@@ -1,5 +1,5 @@
-<div class="grid grid-cols-3 justify-center items-center mb-2">
-  <div class="max-h-[400px]">
+<div class="grid grid-cols-3 justify-center max-h-[350px] items-start mb-2">
+  <div>
     <nz-date-picker [(ngModel)]="date"></nz-date-picker>
     <canvas id="doughnut"></canvas>
   </div>
@@ -21,7 +21,7 @@
       <nz-option [nzValue]="3" nzLabel="III"></nz-option>
       <nz-option [nzValue]="4" nzLabel="IV"></nz-option>
     </nz-select>
-    <canvas id="lineChart"></canvas>
+    <canvas class="mt-[40px]" id="lineChart"></canvas>
   </div>
 </div>
 

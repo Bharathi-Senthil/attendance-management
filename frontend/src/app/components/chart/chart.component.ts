@@ -94,7 +94,7 @@ export class ChartComponent implements OnInit {
         var sidePaddingCalculated =
           (sidePadding / 100) * (chart.innerRadius * 2);
         // Start with a base font of 30px
-        ctx.font = "20px " + fontStyle;
+        ctx.font = "18px " + fontStyle;
 
         // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
         var stringWidth = ctx.measureText(txt).width;
