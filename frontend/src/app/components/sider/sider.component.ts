@@ -5,7 +5,6 @@ import { FormControl } from "@angular/forms";
 import { SlideInOut } from "./../../animations";
 import { Component, Input, OnInit } from "@angular/core";
 import { Menu, Section } from "../../models";
-import { downloadCSV } from "src/app/helpers";
 
 import { environment } from "src/environments/environment";
 
@@ -64,8 +63,15 @@ export class SiderComponent implements OnInit {
         }${fDate ? `&date=${fDate}` : ""}`
       )
       .subscribe((res) => {
-        if (res.length > 0)
-          downloadCSV(res, this.year.value, this.section.value, fDate);
+        const a = document.createElement("a");
+        const blob = new Blob([res.csv], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = res.fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+
         this.section.reset();
         this.year.reset();
         this.date.reset();

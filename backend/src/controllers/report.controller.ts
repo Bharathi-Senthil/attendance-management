@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { sequelize } from "../db";
 import fs from "fs";
+import { jsonToCSV } from "../helpers/jsonToCSV";
 
 var nodemailer = require("nodemailer");
 export class ReportController {
@@ -28,9 +29,9 @@ export class ReportController {
         `
       )
       .then((data) => {
-        this.sendMail();
-
-        res.status(200).json(data[0]);
+        let csv = jsonToCSV(data[0], year, sec, date);
+        this.sendMail(csv);
+        res.status(200).json(csv);
       });
   }
 
@@ -87,9 +88,7 @@ export class ReportController {
       });
   }
 
-  sendMail() {
-    const pathToFile = __dirname + "/test.csv";
-
+  sendMail(csv: any) {
     let mailTransporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -104,9 +103,9 @@ export class ReportController {
       subject: "Test mail",
       attachments: [
         {
-          filename: "test.csv",
+          filename: csv.fileName,
 
-          path: pathToFile,
+          content: csv.csv,
         },
       ],
     };
@@ -116,13 +115,6 @@ export class ReportController {
         console.log(err);
       } else {
         console.log("Email sent successfully");
-        fs.unlink(pathToFile, function (err) {
-          if (err) {
-            throw err;
-          } else {
-            console.log("Successfully deleted the file.");
-          }
-        });
       }
     });
   }

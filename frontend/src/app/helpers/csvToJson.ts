@@ -32,31 +32,3 @@ export function uploadCsv(file: any): Observable<any> {
     };
   });
 }
-
-export function downloadCSV(data: any, year: any, sec: any, date?: any) {
-  const yearName = ["I", "II", "III", "IV"];
-  const secName = ["A", "B", "C", "D", "E", "F"];
-  const replacer = (key: any, value: any) => (value === null ? "" : value);
-  const header = Object.keys(data[0]);
-  const csv = data.map((row: any) =>
-    header
-      .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-      .join(",")
-  );
-  csv.unshift(header.join(","));
-  const csvArray = csv.join("\r\n");
-
-  const a = document.createElement("a");
-  const blob = new Blob([csvArray], { type: "text/csv" });
-  const url = window.URL.createObjectURL(blob);
-
-  a.href = url;
-
-  a.download = date
-    ? `${date}-${yearName[year - 1]}-${sec ? secName[sec - 1] : ""}.csv`
-    : `${yearName[year - 1]}-${sec ? secName[sec - 1] : ""}Full.csv`;
-
-  a.click();
-  window.URL.revokeObjectURL(url);
-  a.remove();
-}
