@@ -32,18 +32,18 @@ import * as googleAuth from "google-auth-library";
 import * as fs from "fs";
 import path from "path";
 
-// const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
-// const KEY_FILE = __dirname + "/keyfile.json";
+const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
+const KEY_FILE = __dirname + "/keyfile.json";
 
-// const auth = new googleAuth.GoogleAuth({
-//   scopes: SCOPES,
-//   keyFilename: KEY_FILE,
-// });
+const auth = new googleAuth.GoogleAuth({
+  scopes: SCOPES,
+  keyFilename: KEY_FILE,
+});
 
-// const drive = google.drive({
-//   version: "v3",
-//   auth: auth.fromJSON(JSON.parse(fs.readFileSync(KEY_FILE, "utf8"))),
-// });
+const drive = google.drive({
+  version: "v3",
+  auth: auth.fromJSON(JSON.parse(fs.readFileSync(KEY_FILE, "utf8"))),
+});
 
 const app = express();
 
@@ -226,18 +226,16 @@ app.get("/api/hourly-report", (req, res) => {
 //     res.send(`File ID: ${file.data.id}`);
 //   } catch (err) {
 //     console.error(err);
-//     res.status(500).send("Error uploading file");
+//     res.status(500).send({ error: "Error uploading file" });
 //   }
 // });
 
-// // Define a function to get the latest uploaded file
 // async function getLatestFile(): Promise<any> {
 //   const files: any = await drive.files.list({
 //     q: "mimeType != 'application/vnd.google-apps.folder' and trashed = false",
 //     orderBy: "createdTime desc",
-//     fields: "files(name, createdTime)",
+//     fields: "files(name, createdTime, id)",
 //   });
-
 //   if (files.data.files.length === 0) {
 //     throw new Error("No files found");
 //   }
@@ -245,13 +243,33 @@ app.get("/api/hourly-report", (req, res) => {
 //   return files.data.files[0];
 // }
 
+// async function downloadFile(
+//   fileId: string,
+//   destinationPath: string
+// ): Promise<void> {
+//   const { data } = await drive.files.get(
+//     { fileId, alt: "media" },
+//     { responseType: "stream" }
+//   );
+
+//   const writeStream = fs.createWriteStream(destinationPath);
+//   data.pipe(writeStream);
+
+//   return new Promise((resolve, reject) => {
+//     writeStream.on("finish", resolve);
+//     writeStream.on("error", reject);
+//   });
+// }
+
 // // Example usage
 // app.get("/api/restore", async (req, res) => {
 //   try {
 //     const latestFile = await getLatestFile();
-//     res.send(
-//       `Latest file: ${latestFile.name}, created on ${latestFile.createdTime}`
-//     );
+//     downloadFile(latestFile.id, __dirname + "/db/db.sqlite").then((finish) => {
+//       res.send(
+//         `Latest file: ${latestFile.name}, created on ${latestFile.createdTime}`
+//       );
+//     });
 //   } catch (err) {
 //     console.error(err);
 //     res.status(500).send("Error getting latest file");

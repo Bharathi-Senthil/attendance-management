@@ -107,9 +107,9 @@ export class StudentController {
             as: "section",
           },
         ],
+        order: [["rollNo", "ASC"]],
       },
     ],
-    order: [["studentRollNo", "ASC"]],
   };
 
   constructor() {

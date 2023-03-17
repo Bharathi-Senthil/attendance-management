@@ -22,7 +22,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       retry(0),
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
         let err = error.error;
         let errorMessage: string = "";
         if (error.status == 401) {

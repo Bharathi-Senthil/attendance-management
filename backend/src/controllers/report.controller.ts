@@ -11,13 +11,10 @@ export class ReportController {
     const { year, sec, date }: any = req.query;
     let where = `WHERE da.is_absent = TRUE AND s.year_id = ${year}`;
     if (sec != "null") where += ` AND s.section_id = ${sec}`;
-    if (date) where += ` AND da.date = "${date} 00:00:00.000 +00:00"`;
     sequelize
       .query(
         `
-          SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS totalAbsent ${
-            date ? `, da.reason` : ""
-          }
+          SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS totalAbsent
           FROM students s 
           LEFT JOIN day_attendances da ON s.id = da.student_id 
           ${where} 
@@ -31,7 +28,31 @@ export class ReportController {
       )
       .then((data) => {
         let csv = jsonToCSV(data[0], year, sec, date);
-        res.status(200).json(csv);
+        if (!date) res.status(200).json(csv);
+        else
+          sequelize
+            .query(
+              `
+        SELECT da.reason, s.roll_no 
+        FROM students s 
+        LEFT JOIN day_attendances da ON s.id = da.student_id 
+        ${where} ${
+                date ? `AND da.date = "${date} 00:00:00.000 +00:00"` : "da.id"
+              }
+        `
+            )
+            .then((reason) => {
+              let absentees: any[] = [];
+              data[0].forEach((abs: any) => {
+                reason[0].forEach((r: any) => {
+                  if (abs.roll_no == r.roll_no)
+                    absentees.push({ ...abs, reason: r.reason });
+                });
+              });
+              let csv = jsonToCSV(absentees, year, sec, date);
+              // this.sendMail(csv);
+              res.status(200).json(csv);
+            });
       });
   }
 
@@ -99,7 +120,7 @@ export class ReportController {
 
     let mailDetails = {
       from: "panimalar.backup@gmail.com",
-      to: "sbharathi261@gmail.com",
+      to: "sathishjraman@gmail.com",
       subject: "Test mail",
       attachments: [
         {

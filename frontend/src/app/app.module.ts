@@ -12,11 +12,13 @@ import { NZ_I18N } from "ng-zorro-antd/i18n";
 import { en_US } from "ng-zorro-antd/i18n";
 import { registerLocaleData } from "@angular/common";
 import en from "@angular/common/locales/en";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AuthInterceptorProvider } from "./helpers/auth.interceptor";
 import { ErrorInterceptorProvider } from "./helpers/error.interceptor";
 import { NgZorroModule } from "./NgZorro.module";
+import { LoaderInterceptor } from "./helpers/loader.interceptor";
+import { LoaderService } from "./services";
 
 registerLocaleData(en);
 
@@ -38,6 +40,12 @@ registerLocaleData(en);
     { provide: NZ_I18N, useValue: en_US },
     AuthInterceptorProvider,
     ErrorInterceptorProvider,
+    // LoaderService,
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: LoaderInterceptor,
+    //   multi: true,
+    // },
   ],
   bootstrap: [AppComponent],
 })
