@@ -32,18 +32,18 @@ import * as googleAuth from "google-auth-library";
 import * as fs from "fs";
 import path from "path";
 
-const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
-const KEY_FILE = __dirname + "/keyfile.json";
+// const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
+// const KEY_FILE = __dirname + "/keyfile.json";
 
-const auth = new googleAuth.GoogleAuth({
-  scopes: SCOPES,
-  keyFilename: KEY_FILE,
-});
+// const auth = new googleAuth.GoogleAuth({
+//   scopes: SCOPES,
+//   keyFilename: KEY_FILE,
+// });
 
-const drive = google.drive({
-  version: "v3",
-  auth: auth.fromJSON(JSON.parse(fs.readFileSync(KEY_FILE, "utf8"))),
-});
+// const drive = google.drive({
+//   version: "v3",
+//   auth: auth.fromJSON(JSON.parse(fs.readFileSync(KEY_FILE, "utf8"))),
+// });
 
 const app = express();
 

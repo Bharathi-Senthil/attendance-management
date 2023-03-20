@@ -43,7 +43,7 @@ export class ReportController {
         if (data[0].length !== 0) {
           if (!date) {
             jsonToExcel(data[0], year, sec, date).then((data) => {
-              if (isEmail)
+              if (isEmail === "true")
                 this.sendMail({
                   buffer: data,
                   fileName,
@@ -71,7 +71,7 @@ export class ReportController {
                   });
                 });
                 jsonToExcel(absentees, year, sec, date).then((data) => {
-                  if (isEmail)
+                  if (isEmail === "true")
                     this.sendMail({
                       buffer: data,
                       fileName,
@@ -147,7 +147,7 @@ export class ReportController {
     // to: "sathishjraman@gmail.com",
     let mailDetails = {
       from: "panimalar.backup@gmail.com",
-      to: "ramanan.bala2003@gmail.com",
+      to: "gmail.com",
       subject: "Test mail",
       attachments: [
         {
