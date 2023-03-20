@@ -1,3 +1,4 @@
+import { NzMessageService } from "ng-zorro-antd/message";
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Validators } from "@angular/forms";
@@ -7,6 +8,8 @@ import { Component, Input, OnInit } from "@angular/core";
 import { Menu, Section } from "../../models";
 
 import { environment } from "src/environments/environment";
+
+import { saveAs } from "file-saver";
 
 @Component({
   selector: "app-sider",
@@ -27,11 +30,11 @@ export class SiderComponent implements OnInit {
     isOpen: false,
   };
 
-  section = new FormControl(null, [Validators.required]);
-  year = new FormControl(null, [Validators.required]);
-  date = new FormControl(null, [Validators.required]);
+  section = new FormControl<any>(null, [Validators.required]);
+  year = new FormControl<any>(null, [Validators.required]);
+  date = new FormControl<any>(null, [Validators.required]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private message: NzMessageService) {}
 
   ngOnInit(): void {
     this.http
@@ -53,24 +56,34 @@ export class SiderComponent implements OnInit {
   }
 
   getReport() {
+    const yearName = ["I", "II", "III", "IV"];
+    const secName = ["A", "B", "C", "D", "E", "F"];
+
     let fDate: any;
     if (this.date.value)
       fDate = formatDate(String(this.date.value), "yyyy-MM-dd", "en");
+
+    let fileName = this.date.value
+      ? `${fDate}-${yearName[this.year.value - 1]}-${
+          this.section.value ? secName[this.section.value - 1] : ""
+        }.xlsx`
+      : `${yearName[this.year.value]}-${
+          this.section.value ? secName[this.section.value - 1] : ""
+        }Full.xlsx`;
+
     this.http
       .get<any>(
         `${environment.apiUrl}/report/day?year=${this.year.value}&sec=${
           this.section.value
-        }${fDate ? `&date=${fDate}` : ""}`
+        }${fDate ? `&date=${fDate}` : ""}`,
+        {
+          responseType: "blob" as "json",
+        }
       )
-      .subscribe((res) => {
-        const a = document.createElement("a");
-        const blob = new Blob([res.csv], { type: "text/csv" });
-        const url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = res.fileName;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
+      .subscribe((blob) => {
+        if (blob.message) this.message.warning(blob.message);
+        else if (blob.type !== "application/json;charset=utf-8")
+          saveAs(blob, fileName);
 
         this.section.reset();
         this.year.reset();

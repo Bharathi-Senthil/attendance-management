@@ -1,20 +1,20 @@
 import { Request, Response } from "express";
 import { sequelize } from "../db";
 import fs from "fs";
-import { jsonToCSV } from "../helpers/jsonToCSV";
+import { jsonToExcel } from "../helpers/jsonToCSV";
 
 var nodemailer = require("nodemailer");
 export class ReportController {
   constructor() {}
 
   getDayReport(req: Request, res: Response) {
-    const { year, sec, date }: any = req.query;
+    const { year, sec, date, isEmail }: any = req.query;
     let where = `WHERE da.is_absent = TRUE AND s.year_id = ${year}`;
     if (sec != "null") where += ` AND s.section_id = ${sec}`;
     sequelize
       .query(
         `
-          SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS totalAbsent
+          SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS total_absent
           FROM students s 
           LEFT JOIN day_attendances da ON s.id = da.student_id 
           ${where} 
@@ -27,32 +27,36 @@ export class ReportController {
         `
       )
       .then((data) => {
-        let csv = jsonToCSV(data[0], year, sec, date);
-        if (!date) res.status(200).json(csv);
-        else
-          sequelize
-            .query(
-              `
+        if (data[0].length !== 0) {
+          if (!date) {
+            jsonToExcel(data[0], year, sec, date).then((data) => {
+              res.send(data);
+            });
+          } else
+            sequelize
+              .query(
+                `
         SELECT da.reason, s.roll_no 
         FROM students s 
         LEFT JOIN day_attendances da ON s.id = da.student_id 
         ${where} ${
-                date ? `AND da.date = "${date} 00:00:00.000 +00:00"` : "da.id"
-              }
+                  date ? `AND da.date = "${date} 00:00:00.000 +00:00"` : "da.id"
+                }
         `
-            )
-            .then((reason) => {
-              let absentees: any[] = [];
-              data[0].forEach((abs: any) => {
-                reason[0].forEach((r: any) => {
-                  if (abs.roll_no == r.roll_no)
-                    absentees.push({ ...abs, reason: r.reason });
+              )
+              .then((reason) => {
+                let absentees: any[] = [];
+                data[0].forEach((abs: any) => {
+                  reason[0].forEach((r: any) => {
+                    if (abs.roll_no == r.roll_no)
+                      absentees.push({ ...abs, reason: r.reason });
+                  });
+                });
+                jsonToExcel(absentees, year, sec, date).then((data) => {
+                  res.send(data);
                 });
               });
-              let csv = jsonToCSV(absentees, year, sec, date);
-              // this.sendMail(csv);
-              res.status(200).json(csv);
-            });
+        } else res.send({ message: "No Absentees" });
       });
   }
 

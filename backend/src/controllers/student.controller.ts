@@ -219,13 +219,15 @@ export class StudentController {
   }
 
   getDayPresent(req: Request, res: Response) {
-    const { mentor, date }: any = req.query;
+    const { mentor, date, year, sec }: any = req.query;
     let preStudents: Student[];
     User.findByPk(mentor).then((user) => {
-      let options = {};
+      let where = {};
+      if (sec) where = { ...where, sectionId: sec };
+      if (year) where = { ...where, yearId: year };
       if (user?.dataValues.role != "ADMIN")
-        options = { where: { mentorId: mentor } };
-      Student.findAll(options).then((students) => {
+        where = { ...where, mentorId: mentor };
+      Student.findAll({ where }).then((students) => {
         preStudents = students;
         let options: any = this.dayOptions;
         if (date)

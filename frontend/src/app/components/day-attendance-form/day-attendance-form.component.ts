@@ -4,7 +4,7 @@ import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { TransferItem } from "ng-zorro-antd/transfer";
-import { Student } from "src/app/models";
+import { Section, Student } from "src/app/models";
 import { environment } from "src/environments/environment";
 import { NzMessageService } from "ng-zorro-antd/message";
 
@@ -16,6 +16,11 @@ import { NzMessageService } from "ng-zorro-antd/message";
 })
 export class DayAttendanceFormComponent implements OnInit {
   list: Array<TransferItem & { rollNo: string; name: string }> = [];
+
+  sections: Section[];
+
+  selectedYear: string;
+  selectedSection: string;
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
@@ -34,22 +39,30 @@ export class DayAttendanceFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.http
+      .get<Section[]>(`${environment.apiUrl}/sections`)
+      .subscribe((data: Section[]) => {
+        this.sections = data;
+      });
     this.data.getDate().subscribe((date) => {
       this.selectedDate = date;
       this.getStudents();
     });
-    this.getStudents();
   }
 
   getStudents() {
     let Fdate = formatDate(this.selectedDate, "yyyy-MM-dd", "en");
     this.http
-      .get<Student[]>(
-        `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=${Fdate}`
+      .get<any>(
+        `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=${Fdate}&sec=${this.selectedSection}&year=${this.selectedYear}`
       )
-      .subscribe((data: any) => {
-        this.students = data.preStudents;
-        this.absentees = data.absStudents;
+      .subscribe((data: { preStudents: Student[]; absStudents: any[] }) => {
+        this.students = data.preStudents.sort((a, b): any => {
+          return a.rollNo > b.rollNo;
+        });
+        this.absentees = data.absStudents.sort((a, b): any => {
+          return a.studentRollNo > b.studentRollNo;
+        });
         this.sendAbsentees.emit(this.absentees);
         this.getData(data);
       });

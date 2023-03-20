@@ -1,4 +1,4 @@
-import { ChartComponent } from "./components/chart/chart.component";
+import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import { TimeTableComponent } from "./pages/time-table/time-table.component";
 import { SubjectSectionHoursComponent } from "./pages/subject-section-hours/subject-section-hours.component";
 import { StudentsComponent } from "./pages/students/students.component";
@@ -64,7 +64,7 @@ const routes: Routes = [
       },
       {
         path: "home",
-        component: ChartComponent,
+        component: DashboardComponent,
         canActivate: [AuthGuard],
       },
     ],
