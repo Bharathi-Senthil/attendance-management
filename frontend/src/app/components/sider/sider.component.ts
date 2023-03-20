@@ -24,6 +24,7 @@ export class SiderComponent implements OnInit {
   sections: Section[];
 
   isVisible = false;
+  isEmail = false;
 
   dropdown: { id: any; isOpen: boolean } = {
     id: null,

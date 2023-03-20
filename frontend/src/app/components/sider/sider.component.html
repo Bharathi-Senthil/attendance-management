@@ -71,10 +71,16 @@
 >
   <ng-container *nzModalContent>
     <div class="flex flex-col gap-5">
-      <nz-radio-group ngModel="day" (ngModelChange)="changeReportType($event)">
-        <label nz-radio nzValue="day">Day Report</label>
-        <label nz-radio nzValue="full">Full Report</label>
-      </nz-radio-group>
+      <div>
+        <nz-radio-group
+          ngModel="day"
+          (ngModelChange)="changeReportType($event)"
+        >
+          <label nz-radio nzValue="day">Day Report</label>
+          <label nz-radio nzValue="full">Full Report</label>
+        </nz-radio-group>
+        <label nz-checkbox [(ngModel)]="isEmail">Send mail</label>
+      </div>
       <div class="flex items-center gap-4">
         <nz-select
           class="w-[100px]"
