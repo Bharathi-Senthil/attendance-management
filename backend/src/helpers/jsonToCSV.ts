@@ -13,12 +13,17 @@ export function jsonToExcel(
   const secName = ["A", "B", "C", "D", "E", "F"];
   const header = Object.keys(data[0]);
 
+  let fDate = new Date(date);
+
   let workbook = exportAsExcelFile(
     "PANIMALAR ENGINEEERING COLLEGE",
-    date
-      ? date +
-          ` ${yearName[year - 1]} - ${sec !== "null" ? secName[sec - 1] : ""}`
-      : "",
+    `${
+      date
+        ? `${fDate.getDate()}-${fDate.getMonth()}-${fDate.getFullYear()} /`
+        : ""
+    } ${yearName[year - 1]} YEAR ${
+      sec !== "null" ? secName[sec - 1] + " SEC" : ""
+    }`,
     header,
     data
   );
@@ -55,12 +60,18 @@ function exportAsExcelFile(
   worksheet.getCell("A1").alignment = { horizontal: "center" };
   worksheet.getCell("A1").font = { size: 26, bold: true };
 
+  worksheet.addRow([]);
+  worksheet.mergeCells("A2:" + numToAlpha(header.length - 1) + "2");
+  worksheet.getCell("A2").value = "DEPARTMENT OF CSE";
+  worksheet.getCell("A2").alignment = { horizontal: "center" };
+  worksheet.getCell("A2").font = { size: 20, bold: false };
+
   if (reportSubHeading !== "") {
     worksheet.addRow([]);
-    worksheet.mergeCells("A2:" + numToAlpha(header.length - 1) + "2");
-    worksheet.getCell("A2").value = reportSubHeading;
-    worksheet.getCell("A2").alignment = { horizontal: "center" };
-    worksheet.getCell("A2").font = { size: 20, bold: false };
+    worksheet.mergeCells("A3:" + numToAlpha(header.length - 1) + "3");
+    worksheet.getCell("A3").value = reportSubHeading;
+    worksheet.getCell("A3").alignment = { horizontal: "center" };
+    worksheet.getCell("A3").font = { size: 20, bold: false };
   }
 
   /* Add Header Row */
