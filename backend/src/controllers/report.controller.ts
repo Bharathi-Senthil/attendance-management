@@ -27,9 +27,27 @@ export class ReportController {
         `
       )
       .then((data) => {
+        const yearName = ["I", "II", "III", "IV"];
+        const secName = ["A", "B", "C", "D", "E", "F"];
+
+        let fDate = new Date(date);
+
+        let fileName = `${
+          date
+            ? `${fDate.getDate()}-${fDate.getMonth()}-${fDate.getFullYear()} /`
+            : ""
+        } ${yearName[year - 1]} YEAR ${
+          sec !== "null" ? secName[sec - 1] + " SEC" : ""
+        }`;
+
         if (data[0].length !== 0) {
           if (!date) {
             jsonToExcel(data[0], year, sec, date).then((data) => {
+              if (isEmail)
+                this.sendMail({
+                  buffer: data,
+                  fileName,
+                });
               res.send(data);
             });
           } else
@@ -53,6 +71,11 @@ export class ReportController {
                   });
                 });
                 jsonToExcel(absentees, year, sec, date).then((data) => {
+                  if (isEmail)
+                    this.sendMail({
+                      buffer: data,
+                      fileName,
+                    });
                   res.send(data);
                 });
               });
@@ -121,16 +144,17 @@ export class ReportController {
         pass: "tlktpezddakdlkfv",
       },
     });
-
+    // to: "sathishjraman@gmail.com",
     let mailDetails = {
       from: "panimalar.backup@gmail.com",
-      to: "sathishjraman@gmail.com",
+      to: "ramanan.bala2003@gmail.com",
       subject: "Test mail",
       attachments: [
         {
           filename: csv.fileName,
-
-          content: csv.csv,
+          content: csv.buffer,
+          contentType:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         },
       ],
     };
