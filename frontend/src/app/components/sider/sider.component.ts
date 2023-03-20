@@ -44,6 +44,7 @@ export class SiderComponent implements OnInit {
         this.sections = data;
       });
   }
+  // checked = true;
 
   toggle(id: any) {
     if (id === this.dropdown.id) this.dropdown.isOpen = !this.dropdown.isOpen;
@@ -74,9 +75,9 @@ export class SiderComponent implements OnInit {
 
     this.http
       .get<any>(
-        `${environment.apiUrl}/report/day?year=${this.year.value}&sec=${
-          this.section.value
-        }${fDate ? `&date=${fDate}` : ""}`,
+        `${environment.apiUrl}/report/day?isEmail=${this.isEmail}&year=${
+          this.year.value
+        }&sec=${this.section.value}${fDate ? `&date=${fDate}` : ""}`,
         {
           responseType: "blob" as "json",
         }
