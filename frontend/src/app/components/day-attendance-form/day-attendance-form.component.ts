@@ -1,12 +1,12 @@
-import { FadeInOut } from "./../../animations";
-import { DataService } from "src/app/helpers/data.service";
-import { formatDate } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { TransferItem } from "ng-zorro-antd/transfer";
-import { Section, Student } from "src/app/models";
-import { environment } from "src/environments/environment";
-import { NzMessageService } from "ng-zorro-antd/message";
+import {FadeInOut} from "./../../animations";
+import {DataService} from "src/app/helpers/data.service";
+import {formatDate} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {Component, EventEmitter, OnInit, Output} from "@angular/core";
+import {TransferItem} from "ng-zorro-antd/transfer";
+import {Section, Student} from "src/app/models";
+import {environment} from "src/environments/environment";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: "day-attendance-form",
@@ -57,12 +57,8 @@ export class DayAttendanceFormComponent implements OnInit {
         `${environment.apiUrl}/students/day-present?mentor=${this.user.id}&date=${Fdate}&sec=${this.selectedSection}&year=${this.selectedYear}`
       )
       .subscribe((data: { preStudents: Student[]; absStudents: any[] }) => {
-        this.students = data.preStudents.sort((a, b): any => {
-          return a.rollNo > b.rollNo;
-        });
-        this.absentees = data.absStudents.sort((a, b): any => {
-          return a.studentRollNo > b.studentRollNo;
-        });
+        this.students = data.preStudents;
+        this.absentees = data.absStudents;
         this.sendAbsentees.emit(this.absentees);
         this.getData(data);
       });

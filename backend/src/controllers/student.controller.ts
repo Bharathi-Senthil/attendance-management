@@ -227,7 +227,7 @@ export class StudentController {
       if (year) where = { ...where, yearId: year };
       if (user?.dataValues.role != "ADMIN")
         where = { ...where, mentorId: mentor };
-      Student.findAll({ where }).then((students) => {
+      Student.findAll({ where,order:[["rollNo","ASC"]] }).then((students) => {
         preStudents = students;
         let options: any = this.dayOptions;
         if (date)

@@ -106,3 +106,4 @@ dist
 .DS_STORE
 .env
 .angular
+.idea
