@@ -88,6 +88,17 @@
           class="w-[100px]"
           nzShowSearch
           nzAllowClear
+          nzPlaceHolder="Course"
+          [formControl]="course"
+          *ngIf="user.role === 'ADMIN'"
+        >
+          <nz-option nzValue="1" nzLabel="B.E"></nz-option>
+          <nz-option nzValue="2" nzLabel="M.E"></nz-option>
+        </nz-select>
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
           nzPlaceHolder="Year"
           [formControl]="year"
           *ngIf="user.role === 'ADMIN'"

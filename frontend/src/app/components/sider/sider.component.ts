@@ -34,6 +34,7 @@ export class SiderComponent implements OnInit {
   section = new FormControl<any>(null, [Validators.required]);
   year = new FormControl<any>(null, [Validators.required]);
   date = new FormControl<any>(null, [Validators.required]);
+  course = new FormControl<any>(null, [Validators.required]);
 
   user = JSON.parse(String(localStorage.getItem("user")));
 
@@ -59,6 +60,7 @@ export class SiderComponent implements OnInit {
   }
 
   getReport() {
+    const courseName = ["B.E", "M.E"];
     const yearName = ["I", "II", "III", "IV"];
     const secName = ["A", "B", "C", "D", "E", "F"];
 
@@ -67,7 +69,9 @@ export class SiderComponent implements OnInit {
       fDate = formatDate(String(this.date.value), "yyyy-MM-dd", "en");
 
     let fileName = this.date.value
-      ? `${fDate}${this.year.value ? " " + yearName[this.year.value - 1] : ""}${
+      ? `${fDate}${
+          this.course.value ? " " + courseName[this.course.value - 1] : ""
+        }${this.year.value ? " " + yearName[this.year.value - 1] : ""}${
           this.section.value ? " " + secName[this.section.value - 1] : ""
         }.xlsx`
       : `${this.year.value ? " " + yearName[this.year.value - 1] : ""}${
@@ -77,9 +81,9 @@ export class SiderComponent implements OnInit {
       .get<any>(
         `${environment.apiUrl}/report/day?isEmail=${this.isEmail}&year=${
           this.year.value
-        }&sec=${this.section.value}${fDate ? `&date=${fDate}` : ""}${
-          this.user.role !== "ADMIN" ? `&mentor=${this.user.id}` : ""
-        }`,
+        }&sec=${this.section.value}${fDate && `&date=${fDate}`}${
+          this.user.role !== "ADMIN" && `&mentor=${this.user.id}`
+        }${this.course.valid && `&course=${this.course.value}`}`,
         {
           responseType: "blob" as "json",
         }
