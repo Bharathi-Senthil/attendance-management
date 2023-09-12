@@ -79,6 +79,16 @@
           <th>Roll No</th>
           <th>Register No</th>
           <th
+            nzColumnKey="fCourse"
+            [nzFilterFn]="true"
+            [nzFilters]="[
+              { text: 'B.E', value: 'BE' },
+              { text: 'M.E', value: 'ME' },
+            ]"
+          >
+            Course
+          </th>
+          <th
             nzColumnKey="fYear"
             [nzFilterFn]="true"
             [nzFilters]="[
@@ -119,6 +129,7 @@
           <td>{{ s.name }}</td>
           <td>{{ s.rollNo }}</td>
           <td>{{ s.regNo }}</td>
+          <td>{{ s.course }}</td>
           <td>{{ s.yearName }}</td>
           <td>{{ s.sectionName }}</td>
           <td>{{ s.mentorName }}</td>

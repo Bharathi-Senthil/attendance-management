@@ -24,6 +24,7 @@ export class StudentController {
       "sectionId",
       "studentMobile",
       "parentMobile",
+      "course",
       [Sequelize.col("section.name"), "sectionName"],
       "yearId",
       [Sequelize.col("year.name"), "yearName"],
@@ -88,6 +89,7 @@ export class StudentController {
       "date",
       "studentId",
       "reason",
+      "course",
       [Sequelize.col("student.name"), "studentName"],
       [Sequelize.col("student.roll_no"), "studentRollNo"],
       [Sequelize.col("student.reg_no"), "studentRegNo"],
@@ -118,10 +120,11 @@ export class StudentController {
   }
 
   getPaged(req: Request, res: Response) {
-    const { page, size, sec, mentor, search, fYear, fSec, fMentor }: any =
+    const { page, size, sec, mentor, search, fCourse,fYear, fSec, fMentor }: any =
       req.query;
     let where = {};
     if (sec) where = { ...where, sectionId: sec };
+    if (fCourse) where = { ...where, course: fCourse };
     if (fYear) where = { ...where, yearId: fYear };
     if (fSec) where = { ...where, sectionId: fSec };
     if (fMentor) {

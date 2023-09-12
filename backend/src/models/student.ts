@@ -36,6 +36,12 @@ Student.init(
       allowNull: false,
       unique: { msg: "Reg No must be unique!", name: "regNo" },
     },
+    course: {
+      type: DataTypes.ENUM,
+      values: ["BE", "ME"],
+      allowNull: false,
+      defaultValue: "BE",
+    },
     sectionId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -4,6 +4,7 @@ export interface Student {
   rollNo: string;
   regNo: string;
   sectionId: number;
+  course:string;
   sectionName?: number;
   yearId: number;
   yearName?: number;
