@@ -44,7 +44,6 @@ function exportAsExcelFile(
 ) {
   const header = headersArray;
   const data = json;
-
   /* Create workbook and worksheet */
   const workbook = new Workbook();
   workbook.creator = "Snippet Coder";

@@ -70,7 +70,7 @@ export class SiderComponent implements OnInit {
 
     let fileName = this.date.value
       ? `${fDate}${
-          this.course.value ? " " + courseName[this.course.value - 1] : ""
+          this.course.value ? " " + this.course.value : ""
         }${this.year.value ? " " + yearName[this.year.value - 1] : ""}${
           this.section.value ? " " + secName[this.section.value - 1] : ""
         }.xlsx`
@@ -82,7 +82,7 @@ export class SiderComponent implements OnInit {
         `${environment.apiUrl}/report/day?isEmail=${this.isEmail}&year=${
           this.year.value
         }&sec=${this.section.value}${fDate && `&date=${fDate}`}${
-          this.user.role !== "ADMIN" && `&mentor=${this.user.id}`
+          this.user.role !== "ADMIN" ? `&mentor=${this.user.id}`:""
         }${this.course.valid && `&course=${this.course.value}`}`,
         {
           responseType: "blob" as "json",

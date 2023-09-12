@@ -89,7 +89,6 @@ export class StudentController {
       "date",
       "studentId",
       "reason",
-      "course",
       [Sequelize.col("student.name"), "studentName"],
       [Sequelize.col("student.roll_no"), "studentRollNo"],
       [Sequelize.col("student.reg_no"), "studentRegNo"],
