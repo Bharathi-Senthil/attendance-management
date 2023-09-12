@@ -28,7 +28,7 @@ export class ChartComponent implements OnInit {
   user = JSON.parse(String(localStorage.getItem("user")));
   dateRange: Date[];
 
-  year = 1;
+  year = 2;
   _date: Date;
 
   get date() {

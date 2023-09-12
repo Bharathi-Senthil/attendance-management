@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { UserController } from "../controllers";
-import { verifyToken } from "../middleware";
+import { verifyAdmin, verifyToken } from "../middleware";
 
 export class UserRoutes {
   private router: Router;
@@ -19,28 +19,30 @@ export class UserRoutes {
     // );
 
     //! GetAll
-    this.router.get("/", verifyToken, (req, res) =>
+    this.router.get("/", verifyAdmin, verifyToken, (req, res) =>
       this.controller.getAll(req, res)
     );
 
     //! GetById
-    this.router.get("/:id", verifyToken, (req, res) =>
+    this.router.get("/:id", verifyAdmin, verifyToken, (req, res) =>
       this.controller.getById(req, res)
     );
 
     //! Register
-    this.router.post("/register", (req, res) => this.controller.post(req, res));
+    this.router.post("/register", verifyAdmin, (req, res) =>
+      this.controller.post(req, res)
+    );
 
     //! Login
     this.router.post("/login", (req, res) => this.controller.login(req, res));
 
     //! Put
-    this.router.put("/:id", verifyToken, (req, res) =>
+    this.router.put("/:id", verifyAdmin, verifyToken, (req, res) =>
       this.controller.update(req, res)
     );
 
     //! Delete
-    this.router.delete("/:id", verifyToken, (req, res) =>
+    this.router.delete("/:id", verifyAdmin, verifyToken, (req, res) =>
       this.controller.delete(req, res)
     );
   }

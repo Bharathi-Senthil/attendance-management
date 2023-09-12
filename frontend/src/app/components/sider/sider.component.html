@@ -79,7 +79,9 @@
           <label nz-radio nzValue="day">Day Report</label>
           <label nz-radio nzValue="full">Full Report</label>
         </nz-radio-group>
-        <label nz-checkbox [(ngModel)]="isEmail">Send mail</label>
+        <label nz-checkbox [(ngModel)]="isEmail" *ngIf="user.role === 'ADMIN'"
+          >Send mail</label
+        >
       </div>
       <div class="flex items-center gap-4">
         <nz-select
@@ -88,6 +90,7 @@
           nzAllowClear
           nzPlaceHolder="Year"
           [formControl]="year"
+          *ngIf="user.role === 'ADMIN'"
         >
           <nz-option nzValue="1" nzLabel="I"></nz-option>
           <nz-option nzValue="2" nzLabel="II"></nz-option>
@@ -100,6 +103,7 @@
           nzAllowClear
           nzPlaceHolder="Section"
           [formControl]="section"
+          *ngIf="user.role === 'ADMIN'"
         >
           <nz-option
             *ngFor="let s of sections"
@@ -111,7 +115,10 @@
         <button
           nz-button
           [nzType]="'primary'"
-          [disabled]="year.invalid || (date.enabled ? date.invalid : false)"
+          [disabled]="
+            (user.role === 'ADMIN' ? year.invalid : false) ||
+            (date.enabled ? date.invalid : false)
+          "
           (click)="getReport()"
         >
           Download

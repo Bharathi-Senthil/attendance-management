@@ -3,12 +3,16 @@ import { verify, decode } from "jsonwebtoken";
 
 const config = process.env.TOKEN_KEY ? process.env.TOKEN_KEY : "";
 
-export const verifyToken = (req: any, res: Response, next: NextFunction) => {
+export const verifyAdmin = (req: any, res: Response, next: NextFunction) => {
   const token =
     req.body.token ||
     req.query.token ||
     req.headers.authorization?.split(" ")[1];
-  if (!token) {
+
+  let user: any = decode(token, { complete: true })?.payload;
+  let isAdmin = user.role === "ADMIN";
+
+  if (!token || !isAdmin) {
     return res.status(403).send("A token is required for authentication");
   }
   try {

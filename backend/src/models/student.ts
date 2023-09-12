@@ -54,6 +54,7 @@ Student.init(
     },
     mentorId: {
       type: DataTypes.INTEGER,
+
       allowNull: true,
       references: {
         model: User,

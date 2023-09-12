@@ -64,7 +64,7 @@ export class MentorFormComponent implements OnInit {
           Validators.minLength(8),
         ],
       ],
-      studentId: [null, [Validators.required]],
+      studentId: [null],
     });
   }
 
@@ -91,10 +91,12 @@ export class MentorFormComponent implements OnInit {
             this.message.success("Mentor updated successfully");
             this.mentorId = -1;
             this.students = [];
+            console.log(this.students);
             this.form.reset();
             this.onFormSubmit.emit();
           });
     } else {
+      console.log(this.students);
       Object.values(this.form.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();

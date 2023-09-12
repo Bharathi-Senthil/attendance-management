@@ -19,10 +19,10 @@ export function jsonToExcel(
     "PANIMALAR ENGINEEERING COLLEGE",
     `${
       date
-        ? `${fDate.getDate()}-${fDate.getMonth()}-${fDate.getFullYear()} /`
+        ? `${fDate.getDate()}-${fDate.getMonth() + 1}-${fDate.getFullYear()} `
         : ""
-    } ${yearName[year - 1]} YEAR ${
-      sec !== "null" ? secName[sec - 1] + " SEC" : ""
+    } ${year > 0 ? yearName[year - 1] + "/ YEAR" : ""} ${
+      sec > 0 ? secName[sec - 1] + " SEC" : ""
     }`,
     header,
     data

@@ -6,6 +6,8 @@ import { FormControl, Validators } from "@angular/forms";
 import { uploadCsv } from "src/app/helpers";
 import { Mentor, Section, Student } from "src/app/models";
 
+import { NzModalService } from "ng-zorro-antd/modal";
+
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -47,13 +49,18 @@ export class StudentsComponent implements OnInit {
     }, 300);
   }
 
-  constructor(private http: HttpClient, private message: NzMessageService) {}
+  constructor(
+    private http: HttpClient,
+    private message: NzMessageService,
+    private modal: NzModalService
+  ) {}
 
   ngOnInit(): void {
     this.http
       .get<Section[]>(`${environment.apiUrl}/sections`)
       .subscribe((data: Section[]) => {
         this.sections = data;
+        console.log(this.sections);
       });
     this.http
       .get<Mentor[]>(`${environment.apiUrl}/users`)
@@ -62,6 +69,27 @@ export class StudentsComponent implements OnInit {
           this.mentors.push({ text: u.name, value: u.id });
         });
       });
+  }
+
+  promote() {
+    this.modal.confirm({
+      nzTitle: "Are you REALLY sure want to promote the Students?",
+      // nzContent:
+      //   '<b style="color: red;">Note: In case you accidentally deleted the data, please don\'t ever try to contact us.</b>',
+      nzOkText: "Yes",
+      nzOkType: "primary",
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.http
+          .get(`${environment.apiUrl}/promotion`)
+          .subscribe((data: any) => {
+            this.message.success("Students promoted successfully");
+            this.getStudents();
+          });
+      },
+      nzCancelText: "No",
+      nzOnCancel: () => console.log("Cancel"),
+    });
   }
 
   getStudents(p?: any) {
@@ -111,6 +139,7 @@ export class StudentsComponent implements OnInit {
         s["sectionId"] = this.section.value;
         s["yearId"] = this.year.value;
         file.value = null;
+        console.log(file.value);
       });
       this.http
         .post(`${environment.apiUrl}/students`, students)

@@ -35,6 +35,8 @@ export class SiderComponent implements OnInit {
   year = new FormControl<any>(null, [Validators.required]);
   date = new FormControl<any>(null, [Validators.required]);
 
+  user = JSON.parse(String(localStorage.getItem("user")));
+
   constructor(private http: HttpClient, private message: NzMessageService) {}
 
   ngOnInit(): void {
@@ -44,7 +46,6 @@ export class SiderComponent implements OnInit {
         this.sections = data;
       });
   }
-  // checked = true;
 
   toggle(id: any) {
     if (id === this.dropdown.id) this.dropdown.isOpen = !this.dropdown.isOpen;
@@ -66,18 +67,19 @@ export class SiderComponent implements OnInit {
       fDate = formatDate(String(this.date.value), "yyyy-MM-dd", "en");
 
     let fileName = this.date.value
-      ? `${fDate}-${yearName[this.year.value - 1]}-${
-          this.section.value ? secName[this.section.value - 1] : ""
+      ? `${fDate}${this.year.value ? " " + yearName[this.year.value - 1] : ""}${
+          this.section.value ? " " + secName[this.section.value - 1] : ""
         }.xlsx`
-      : `${yearName[this.year.value]}-${
-          this.section.value ? secName[this.section.value - 1] : ""
-        }Full.xlsx`;
-
+      : `${this.year.value ? " " + yearName[this.year.value - 1] : ""}${
+          this.section.value ? " " + secName[this.section.value - 1] : ""
+        } Full.xlsx`;
     this.http
       .get<any>(
         `${environment.apiUrl}/report/day?isEmail=${this.isEmail}&year=${
           this.year.value
-        }&sec=${this.section.value}${fDate ? `&date=${fDate}` : ""}`,
+        }&sec=${this.section.value}${fDate ? `&date=${fDate}` : ""}${
+          this.user.role !== "ADMIN" ? `&mentor=${this.user.id}` : ""
+        }`,
         {
           responseType: "blob" as "json",
         }

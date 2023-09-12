@@ -1,4 +1,4 @@
-<div class="flex gap-4 items-center mb-2">
+<div class="flex gap-4 items-center mb-2" *ngIf="user.role === 'ADMIN'">
   <nz-select
     class="w-[100px]"
     nzShowSearch

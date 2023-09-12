@@ -15,14 +15,17 @@ export class DayAttendanceComponent implements OnInit {
 
   selectedStudent: any;
   reason: string;
+  parentMobile: number;
 
   constructor(private http: HttpClient, private message: NzMessageService) {}
   ngOnInit(): void {}
 
   onSelectedStudentChange() {
-    this.reason = this.absentees.filter(
+    let student = this.absentees.filter(
       (a: any) => a.id === this.selectedStudent
-    )[0].reason;
+    )[0];
+    this.reason = student.reason;
+    this.parentMobile = student.parentMobile;
   }
 
   getAbsentees(absentees: any) {
@@ -32,6 +35,7 @@ export class DayAttendanceComponent implements OnInit {
     if (absentees.length > 0) {
       this.selectedStudent = absentees[0].id;
       this.reason = absentees[0].reason;
+      this.parentMobile = absentees[0].parentMobile;
     } else this.selectedStudent = 0;
   }
 

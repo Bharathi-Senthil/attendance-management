@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { sequelize } from "../db";
-import fs from "fs";
 import { jsonToExcel } from "../helpers/jsonToCSV";
 
 var nodemailer = require("nodemailer");
@@ -8,9 +7,11 @@ export class ReportController {
   constructor() {}
 
   getDayReport(req: Request, res: Response) {
-    const { year, sec, date, isEmail }: any = req.query;
-    let where = `WHERE da.is_absent = TRUE AND s.year_id = ${year}`;
-    if (sec != "null") where += ` AND s.section_id = ${sec}`;
+    const { year, sec, mentor, date, isEmail }: any = req.query;
+    let where = `WHERE da.is_absent = TRUE`;
+    if (year > 0) where += ` AND s.year_id = ${year}`;
+    if (sec > 0) where += ` AND s.section_id = ${sec}`;
+    if (mentor > 0) where += ` AND s.mentor_id = ${mentor}`;
     sequelize
       .query(
         `
@@ -36,8 +37,8 @@ export class ReportController {
           date
             ? `${fDate.getDate()}-${fDate.getMonth()}-${fDate.getFullYear()} /`
             : ""
-        } ${yearName[year - 1]} YEAR ${
-          sec !== "null" ? secName[sec - 1] + " SEC" : ""
+        } ${year > 0 ? yearName[year - 1] + " YEAR" : ""} ${
+          sec > 0 ? secName[sec - 1] + " SEC" : ""
         }`;
 
         if (data[0].length !== 0) {
@@ -141,14 +142,14 @@ export class ReportController {
       service: "gmail",
       auth: {
         user: "panimalar.backup@gmail.com",
-        pass: "tlktpezddakdlkfv",
+        pass: "qaoeyrrjbqqagpii",
       },
     });
     // to: "sathishjraman@gmail.com",
     let mailDetails = {
       from: "panimalar.backup@gmail.com",
-      to: "gmail.com",
-      subject: "Test mail",
+      to: "ramanan.bala2003@gmail.com",
+      subject: "Day Attendance mail",
       attachments: [
         {
           filename: csv.fileName,

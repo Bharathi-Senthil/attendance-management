@@ -1,12 +1,12 @@
-import {FadeInOut} from "./../../animations";
-import {DataService} from "src/app/helpers/data.service";
-import {formatDate} from "@angular/common";
-import {HttpClient} from "@angular/common/http";
-import {Component, EventEmitter, OnInit, Output} from "@angular/core";
-import {TransferItem} from "ng-zorro-antd/transfer";
-import {Section, Student} from "src/app/models";
-import {environment} from "src/environments/environment";
-import {NzMessageService} from "ng-zorro-antd/message";
+import { FadeInOut } from "./../../animations";
+import { DataService } from "src/app/helpers/data.service";
+import { formatDate } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { TransferItem } from "ng-zorro-antd/transfer";
+import { Section, Student } from "src/app/models";
+import { environment } from "src/environments/environment";
+import { NzMessageService } from "ng-zorro-antd/message";
 
 @Component({
   selector: "day-attendance-form",
@@ -44,6 +44,7 @@ export class DayAttendanceFormComponent implements OnInit {
       .subscribe((data: Section[]) => {
         this.sections = data;
       });
+    if (this.user.role !== "ADMIN") this.getStudents();
     this.data.getDate().subscribe((date) => {
       this.selectedDate = date;
       this.getStudents();

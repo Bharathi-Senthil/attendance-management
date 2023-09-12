@@ -1,3 +1,4 @@
+import { ResetRoutes } from "./routes/reset.routes";
 import bcrypt from "bcryptjs";
 import { UserRoutes } from "./routes/user.routes";
 import express from "express";
@@ -25,12 +26,12 @@ import {
   User,
   Year,
 } from "./models";
-import { verifyToken } from "./middleware";
+import { verifyAdmin, verifyToken } from "./middleware";
 
-import { google } from "googleapis";
-import * as googleAuth from "google-auth-library";
-import * as fs from "fs";
-import path from "path";
+// import { google } from "googleapis";
+// import * as googleAuth from "google-auth-library";
+// import * as fs from "fs";
+// import path from "path";
 
 // const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 // const KEY_FILE = __dirname + "/keyfile.json";
@@ -201,6 +202,7 @@ app.use(
 
 app.use("/api/report", verifyToken, new ReportRoutes().getRouter());
 // app.use("/api/reason", verifyToken, new ReasonRoutes().getRouter());
+app.use("/api", verifyToken, new ResetRoutes().getRouter());
 
 app.get("/api/hourly-report", (req, res) => {
   sequelize.query(query).then((data) => {

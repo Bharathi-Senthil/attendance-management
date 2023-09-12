@@ -56,7 +56,6 @@ export class BaseLayoutComponent implements OnInit {
           icon: "team",
           path: "day-attendance",
         },
-
         {
           title: "Time Table",
           icon: "timetable",

@@ -94,6 +94,7 @@ export class StudentController {
       [Sequelize.col("student.section_id"), "studentSectionId"],
       [Sequelize.col("student.section.name"), "sectionName"],
       [Sequelize.col("student.mentor_id"), "mentorId"],
+      [Sequelize.col("student.parent_mobile"), "parentMobile"],
       "isAbsent",
     ],
     include: [
@@ -223,33 +224,35 @@ export class StudentController {
     let preStudents: Student[];
     User.findByPk(mentor).then((user) => {
       let where = {};
-      if (sec) where = { ...where, sectionId: sec };
-      if (year) where = { ...where, yearId: year };
+      if (sec > 0) where = { ...where, sectionId: sec };
+      if (year > 0) where = { ...where, yearId: year };
       if (user?.dataValues.role != "ADMIN")
         where = { ...where, mentorId: mentor };
-      Student.findAll({ where,order:[["rollNo","ASC"]] }).then((students) => {
-        preStudents = students;
-        let options: any = this.dayOptions;
-        if (date)
-          options = {
-            ...options,
-            where: {
-              date: new Date(String(date)),
-            },
-          };
-        DayAttendance.findAll(options).then((absStudents) => {
-          absStudents.forEach((abs) => {
-            preStudents = preStudents.filter(
-              (pre) => pre.dataValues.id != abs.dataValues.studentId
-            );
+      Student.findAll({ where, order: [["rollNo", "ASC"]] }).then(
+        (students) => {
+          preStudents = students;
+          let options: any = this.dayOptions;
+          if (date)
+            options = {
+              ...options,
+              where: {
+                date: new Date(String(date)),
+              },
+            };
+          DayAttendance.findAll(options).then((absStudents) => {
+            absStudents.forEach((abs) => {
+              preStudents = preStudents.filter(
+                (pre) => pre.dataValues.id != abs.dataValues.studentId
+              );
+            });
+            if (user?.dataValues.role != "ADMIN")
+              absStudents = absStudents.filter(
+                (abs) => abs.dataValues.mentorId === parseInt(mentor)
+              );
+            res.status(200).json({ preStudents, absStudents });
           });
-          if (user?.dataValues.role != "ADMIN")
-            absStudents = absStudents.filter(
-              (abs) => abs.dataValues.mentorId === parseInt(mentor)
-            );
-          res.status(200).json({ preStudents, absStudents });
-        });
-      });
+        }
+      );
     });
   }
 

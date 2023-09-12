@@ -60,3 +60,10 @@ FROM
 ) a
 GROUP BY a.student_id, a.section_name
 ORDER BY a.student_name
+
+-- Present percentage
+SELECT  s.name, s.roll_no, s.reg_no, s.parent_mobile, COUNT(da.id) AS total_absent, 100.0 - ((100.0 / 50.0) * COUNT(da.id))  as total_present
+FROM students s
+LEFT JOIN day_attendances da ON s.id = da.student_id
+WHERE s.mentor_id = 23
+GROUP BY s.id, s.name
