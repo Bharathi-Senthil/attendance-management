@@ -21,6 +21,7 @@ import { NzRadioModule } from "ng-zorro-antd/radio";
 import { NzEmptyModule } from "ng-zorro-antd/empty";
 import { NzTransferModule } from "ng-zorro-antd/transfer";
 import { NzSpinModule } from "ng-zorro-antd/spin";
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 @NgModule({
   exports: [
@@ -46,6 +47,7 @@ import { NzSpinModule } from "ng-zorro-antd/spin";
     NzInputModule,
     NzTransferModule,
     NzSpinModule,
+    NzPopoverModule
   ],
 })
 export class NgZorroModule {}

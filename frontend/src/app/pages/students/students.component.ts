@@ -9,6 +9,7 @@ import { Mentor, Section, Student } from "src/app/models";
 import { NzModalService } from "ng-zorro-antd/modal";
 
 import { environment } from "src/environments/environment";
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-students",
@@ -29,7 +30,7 @@ export class StudentsComponent implements OnInit {
 
   studentId = -1;
 
-  sections: Section[];
+  sections: any[] = [];
 
   section = new FormControl(null, [Validators.required]);
   year = new FormControl(null, [Validators.required]);
@@ -53,21 +54,24 @@ export class StudentsComponent implements OnInit {
     private http: HttpClient,
     private message: NzMessageService,
     private modal: NzModalService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.http
       .get<Section[]>(`${environment.apiUrl}/sections`)
       .subscribe((data: Section[]) => {
-        this.sections = data;
-        console.log(this.sections);
+        this.sections = data.map((s) => ({ text: s.name, value: s.id }));
+        this.isLoading = false;
       });
+    this.isLoading = true;
     this.http
       .get<Mentor[]>(`${environment.apiUrl}/users`)
       .subscribe((users) => {
         users.map((u) => {
           this.mentors.push({ text: u.name, value: u.id });
         });
+        this.isLoading = false;
       });
   }
 
@@ -92,6 +96,19 @@ export class StudentsComponent implements OnInit {
     });
   }
 
+
+  visible: boolean = false;
+  resetDate:Date;
+  resetYear:number;
+  reset() {
+    this.http
+      .delete(`${environment.apiUrl}/reset?date=${formatDate(this.resetDate,"yyyy-MM-dd","en")}&year=${this.resetYear}`)
+      .subscribe((data: any) => {
+        this.message.success("Reset successfully");
+        this.getStudents();
+      });
+  }
+
   getStudents(p?: any) {
     let params = new HttpParams()
       .append("page", `${this.pageIndex}`)
@@ -103,12 +120,12 @@ export class StudentsComponent implements OnInit {
     if (this.filter) {
       url += `&filter[]=${this.filter}`;
       this.filter.forEach((filter: { value: any[]; key: string }) => {
-        filter.value.forEach((value) => {
+        filter.value?.forEach((value) => {
           params = params.append(filter.key, value);
         });
       });
     }
-    this.isLoading = !this.isLoading;
+    this.isLoading = true;
     this.http
       .get<{ data: Student[]; totalItems: number }>(
         `${environment.apiUrl}/students/page`,
@@ -116,11 +133,11 @@ export class StudentsComponent implements OnInit {
       )
       .subscribe(
         (res: { data: Student[]; totalItems: number }) => {
-          this.isLoading = !this.isLoading;
+          this.isLoading = false;
           this.students = res.data;
           this.total = res.totalItems;
         },
-        (err) => (this.isLoading = !this.isLoading)
+        (err) => (this.isLoading = false)
       );
   }
 

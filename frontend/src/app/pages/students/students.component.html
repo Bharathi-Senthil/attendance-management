@@ -1,7 +1,7 @@
 <div class="flex gap-10" @fade>
   <div class="flex-grow">
     <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
         <nz-select
           class="w-[100px]"
           nzShowSearch
@@ -51,6 +51,16 @@
         >
           Promote
         </button>
+        <button
+          class="bg-[#1890FF] text-white px-2 py-[5.5px] rounded-sm"
+          nz-popover
+          [(nzPopoverVisible)]="visible"
+          nzPopoverTrigger="click"
+          [nzPopoverContent]="contentTemplate"
+          nzPopoverPlacement="bottom"
+        >
+        <span nz-icon nzType="reload" nzTheme="outline"></span>
+        </button>
       </div>
       <nz-input-group [nzSuffix]="suffixIconSearch" class="w-[220px]">
         <input
@@ -65,7 +75,7 @@
       #basicTable
       nzSize="small"
       [nzData]="students"
-      [nzLoading]="isLoading"
+      [nzLoading]="isLoading || sections.length === 0"
       [nzShowPagination]="false"
       [nzFrontPagination]="false"
       [(nzPageSize)]="pageSize"
@@ -103,13 +113,7 @@
           <th
             nzColumnKey="fSec"
             [nzFilterFn]="true"
-            [nzFilters]="[
-              { text: 'A', value: 1 },
-              { text: 'B', value: 2 },
-              { text: 'C', value: 3 },
-              { text: 'D', value: 4 },
-              { text: 'E', value: 5 }
-            ]"
+            [nzFilters]="sections"
           >
             Section
           </th>
@@ -186,4 +190,20 @@
 
 <ng-template #suffixIconSearch>
   <span nz-icon nzType="search"></span>
+</ng-template>
+
+<ng-template #contentTemplate>
+  <div class="flex flex-col gap-2">
+    <span class="font-medium">Reset Attendance:</span>
+    <nz-date-picker class="mr-2 w-full" [(ngModel)]="resetDate" nzPlaceHolder="Reset till"></nz-date-picker>
+    <nz-select nzPlaceHolder="Select year" class="w-full" [(ngModel)]="resetYear">
+      <nz-option *ngFor="let y of [
+      { text: 'I', value: 1 },
+      { text: 'II', value: 2 },
+      { text: 'III', value: 3 },
+      { text: 'IV', value: 4 }
+    ]" [nzValue]="y.value" [nzLabel]="y.text"></nz-option>
+    </nz-select>
+    <button nz-button (click)="reset()">Reset</button>
+  </div>
 </ng-template>

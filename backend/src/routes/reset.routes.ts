@@ -16,6 +16,9 @@ export class ResetRoutes {
     this.router.get("/promotion", verifyAdmin, (req, res) =>
       this.controller.promotion(req, res)
     );
+    
+    //! Reset with date
+    this.router.delete("/reset", (req, res) => this.controller.reset(req, res));
   }
 
   public getRouter() {

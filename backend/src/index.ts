@@ -109,6 +109,7 @@ Year.sync().then(() => {
 Section.sync();
 Subject.sync();
 TimeTable.sync();
+// Student.sync();
 Student.sync();
 HourlyAttendance.sync();
 DayAttendance.sync();

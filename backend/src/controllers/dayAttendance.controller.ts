@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { DayAttendanceService } from "../services";
 import { DayAttendance, Student, Section } from "../models";
 import { getPagingData } from "../helpers";
-import { Sequelize } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 
 export class DayAttendanceController {
   private dayAttendanceService: DayAttendanceService;
@@ -134,4 +134,6 @@ export class DayAttendanceController {
       .then((dayAttendance) => res.status(200).json())
       .catch((err) => res.status(400).json(err));
   }
+
+
 }

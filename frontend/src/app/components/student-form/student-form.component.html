@@ -2,23 +2,29 @@
   {{ studentId > 0 ? "Edit" : "Add" }} Student
 </h1>
 <form nz-form [formGroup]="form" class="w-[400px]" nzLayout="vertical">
-  <nz-form-item>
-    <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
-    <nz-form-control nzErrorTip="Please input student name">
-      <input nz-input type="text" formControlName="name" />
-    </nz-form-control>
-  </nz-form-item>
+  <div class="grid grid-cols-3 gap-4">
+    <nz-form-item class="col-span-2">
+      <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
+      <nz-form-control nzErrorTip="Please input student name">
+        <input nz-input type="text" formControlName="name" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="student">Course</nz-form-label>
+      <nz-form-control nzErrorTip="Please select course">
+        <nz-select nzPlaceHolder="Course" formControlName="course">
+          <nz-option nzValue="BE" nzLabel="B.E"></nz-option>
+          <nz-option nzValue="ME" nzLabel="M.E"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
 
   <div class="grid grid-cols-2 gap-4">
     <nz-form-item>
       <nz-form-label nzRequired nzFor="student">Year</nz-form-label>
       <nz-form-control nzErrorTip="Please select year">
-        <nz-select
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Year"
-          formControlName="yearId"
-        >
+        <nz-select nzPlaceHolder="Year" formControlName="yearId">
           <nz-option [nzValue]="1" nzLabel="I"></nz-option>
           <nz-option [nzValue]="2" nzLabel="II"></nz-option>
           <nz-option [nzValue]="3" nzLabel="III"></nz-option>
@@ -30,12 +36,7 @@
     <nz-form-item>
       <nz-form-label nzRequired nzFor="student">Section</nz-form-label>
       <nz-form-control nzErrorTip="Please select a section!">
-        <nz-select
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Section"
-          formControlName="sectionId"
-        >
+        <nz-select nzPlaceHolder="Section" formControlName="sectionId">
           <nz-option
             *ngFor="let s of sections"
             [nzValue]="s.id"
